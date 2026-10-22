@@ -1,14 +1,16 @@
 {
-  "name": "walk-game",
+  "name": "king-of-tree-planting",
   "version": "1.0.0",
-  "description": "",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "three": "^0.186.1",
-    "vite": "^8.3.5"
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.186.1"
   }
 }
