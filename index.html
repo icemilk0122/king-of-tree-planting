@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walk Game - Taipei</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #000; font-family: system-ui, sans-serif; }
+    canvas { display: block; }
+    #hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      color: #fff;
+      font-size: 14px;
+      background: rgba(0,0,0,0.6);
+      padding: 12px 16px;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      line-height: 1.6;
+    }
+    #hud .title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    #hud .coord { font-variant-numeric: tabular-nums; opacity: 0.8; }
+    #minimap {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.3);
+      overflow: hidden;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    #minimap canvas {
+      width: 100%;
+      height: 100%;
+    }
+    #controls-hint {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      z-index: 10;
+      background: rgba(0,0,0,0.4);
+      padding: 8px 12px;
+      border-radius: 8px;
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="title">Walk Game - Taipei</div>
+    <div class="coord" id="coord-display">25.0330, 121.5654</div>
+  </div>
+  <div id="controls-hint">
+    WASD / Arrow Keys: Move &nbsp; Q/E: Rotate Camera &nbsp; Scroll: Zoom
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
