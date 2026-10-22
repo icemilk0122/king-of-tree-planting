@@ -10,6 +10,7 @@ export default function Game() {
   const gameRef = useRef(null);
   const [selectedTree, setSelectedTree] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [address, setAddress] = useState('');
 
   const onTreeClick = useCallback((data) => {
     setSelectedTree(data);
@@ -19,11 +20,15 @@ export default function Game() {
     setWeather(data);
   }, []);
 
+  const onAddressUpdate = useCallback((addr) => {
+    setAddress(addr);
+  }, []);
+
   useEffect(() => {
     if (!containerRef.current || gameRef.current) return;
     gameRef.current = initGame(
       containerRef.current, coordRef.current, treeInfoRef.current,
-      onTreeClick, onWeatherUpdate
+      onTreeClick, onWeatherUpdate, onAddressUpdate
     );
 
     return () => {
@@ -32,7 +37,7 @@ export default function Game() {
         gameRef.current = null;
       }
     };
-  }, [onTreeClick, onWeatherUpdate]);
+  }, [onTreeClick, onWeatherUpdate, onAddressUpdate]);
 
   return (
     <>
@@ -40,6 +45,7 @@ export default function Game() {
       <div style={styles.hud}>
         <div style={styles.title}>King of Tree Planting</div>
         <div ref={coordRef} style={styles.coord}>25.0330, 121.5654</div>
+        {address && <div style={styles.address}>📍 {address}</div>}
       </div>
 
       {weather && (
@@ -61,14 +67,26 @@ export default function Game() {
         <div style={styles.cardOverlay} onClick={() => setSelectedTree(null)}>
           <div style={styles.card} onClick={(e) => e.stopPropagation()}>
             <button style={styles.closeBtn} onClick={() => setSelectedTree(null)}>✕</button>
-            <div style={styles.cardIcon}>🌳</div>
-            <div style={styles.cardTitle}>{selectedTree.species}</div>
+            <div style={styles.cardHeader}>
+              <div style={styles.cardIcon}>🌳</div>
+              <div>
+                <div style={styles.cardTitle}>{selectedTree.species}</div>
+                <div style={styles.cardSubtitle}>{selectedTree.region}{selectedTree.regionRemark ? `・${selectedTree.regionRemark}` : ''}</div>
+              </div>
+            </div>
+            <div style={styles.cardGreeting}>
+              你好，我是{selectedTree.region}的{selectedTree.species}。路過時，也認識一下我吧。
+            </div>
             <div style={styles.cardGrid}>
+              <div style={styles.cardLabel}>行政區</div>
+              <div style={styles.cardValue}>{selectedTree.dist || '—'}</div>
               <div style={styles.cardLabel}>胸徑</div>
               <div style={styles.cardValue}>{selectedTree.diameter} cm</div>
               <div style={styles.cardLabel}>樹高</div>
               <div style={styles.cardValue}>{selectedTree.height} m</div>
-              <div style={styles.cardLabel}>樹木編號</div>
+              <div style={styles.cardLabel}>調查日期</div>
+              <div style={styles.cardValue}>{selectedTree.surveyDate || '—'}</div>
+              <div style={styles.cardLabel}>樹籍編號</div>
               <div style={styles.cardValue}>{selectedTree.treeId || '—'}</div>
             </div>
           </div>
@@ -102,6 +120,11 @@ const styles = {
   coord: {
     fontVariantNumeric: 'tabular-nums',
     opacity: 0.8,
+  },
+  address: {
+    fontSize: 13,
+    opacity: 0.75,
+    marginTop: 4,
   },
   weatherHud: {
     position: 'fixed',
@@ -176,21 +199,20 @@ const styles = {
   },
   card: {
     position: 'relative',
-    background: 'rgba(255,255,255,0.95)',
+    background: 'rgba(255,255,255,0.96)',
     backdropFilter: 'blur(12px)',
     WebkitBackdropFilter: 'blur(12px)',
     borderRadius: 20,
-    padding: '28px 32px 24px',
-    minWidth: 260,
-    maxWidth: 320,
-    textAlign: 'center',
+    padding: '24px 28px 20px',
+    minWidth: 280,
+    maxWidth: 340,
     fontFamily: 'system-ui, sans-serif',
     color: '#1a1a1a',
     boxShadow: '0 12px 40px rgba(0,0,0,0.25)',
   },
   closeBtn: {
     position: 'absolute',
-    top: 10,
+    top: 12,
     right: 14,
     background: 'none',
     border: 'none',
@@ -199,15 +221,34 @@ const styles = {
     color: '#888',
     lineHeight: 1,
   },
+  cardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 12,
+  },
   cardIcon: {
-    fontSize: 40,
-    marginBottom: 8,
+    fontSize: 36,
+    lineHeight: 1,
   },
   cardTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 700,
-    marginBottom: 16,
     color: '#2e7d32',
+  },
+  cardSubtitle: {
+    fontSize: 13,
+    color: '#888',
+    marginTop: 2,
+  },
+  cardGreeting: {
+    fontSize: 14,
+    color: '#444',
+    lineHeight: 1.6,
+    marginBottom: 14,
+    padding: '10px 12px',
+    background: 'rgba(46, 125, 50, 0.06)',
+    borderRadius: 10,
   },
   cardGrid: {
     display: 'grid',
