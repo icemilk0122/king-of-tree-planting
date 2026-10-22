@@ -6,11 +6,12 @@ import { initGame } from '../lib/engine';
 export default function Game() {
   const containerRef = useRef(null);
   const coordRef = useRef(null);
+  const treeInfoRef = useRef(null);
   const gameRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current || gameRef.current) return;
-    gameRef.current = initGame(containerRef.current, coordRef.current);
+    gameRef.current = initGame(containerRef.current, coordRef.current, treeInfoRef.current);
 
     return () => {
       if (gameRef.current?.cleanup) {
@@ -27,6 +28,7 @@ export default function Game() {
         <div style={styles.title}>King of Tree Planting</div>
         <div ref={coordRef} style={styles.coord}>25.0330, 121.5654</div>
       </div>
+      <div ref={treeInfoRef} style={styles.treeInfo} />
       <div style={styles.controls}>
         WASD / Arrow Keys: Move &nbsp; Q/E: Rotate Camera &nbsp; Scroll: Zoom
       </div>
@@ -58,6 +60,25 @@ const styles = {
   coord: {
     fontVariantNumeric: 'tabular-nums',
     opacity: 0.8,
+  },
+  treeInfo: {
+    position: 'fixed',
+    bottom: 80,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 600,
+    background: 'rgba(30, 70, 30, 0.85)',
+    padding: '10px 20px',
+    borderRadius: 12,
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    zIndex: 10,
+    fontFamily: 'system-ui, sans-serif',
+    transition: 'opacity 0.3s',
+    opacity: 0,
+    whiteSpace: 'nowrap',
   },
   controls: {
     position: 'fixed',
