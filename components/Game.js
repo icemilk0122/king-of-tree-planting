@@ -210,6 +210,7 @@ export default function Game() {
       await resetUserData();
       localStorage.removeItem('walk-game-device-id');
       localStorage.removeItem('walk-game-intro-seen');
+      localStorage.removeItem('walk-game-player-pos');
     } catch (e) {
       console.warn('Reset failed:', e);
     }
