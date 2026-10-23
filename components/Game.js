@@ -8,6 +8,7 @@ import { getQuestsForTree, acceptQuest, toggleFollowTree } from '../lib/quest-en
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
 import MyRecords from './records/MyRecords';
+import DistrictMap from './map/DistrictMap';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -179,6 +180,16 @@ export default function Game() {
           quest={treeQuest}
           onClose={() => { setActivePanel(null); setSelectedTree(null); setTreeQuest(null); }}
           onSubmitted={() => {}}
+        />
+      )}
+
+      {/* District Map */}
+      {activePanel === 'map' && (
+        <DistrictMap
+          onTeleport={(lat, lng) => {
+            gameRef.current?.teleport(lat, lng);
+          }}
+          onClose={() => setActivePanel(null)}
         />
       )}
 
