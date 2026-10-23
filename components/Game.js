@@ -6,6 +6,8 @@ import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
 import { getQuestsForTree, acceptQuest, toggleFollowTree } from '../lib/quest-engine';
 import PhotoCapture from './photo/PhotoCapture';
+import NearbyQuests from './quest/NearbyQuests';
+import MyRecords from './records/MyRecords';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -156,6 +158,20 @@ export default function Game() {
         />
       )}
 
+      {/* Nearby Quests Panel */}
+      {activePanel === 'nearby' && (
+        <NearbyQuests
+          areaId="daan"
+          onSelectQuest={(q) => {
+            setTreeQuest(q);
+            setSelectedTree({ treeId: q.tree_id, species: '', region: '' });
+            setActivePanel(null);
+            setShowDialogue(true);
+          }}
+          onClose={() => setActivePanel(null)}
+        />
+      )}
+
       {/* Photo Capture Panel */}
       {activePanel === 'photo' && (
         <PhotoCapture
@@ -164,6 +180,11 @@ export default function Game() {
           onClose={() => { setActivePanel(null); setSelectedTree(null); setTreeQuest(null); }}
           onSubmitted={() => {}}
         />
+      )}
+
+      {/* My Records Panel */}
+      {activePanel === 'records' && (
+        <MyRecords onClose={() => setActivePanel(null)} />
       )}
 
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
