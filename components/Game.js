@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea, getActiveQuests, startRelay } from '../lib/quest-engine';
+import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
 import { detectDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
@@ -13,6 +13,7 @@ import DistrictMap from './map/DistrictMap';
 import FollowedTrees from './social/FollowedTrees';
 import PlantProposal from './social/PlantProposal';
 import CommunityFeed from './social/CommunityFeed';
+import TitleScreen from './title/TitleScreen';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -20,6 +21,7 @@ export default function Game() {
   const treeInfoRef = useRef(null);
   const gameRef = useRef(null);
 
+  const [gameStarted, setGameStarted] = useState(false);
   const [selectedTree, setSelectedTree] = useState(null);
   const [treeQuest, setTreeQuest] = useState(null);
   const [weather, setWeather] = useState(null);
@@ -89,7 +91,7 @@ export default function Game() {
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || gameRef.current) return;
+    if (!gameStarted || !containerRef.current || gameRef.current) return;
     gameRef.current = initGame(
       containerRef.current, coordRef.current, treeInfoRef.current,
       onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange
@@ -100,7 +102,7 @@ export default function Game() {
         gameRef.current = null;
       }
     };
-  }, [onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
+  }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
 
   useEffect(() => {
     let attempts = 0;
@@ -166,8 +168,24 @@ export default function Game() {
     setSelectedTree(null);
   }
 
+  async function handleTitleReset() {
+    try {
+      await resetUserData();
+      localStorage.removeItem('walk-game-device-id');
+    } catch (e) {
+      console.warn('Reset failed:', e);
+    }
+    setGameStarted(true);
+  }
+
   return (
     <>
+      {!gameStarted && (
+        <TitleScreen
+          onStart={() => setGameStarted(true)}
+          onReset={handleTitleReset}
+        />
+      )}
       <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />
 
       {/* Top-left HUD */}
