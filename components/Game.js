@@ -298,7 +298,11 @@ export default function Game() {
           tree={selectedTree}
           quest={treeQuest}
           onClose={() => { setActivePanel(null); setSelectedTree(null); setTreeQuest(null); }}
-          onSubmitted={() => {}}
+          onSubmitted={() => {
+            if (selectedTree?.treeId) {
+              gameRef.current?.removeQuestTreeId(selectedTree.treeId);
+            }
+          }}
         />
       )}
 
