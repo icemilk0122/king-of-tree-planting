@@ -2,19 +2,25 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
+import RPGDialogue from './quest/RPGDialogue';
+import ActionBar from './hud/ActionBar';
 
 export default function Game() {
   const containerRef = useRef(null);
   const coordRef = useRef(null);
   const treeInfoRef = useRef(null);
   const gameRef = useRef(null);
+
   const [selectedTree, setSelectedTree] = useState(null);
   const [weather, setWeather] = useState(null);
   const [address, setAddress] = useState('');
   const [cameraMode, setCameraMode] = useState('');
+  const [showDialogue, setShowDialogue] = useState(false);
+  const [activePanel, setActivePanel] = useState(null);
 
   const onTreeClick = useCallback((data) => {
     setSelectedTree(data);
+    setShowDialogue(true);
   }, []);
 
   const onWeatherUpdate = useCallback((data) => {
@@ -35,7 +41,6 @@ export default function Game() {
       containerRef.current, coordRef.current, treeInfoRef.current,
       onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange
     );
-
     return () => {
       if (gameRef.current?.cleanup) {
         gameRef.current.cleanup();
@@ -44,15 +49,37 @@ export default function Game() {
     };
   }, [onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
 
+  function handleDialogueAction(action) {
+    if (action === 'photo') {
+      setShowDialogue(false);
+      setActivePanel('photo');
+    } else if (action === 'records') {
+      setShowDialogue(false);
+      setActivePanel('records');
+    } else if (action === 'info') {
+      setShowDialogue(false);
+    } else if (action === 'follow') {
+      setShowDialogue(false);
+    }
+  }
+
+  function closeDialogue() {
+    setShowDialogue(false);
+    setSelectedTree(null);
+  }
+
   return (
     <>
       <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />
+
+      {/* Top-left HUD */}
       <div style={styles.hud}>
-        <div style={styles.title}>King of Tree Planting</div>
+        <div style={styles.title}>樹蔭守護者</div>
         <div ref={coordRef} style={styles.coord}>25.0330, 121.5654</div>
         {address && <div style={styles.address}>📍 {address}</div>}
       </div>
 
+      {/* Weather */}
       {weather && (
         <div style={styles.weatherHud}>
           <div style={styles.weatherIcon}>{weather.icon}</div>
@@ -63,46 +90,46 @@ export default function Game() {
         </div>
       )}
 
+      {/* Records button */}
+      <button
+        style={styles.recordsBtn}
+        onClick={() => setActivePanel(activePanel === 'records' ? null : 'records')}
+      >
+        🏆 我的紀錄
+      </button>
+
+      {/* Proximity tree info */}
       <div ref={treeInfoRef} style={styles.treeInfo} />
 
+      {/* Camera mode */}
       {cameraMode && (
-        <div style={styles.cameraModeHud}>
-          🎥 {cameraMode}
-        </div>
+        <div style={styles.cameraModeHud}>🎥 {cameraMode}</div>
       )}
 
+      {/* Controls hint */}
       <div style={styles.controls}>
-        WASD: Move &nbsp; Q/E: Rotate &nbsp; Scroll: Zoom &nbsp; V: Switch View
+        WASD: 移動 &nbsp; Q/E: 旋轉 &nbsp; 滾輪: 縮放 &nbsp; V: 視角
       </div>
 
-      {selectedTree && (
-        <div style={styles.cardOverlay} onClick={() => setSelectedTree(null)}>
-          <div style={styles.card} onClick={(e) => e.stopPropagation()}>
-            <button style={styles.closeBtn} onClick={() => setSelectedTree(null)}>✕</button>
-            <div style={styles.cardHeader}>
-              <div style={styles.cardIcon}>🌳</div>
-              <div>
-                <div style={styles.cardTitle}>{selectedTree.species}</div>
-                <div style={styles.cardSubtitle}>{selectedTree.region}{selectedTree.regionRemark ? `・${selectedTree.regionRemark}` : ''}</div>
-              </div>
-            </div>
-            <div style={styles.cardGreeting}>
-              你好，我是{selectedTree.region}的{selectedTree.species}。路過時，也認識一下我吧。
-            </div>
-            <div style={styles.cardGrid}>
-              <div style={styles.cardLabel}>行政區</div>
-              <div style={styles.cardValue}>{selectedTree.dist || '—'}</div>
-              <div style={styles.cardLabel}>胸徑</div>
-              <div style={styles.cardValue}>{selectedTree.diameter} cm</div>
-              <div style={styles.cardLabel}>樹高</div>
-              <div style={styles.cardValue}>{selectedTree.height} m</div>
-              <div style={styles.cardLabel}>調查日期</div>
-              <div style={styles.cardValue}>{selectedTree.surveyDate || '—'}</div>
-              <div style={styles.cardLabel}>樹籍編號</div>
-              <div style={styles.cardValue}>{selectedTree.treeId || '—'}</div>
-            </div>
-          </div>
-        </div>
+      {/* RPG Dialogue */}
+      {showDialogue && selectedTree && (
+        <RPGDialogue
+          tree={selectedTree}
+          quest={null}
+          onAction={handleDialogueAction}
+          onClose={closeDialogue}
+        />
+      )}
+
+      {/* Bottom Action Bar (hidden when dialogue is open) */}
+      {!showDialogue && (
+        <ActionBar
+          onNearbyQuests={() => setActivePanel('nearby')}
+          onPhotoReport={() => setActivePanel('photo')}
+          onPlantTree={() => setActivePanel('plant')}
+          onMap={() => setActivePanel('map')}
+          onRecords={() => setActivePanel('records')}
+        />
       )}
     </>
   );
@@ -111,7 +138,7 @@ export default function Game() {
 const styles = {
   hud: {
     position: 'fixed',
-    top: 16,
+    top: 'calc(16px + env(safe-area-inset-top, 0px))',
     left: 16,
     color: '#fff',
     fontSize: 14,
@@ -122,7 +149,7 @@ const styles = {
     WebkitBackdropFilter: 'blur(8px)',
     zIndex: 10,
     lineHeight: 1.6,
-    fontFamily: 'system-ui, sans-serif',
+    fontFamily: 'var(--font-family)',
   },
   title: {
     fontSize: 18,
@@ -140,7 +167,7 @@ const styles = {
   },
   weatherHud: {
     position: 'fixed',
-    top: 16,
+    top: 'calc(16px + env(safe-area-inset-top, 0px))',
     right: 16,
     color: '#fff',
     display: 'flex',
@@ -152,20 +179,25 @@ const styles = {
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)',
     zIndex: 10,
-    fontFamily: 'system-ui, sans-serif',
   },
-  weatherIcon: {
-    fontSize: 32,
-    lineHeight: 1,
-  },
-  weatherTemp: {
-    fontSize: 20,
-    fontWeight: 700,
-    fontVariantNumeric: 'tabular-nums',
-  },
-  weatherLabel: {
+  weatherIcon: { fontSize: 32, lineHeight: 1 },
+  weatherTemp: { fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums' },
+  weatherLabel: { fontSize: 13, opacity: 0.8 },
+  recordsBtn: {
+    position: 'fixed',
+    top: 'calc(80px + env(safe-area-inset-top, 0px))',
+    right: 16,
+    background: 'rgba(0,0,0,0.6)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    borderRadius: 12,
+    color: '#fff',
     fontSize: 13,
-    opacity: 0.8,
+    fontWeight: 600,
+    padding: '8px 14px',
+    zIndex: 10,
+    cursor: 'pointer',
   },
   treeInfo: {
     position: 'fixed',
@@ -181,14 +213,13 @@ const styles = {
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)',
     zIndex: 10,
-    fontFamily: 'system-ui, sans-serif',
     transition: 'opacity 0.3s',
     opacity: 0,
     whiteSpace: 'nowrap',
   },
   cameraModeHud: {
     position: 'fixed',
-    bottom: 16,
+    bottom: 60,
     right: 16,
     color: '#fff',
     fontSize: 13,
@@ -199,97 +230,18 @@ const styles = {
     borderRadius: 8,
     backdropFilter: 'blur(4px)',
     WebkitBackdropFilter: 'blur(4px)',
-    fontFamily: 'system-ui, sans-serif',
   },
   controls: {
     position: 'fixed',
-    bottom: 16,
+    bottom: 60,
     left: 16,
     color: 'rgba(255,255,255,0.6)',
-    fontSize: 13,
+    fontSize: 12,
     zIndex: 10,
     background: 'rgba(0,0,0,0.4)',
-    padding: '8px 12px',
+    padding: '6px 10px',
     borderRadius: 8,
     backdropFilter: 'blur(4px)',
     WebkitBackdropFilter: 'blur(4px)',
-    fontFamily: 'system-ui, sans-serif',
-  },
-  cardOverlay: {
-    position: 'fixed',
-    inset: 0,
-    zIndex: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'rgba(0,0,0,0.3)',
-  },
-  card: {
-    position: 'relative',
-    background: 'rgba(255,255,255,0.96)',
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    borderRadius: 20,
-    padding: '24px 28px 20px',
-    minWidth: 280,
-    maxWidth: 340,
-    fontFamily: 'system-ui, sans-serif',
-    color: '#1a1a1a',
-    boxShadow: '0 12px 40px rgba(0,0,0,0.25)',
-  },
-  closeBtn: {
-    position: 'absolute',
-    top: 12,
-    right: 14,
-    background: 'none',
-    border: 'none',
-    fontSize: 18,
-    cursor: 'pointer',
-    color: '#888',
-    lineHeight: 1,
-  },
-  cardHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
-  },
-  cardIcon: {
-    fontSize: 36,
-    lineHeight: 1,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 700,
-    color: '#2e7d32',
-  },
-  cardSubtitle: {
-    fontSize: 13,
-    color: '#888',
-    marginTop: 2,
-  },
-  cardGreeting: {
-    fontSize: 14,
-    color: '#444',
-    lineHeight: 1.6,
-    marginBottom: 14,
-    padding: '10px 12px',
-    background: 'rgba(46, 125, 50, 0.06)',
-    borderRadius: 10,
-  },
-  cardGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
-    gap: '8px 16px',
-    textAlign: 'left',
-  },
-  cardLabel: {
-    fontSize: 14,
-    color: '#666',
-    fontWeight: 500,
-  },
-  cardValue: {
-    fontSize: 14,
-    fontWeight: 600,
   },
 };
