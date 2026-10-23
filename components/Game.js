@@ -15,6 +15,7 @@ import PlantProposal from './social/PlantProposal';
 import CommunityFeed from './social/CommunityFeed';
 import TitleScreen from './title/TitleScreen';
 import VirtualJoystick from './hud/VirtualJoystick';
+import QuestNav from './hud/QuestNav';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -33,6 +34,7 @@ export default function Game() {
   const [activePanel, setActivePanel] = useState(null);
   const [questLoading, setQuestLoading] = useState(false);
   const [currentDistrict, setCurrentDistrict] = useState('xinyi');
+  const [navQuest, setNavQuest] = useState(null);
   const seededAreasRef = useRef(new Set());
 
   const onTreeClick = useCallback(async (data) => {
@@ -263,11 +265,9 @@ export default function Game() {
       {activePanel === 'nearby' && (
         <NearbyQuests
           areaId={currentDistrict}
-          onSelectQuest={(q) => {
-            setTreeQuest(q);
-            setSelectedTree({ treeId: q.tree_id, species: '', region: '' });
+          onNavigateToQuest={(q) => {
+            setNavQuest(q);
             setActivePanel(null);
-            setShowDialogue(true);
           }}
           onClose={() => setActivePanel(null)}
         />
@@ -322,6 +322,23 @@ export default function Game() {
         <CommunityFeed
           areaId={currentDistrict}
           onClose={() => setActivePanel(null)}
+        />
+      )}
+
+      {/* Quest Navigation */}
+      {navQuest && (
+        <QuestNav
+          quest={navQuest}
+          getTargetPos={() => gameRef.current?.getTreeWorldPos(navQuest.tree_id)}
+          getPlayerPos={() => gameRef.current?.getPlayerWorldPos()}
+          onArrive={() => {
+            const q = navQuest;
+            setNavQuest(null);
+            setTreeQuest(q);
+            setSelectedTree({ treeId: q.tree_id, species: '', region: '' });
+            setShowDialogue(true);
+          }}
+          onCancel={() => setNavQuest(null)}
         />
       )}
 

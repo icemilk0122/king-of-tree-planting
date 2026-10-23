@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getActiveQuests } from '../../lib/quest-engine';
 
-export default function NearbyQuests({ areaId, onSelectQuest, onClose }) {
+export default function NearbyQuests({ areaId, onNavigateToQuest, onClose }) {
   const [quests, setQuests] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +39,7 @@ export default function NearbyQuests({ areaId, onSelectQuest, onClose }) {
               <button
                 key={q.id}
                 style={styles.questCard}
-                onClick={() => onSelectQuest?.(q)}
+                onClick={() => onNavigateToQuest?.(q)}
               >
                 <div style={styles.questTop}>
                   <span style={styles.questType}>
