@@ -3,8 +3,17 @@
 import { useState } from 'react';
 import { submitPlantingProposal } from '../../lib/quest-engine';
 
+const REASON_PRESETS = [
+  '🌞 人行道太曬，需要遮蔭',
+  '🏗️ 有空地適合種樹',
+  '🌿 想增加社區綠化',
+  '🦜 希望吸引鳥類棲息',
+  '💨 降低空氣污染',
+];
+
 export default function PlantProposal({ playerCoords, currentDistrict, onClose, onSubmitted }) {
   const [reason, setReason] = useState('');
+  const [customMode, setCustomMode] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -54,13 +63,34 @@ export default function PlantProposal({ playerCoords, currentDistrict, onClose, 
           📍 目前位置 {playerCoords ? `${playerCoords.lat.toFixed(4)}, ${playerCoords.lng.toFixed(4)}` : '未知'}
         </div>
 
-        <textarea
-          style={styles.textarea}
-          placeholder="為什麼這裡適合種樹？例如：人行道空曠缺蔭、有空間種植…"
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
-          rows={4}
-        />
+        {!customMode ? (
+          <div style={styles.presets}>
+            {REASON_PRESETS.map((r) => (
+              <button
+                key={r}
+                style={{ ...styles.presetBtn, ...(reason === r ? styles.presetActive : {}) }}
+                onClick={() => setReason(r)}
+              >
+                {r}
+              </button>
+            ))}
+            <button
+              style={styles.presetBtn}
+              onClick={() => { setCustomMode(true); setReason(''); }}
+            >
+              ✏️ 自己填寫
+            </button>
+          </div>
+        ) : (
+          <textarea
+            style={styles.textarea}
+            placeholder="為什麼這裡適合種樹？"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            rows={3}
+            autoFocus
+          />
+        )}
 
         {error && <div style={styles.error}>{error}</div>}
 
@@ -123,6 +153,27 @@ const styles = {
     padding: '8px 12px',
     background: 'rgba(255,255,255,0.06)',
     borderRadius: 10,
+  },
+  presets: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+    marginBottom: 12,
+  },
+  presetBtn: {
+    padding: '12px 14px',
+    fontSize: 14,
+    color: '#f5f0e0',
+    background: 'rgba(255,255,255,0.06)',
+    border: '1px solid rgba(212,160,23,0.25)',
+    borderRadius: 10,
+    cursor: 'pointer',
+    textAlign: 'left',
+    transition: 'background 0.15s, border-color 0.15s',
+  },
+  presetActive: {
+    background: 'rgba(212,160,23,0.15)',
+    borderColor: 'rgba(212,160,23,0.6)',
   },
   textarea: {
     width: '100%',
