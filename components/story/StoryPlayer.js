@@ -14,9 +14,21 @@ export default function StoryPlayer({ story, onComplete }) {
   const [isTyping, setIsTyping] = useState(true);
   const [showPrompt, setShowPrompt] = useState(false);
   const timerRef = useRef(null);
+  const prevStoryRef = useRef(story);
 
-  const page = story.pages[pageIdx];
-  const isLast = pageIdx >= story.pages.length - 1;
+  if (prevStoryRef.current !== story) {
+    prevStoryRef.current = story;
+    setPageIdx(0);
+    setDisplayedText('');
+    setIsTyping(true);
+    setShowPrompt(false);
+  }
+
+  const safeIdx = Math.min(pageIdx, story.pages.length - 1);
+  const page = story.pages[safeIdx];
+  const isLast = safeIdx >= story.pages.length - 1;
+
+  if (!page) return null;
 
   useEffect(() => {
     setDisplayedText('');
@@ -33,9 +45,14 @@ export default function StoryPlayer({ story, onComplete }) {
       }
     }, CHAR_SPEED);
     return () => clearInterval(timerRef.current);
-  }, [pageIdx, page.text]);
+  }, [safeIdx, page.text]);
 
+  const lastTapRef = useRef(0);
   const handleTap = useCallback(() => {
+    const now = Date.now();
+    if (now - lastTapRef.current < 200) return;
+    lastTapRef.current = now;
+
     if (isTyping) {
       clearInterval(timerRef.current);
       setDisplayedText(page.text);
@@ -46,9 +63,9 @@ export default function StoryPlayer({ story, onComplete }) {
     if (isLast) {
       onComplete?.();
     } else {
-      setPageIdx(pageIdx + 1);
+      setPageIdx(prev => prev + 1);
     }
-  }, [isTyping, isLast, pageIdx, page.text, onComplete]);
+  }, [isTyping, isLast, page.text, onComplete]);
 
   useEffect(() => {
     function onKey(e) {
