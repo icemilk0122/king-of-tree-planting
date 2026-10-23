@@ -4,12 +4,15 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea } from '../lib/quest-engine';
+import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea, getActiveQuests } from '../lib/quest-engine';
 import { detectDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
 import MyRecords from './records/MyRecords';
 import DistrictMap from './map/DistrictMap';
+import FollowedTrees from './social/FollowedTrees';
+import PlantProposal from './social/PlantProposal';
+import CommunityFeed from './social/CommunityFeed';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -56,6 +59,9 @@ export default function Game() {
     seededAreasRef.current.add(districtKey);
     try {
       await generateQuestsForArea(districtKey, treeIds);
+      const quests = await getActiveQuests(districtKey);
+      const questTreeIds = quests.map(q => q.tree_id).filter(Boolean);
+      gameRef.current?.setQuestTreeIds(questTreeIds);
     } catch (e) {
       console.warn('Quest generation failed:', e);
       seededAreasRef.current.delete(districtKey);
@@ -247,8 +253,31 @@ export default function Game() {
         <MyRecords onClose={() => setActivePanel(null)} />
       )}
 
+      {/* Followed Trees */}
+      {activePanel === 'followed' && (
+        <FollowedTrees onClose={() => setActivePanel(null)} />
+      )}
+
+      {/* Plant Tree Proposal */}
+      {activePanel === 'plant' && (
+        <PlantProposal
+          playerCoords={gameRef.current?.getPlayerCoords()}
+          currentDistrict={currentDistrict}
+          onClose={() => setActivePanel(null)}
+          onSubmitted={() => {}}
+        />
+      )}
+
+      {/* Community Feed */}
+      {activePanel === 'community' && (
+        <CommunityFeed
+          areaId={currentDistrict}
+          onClose={() => setActivePanel(null)}
+        />
+      )}
+
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
-      {!showDialogue && activePanel !== 'photo' && (
+      {!showDialogue && activePanel !== 'photo' && activePanel !== 'plant' && (
         <ActionBar
           onNearbyQuests={() => setActivePanel('nearby')}
           onPhotoReport={() => setActivePanel('photo')}
