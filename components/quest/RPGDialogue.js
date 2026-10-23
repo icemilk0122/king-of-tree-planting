@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const CHAR_SPEED = 40;
 
-export default function RPGDialogue({ tree, quest, onAction, onClose }) {
+export default function RPGDialogue({ tree, quest, loading, onAction, onClose }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [showChoices, setShowChoices] = useState(false);

@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
+import { getQuestsForTree, acceptQuest, toggleFollowTree } from '../lib/quest-engine';
+import PhotoCapture from './photo/PhotoCapture';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -12,15 +14,33 @@ export default function Game() {
   const gameRef = useRef(null);
 
   const [selectedTree, setSelectedTree] = useState(null);
+  const [treeQuest, setTreeQuest] = useState(null);
   const [weather, setWeather] = useState(null);
   const [address, setAddress] = useState('');
   const [cameraMode, setCameraMode] = useState('');
   const [showDialogue, setShowDialogue] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
+  const [questLoading, setQuestLoading] = useState(false);
 
-  const onTreeClick = useCallback((data) => {
+  const onTreeClick = useCallback(async (data) => {
+    if (!data) {
+      setSelectedTree(null);
+      setShowDialogue(false);
+      return;
+    }
     setSelectedTree(data);
+    setTreeQuest(null);
     setShowDialogue(true);
+    setQuestLoading(true);
+    try {
+      const quests = await getQuestsForTree(data.treeId);
+      if (quests.length > 0) {
+        setTreeQuest(quests[0]);
+      }
+    } catch (e) {
+      console.warn('Quest fetch failed:', e);
+    }
+    setQuestLoading(false);
   }, []);
 
   const onWeatherUpdate = useCallback((data) => {
@@ -49,8 +69,15 @@ export default function Game() {
     };
   }, [onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
 
-  function handleDialogueAction(action) {
+  async function handleDialogueAction(action) {
     if (action === 'photo') {
+      if (treeQuest) {
+        try {
+          await acceptQuest(treeQuest.id);
+        } catch (e) {
+          console.warn('Accept quest failed:', e);
+        }
+      }
       setShowDialogue(false);
       setActivePanel('photo');
     } else if (action === 'records') {
@@ -59,6 +86,13 @@ export default function Game() {
     } else if (action === 'info') {
       setShowDialogue(false);
     } else if (action === 'follow') {
+      if (selectedTree?.treeId) {
+        try {
+          await toggleFollowTree(selectedTree.treeId);
+        } catch (e) {
+          console.warn('Follow failed:', e);
+        }
+      }
       setShowDialogue(false);
     }
   }
@@ -115,14 +149,25 @@ export default function Game() {
       {showDialogue && selectedTree && (
         <RPGDialogue
           tree={selectedTree}
-          quest={null}
+          quest={treeQuest}
+          loading={questLoading}
           onAction={handleDialogueAction}
           onClose={closeDialogue}
         />
       )}
 
-      {/* Bottom Action Bar (hidden when dialogue is open) */}
-      {!showDialogue && (
+      {/* Photo Capture Panel */}
+      {activePanel === 'photo' && (
+        <PhotoCapture
+          tree={selectedTree}
+          quest={treeQuest}
+          onClose={() => { setActivePanel(null); setSelectedTree(null); setTreeQuest(null); }}
+          onSubmitted={() => {}}
+        />
+      )}
+
+      {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
+      {!showDialogue && activePanel !== 'photo' && (
         <ActionBar
           onNearbyQuests={() => setActivePanel('nearby')}
           onPhotoReport={() => setActivePanel('photo')}
