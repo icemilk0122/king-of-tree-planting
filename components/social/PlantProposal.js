@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { submitPlantingProposal } from '../../lib/quest-engine';
 
 const REASON_PRESETS = [
-  '🌞 人行道太曬，需要遮蔭',
-  '🏗️ 有空地適合種樹',
-  '🌿 想增加社區綠化',
-  '🦜 希望吸引鳥類棲息',
-  '💨 降低空氣污染',
+  '人行道太曬，需要遮蔭',
+  '有空地適合種樹',
+  '想增加社區綠化',
+  '希望吸引鳥類棲息',
+  '降低空氣污染',
 ];
 
 export default function PlantProposal({ playerCoords, currentDistrict, onClose, onSubmitted }) {
