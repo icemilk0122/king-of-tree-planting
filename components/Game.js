@@ -14,6 +14,7 @@ import FollowedTrees from './social/FollowedTrees';
 import PlantProposal from './social/PlantProposal';
 import CommunityFeed from './social/CommunityFeed';
 import TitleScreen from './title/TitleScreen';
+import VirtualJoystick from './hud/VirtualJoystick';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -22,6 +23,7 @@ export default function Game() {
   const gameRef = useRef(null);
 
   const [gameStarted, setGameStarted] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [selectedTree, setSelectedTree] = useState(null);
   const [treeQuest, setTreeQuest] = useState(null);
   const [weather, setWeather] = useState(null);
@@ -88,6 +90,25 @@ export default function Game() {
 
   const onCameraModeChange = useCallback((label) => {
     setCameraMode(label);
+  }, []);
+
+  const moveJoystickRef = useRef(null);
+  const rotJoystickRef = useRef(null);
+
+  const onMoveJoystick = useCallback((dx, dy) => {
+    moveJoystickRef.current = { dx, dy };
+    const rotDx = rotJoystickRef.current?.dx || 0;
+    gameRef.current?.setJoystickInput(dx, dy, rotDx);
+  }, []);
+
+  const onRotJoystick = useCallback((dx, _dy) => {
+    rotJoystickRef.current = { dx };
+    const move = moveJoystickRef.current || { dx: 0, dy: 0 };
+    gameRef.current?.setJoystickInput(move.dx, move.dy, dx);
+  }, []);
+
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
   }, []);
 
   useEffect(() => {
@@ -302,6 +323,14 @@ export default function Game() {
           areaId={currentDistrict}
           onClose={() => setActivePanel(null)}
         />
+      )}
+
+      {/* Virtual Joysticks (touch devices only) */}
+      {gameStarted && isTouchDevice && !showDialogue && !activePanel && (
+        <>
+          <VirtualJoystick side="left" onInput={onMoveJoystick} />
+          <VirtualJoystick side="right" onInput={onRotJoystick} />
+        </>
       )}
 
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
