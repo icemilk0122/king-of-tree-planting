@@ -14,6 +14,8 @@ import FollowedTrees from './social/FollowedTrees';
 import PlantProposal from './social/PlantProposal';
 import CommunityFeed from './social/CommunityFeed';
 import TitleScreen from './title/TitleScreen';
+import StoryPlayer from './story/StoryPlayer';
+import { STORIES, INTRO_SEQUENCE } from '../lib/stories';
 import VirtualJoystick from './hud/VirtualJoystick';
 import QuestNav from './hud/QuestNav';
 
@@ -35,6 +37,8 @@ export default function Game() {
   const [questLoading, setQuestLoading] = useState(false);
   const [currentDistrict, setCurrentDistrict] = useState('xinyi');
   const [navQuest, setNavQuest] = useState(null);
+  const [storyQueue, setStoryQueue] = useState([]);
+  const [currentStory, setCurrentStory] = useState(null);
   const seededAreasRef = useRef(new Set());
 
   const onTreeClick = useCallback(async (data) => {
@@ -181,21 +185,46 @@ export default function Game() {
     setSelectedTree(null);
   }
 
+  function startIntroSequence() {
+    const seen = localStorage.getItem('walk-game-intro-seen');
+    if (seen) return;
+    const queue = [...INTRO_SEQUENCE];
+    const first = queue.shift();
+    setStoryQueue(queue);
+    setCurrentStory(STORIES[first]);
+  }
+
+  function handleStoryComplete() {
+    if (storyQueue.length > 0) {
+      const next = storyQueue[0];
+      setStoryQueue(storyQueue.slice(1));
+      setCurrentStory(STORIES[next]);
+    } else {
+      setCurrentStory(null);
+      try { localStorage.setItem('walk-game-intro-seen', '1'); } catch {}
+    }
+  }
+
   async function handleTitleReset() {
     try {
       await resetUserData();
       localStorage.removeItem('walk-game-device-id');
+      localStorage.removeItem('walk-game-intro-seen');
     } catch (e) {
       console.warn('Reset failed:', e);
     }
     setGameStarted(true);
+    setTimeout(startIntroSequence, 1500);
   }
 
   return (
     <>
       {!gameStarted && (
         <TitleScreen
-          onStart={() => setGameStarted(true)}
+          onStart={() => {
+            setGameStarted(true);
+            setTimeout(startIntroSequence, 1500);
+          }}
           onReset={handleTitleReset}
         />
       )}
@@ -313,6 +342,11 @@ export default function Game() {
           areaId={currentDistrict}
           onClose={() => setActivePanel(null)}
         />
+      )}
+
+      {/* Story Player */}
+      {currentStory && (
+        <StoryPlayer story={currentStory} onComplete={handleStoryComplete} />
       )}
 
       {/* Quest Navigation */}
