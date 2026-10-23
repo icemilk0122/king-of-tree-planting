@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
+import { getQuestsForTree, acceptQuest, toggleFollowTree, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
 import { detectDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
@@ -60,16 +60,13 @@ export default function Game() {
 
   const seedQuestsForDistrict = useCallback(async (districtKey) => {
     if (!districtKey || seededAreasRef.current.has(districtKey)) return;
-    const trees = gameRef.current?.getVisibleTrees() || [];
-    if (trees.length === 0) return;
     seededAreasRef.current.add(districtKey);
     try {
-      await generateQuestsForArea(districtKey, trees);
       const quests = await getActiveQuests(districtKey);
       const questTreeIds = quests.map(q => q.tree_id).filter(Boolean);
       gameRef.current?.setQuestTreeIds(questTreeIds);
     } catch (e) {
-      console.warn('Quest generation failed:', e);
+      console.warn('Quest load failed:', e);
       seededAreasRef.current.delete(districtKey);
     }
   }, []);
@@ -128,25 +125,18 @@ export default function Game() {
   }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
 
   useEffect(() => {
-    let attempts = 0;
-    const tryInitialSeed = () => {
-      attempts++;
-      if (!gameRef.current || attempts > 10) return;
-      const trees = gameRef.current.getVisibleTrees();
-      if (trees.length === 0) {
-        setTimeout(tryInitialSeed, 2000);
-        return;
-      }
+    if (!gameStarted) return;
+    const timer = setTimeout(() => {
+      if (!gameRef.current) return;
       const coords = gameRef.current.getPlayerCoords();
       const district = detectDistrict(coords.lat, coords.lng);
       if (district) {
         setCurrentDistrict(district);
         seedQuestsForDistrict(district);
       }
-    };
-    const timer = setTimeout(tryInitialSeed, 3000);
+    }, 2000);
     return () => clearTimeout(timer);
-  }, [seedQuestsForDistrict]);
+  }, [gameStarted, seedQuestsForDistrict]);
 
   async function handleDialogueAction(action) {
     if (action === 'photo') {
