@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { getUserStats, getLeaderboard } from '../../lib/quest-engine';
+import RelayTab from './RelayTab';
 
-export default function MyRecords({ onClose }) {
+export default function MyRecords({ onClose, areaId }) {
   const [tab, setTab] = useState('stats');
   const [stats, setStats] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
@@ -43,6 +44,12 @@ export default function MyRecords({ onClose }) {
             onClick={() => setTab('leaderboard')}
           >
             排行榜
+          </button>
+          <button
+            style={{ ...styles.tab, ...(tab === 'relay' ? styles.tabActive : {}) }}
+            onClick={() => setTab('relay')}
+          >
+            社區接力
           </button>
         </div>
 
@@ -108,6 +115,12 @@ export default function MyRecords({ onClose }) {
             {leaderboard.length === 0 && (
               <div style={styles.emptyHint}>還沒有人上榜，成為第一位吧！</div>
             )}
+          </div>
+        )}
+
+        {tab === 'relay' && (
+          <div style={styles.content}>
+            <RelayTab areaId={areaId} />
           </div>
         )}
       </div>

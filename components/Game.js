@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea, getActiveQuests } from '../lib/quest-engine';
+import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea, getActiveQuests, startRelay } from '../lib/quest-engine';
 import { detectDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
@@ -139,6 +139,16 @@ export default function Game() {
       setActivePanel('records');
     } else if (action === 'info') {
       setShowDialogue(false);
+    } else if (action === 'relay') {
+      if (treeQuest && selectedTree?.treeId) {
+        try {
+          await startRelay(treeQuest.id, selectedTree.treeId, currentDistrict);
+        } catch (e) {
+          console.warn('Start relay failed:', e);
+        }
+      }
+      setShowDialogue(false);
+      setActivePanel('records');
     } else if (action === 'follow') {
       if (selectedTree?.treeId) {
         try {
@@ -250,7 +260,7 @@ export default function Game() {
 
       {/* My Records Panel */}
       {activePanel === 'records' && (
-        <MyRecords onClose={() => setActivePanel(null)} />
+        <MyRecords onClose={() => setActivePanel(null)} areaId={currentDistrict} />
       )}
 
       {/* Followed Trees */}

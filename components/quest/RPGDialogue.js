@@ -41,6 +41,7 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
   const choices = quest
     ? [
         { label: '📸 好啊，我來拍！', action: 'photo' },
+        { label: '🤝 發起社區接力', action: 'relay' },
         { label: '👀 先看看你的紀錄', action: 'records' },
         { label: '🚶 下次再來', action: 'close' },
       ]
