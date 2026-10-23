@@ -4,7 +4,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getQuestsForTree, acceptQuest, toggleFollowTree } from '../lib/quest-engine';
+import { getQuestsForTree, acceptQuest, toggleFollowTree, generateQuestsForArea } from '../lib/quest-engine';
+import { detectDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
 import MyRecords from './records/MyRecords';
@@ -24,6 +25,8 @@ export default function Game() {
   const [showDialogue, setShowDialogue] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
   const [questLoading, setQuestLoading] = useState(false);
+  const [currentDistrict, setCurrentDistrict] = useState('xinyi');
+  const seededAreasRef = useRef(new Set());
 
   const onTreeClick = useCallback(async (data) => {
     if (!data) {
@@ -46,13 +49,34 @@ export default function Game() {
     setQuestLoading(false);
   }, []);
 
+  const seedQuestsForDistrict = useCallback(async (districtKey) => {
+    if (!districtKey || seededAreasRef.current.has(districtKey)) return;
+    const treeIds = gameRef.current?.getVisibleTreeIds() || [];
+    if (treeIds.length === 0) return;
+    seededAreasRef.current.add(districtKey);
+    try {
+      await generateQuestsForArea(districtKey, treeIds);
+    } catch (e) {
+      console.warn('Quest generation failed:', e);
+      seededAreasRef.current.delete(districtKey);
+    }
+  }, []);
+
   const onWeatherUpdate = useCallback((data) => {
     setWeather(data);
   }, []);
 
   const onAddressUpdate = useCallback((addr) => {
     setAddress(addr);
-  }, []);
+    if (gameRef.current) {
+      const coords = gameRef.current.getPlayerCoords();
+      const district = detectDistrict(coords.lat, coords.lng);
+      if (district) {
+        setCurrentDistrict(district);
+        seedQuestsForDistrict(district);
+      }
+    }
+  }, [seedQuestsForDistrict]);
 
   const onCameraModeChange = useCallback((label) => {
     setCameraMode(label);
@@ -71,6 +95,27 @@ export default function Game() {
       }
     };
   }, [onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
+
+  useEffect(() => {
+    let attempts = 0;
+    const tryInitialSeed = () => {
+      attempts++;
+      if (!gameRef.current || attempts > 10) return;
+      const treeIds = gameRef.current.getVisibleTreeIds();
+      if (treeIds.length === 0) {
+        setTimeout(tryInitialSeed, 2000);
+        return;
+      }
+      const coords = gameRef.current.getPlayerCoords();
+      const district = detectDistrict(coords.lat, coords.lng);
+      if (district) {
+        setCurrentDistrict(district);
+        seedQuestsForDistrict(district);
+      }
+    };
+    const timer = setTimeout(tryInitialSeed, 3000);
+    return () => clearTimeout(timer);
+  }, [seedQuestsForDistrict]);
 
   async function handleDialogueAction(action) {
     if (action === 'photo') {
@@ -162,7 +207,7 @@ export default function Game() {
       {/* Nearby Quests Panel */}
       {activePanel === 'nearby' && (
         <NearbyQuests
-          areaId="daan"
+          areaId={currentDistrict}
           onSelectQuest={(q) => {
             setTreeQuest(q);
             setSelectedTree({ treeId: q.tree_id, species: '', region: '' });
@@ -186,8 +231,12 @@ export default function Game() {
       {/* District Map */}
       {activePanel === 'map' && (
         <DistrictMap
-          onTeleport={(lat, lng) => {
+          onTeleport={(lat, lng, districtKey) => {
             gameRef.current?.teleport(lat, lng);
+            if (districtKey) {
+              setCurrentDistrict(districtKey);
+              setTimeout(() => seedQuestsForDistrict(districtKey), 1000);
+            }
           }}
           onClose={() => setActivePanel(null)}
         />
