@@ -11,6 +11,7 @@ export default function Game() {
   const [selectedTree, setSelectedTree] = useState(null);
   const [weather, setWeather] = useState(null);
   const [address, setAddress] = useState('');
+  const [cameraMode, setCameraMode] = useState('');
 
   const onTreeClick = useCallback((data) => {
     setSelectedTree(data);
@@ -24,11 +25,15 @@ export default function Game() {
     setAddress(addr);
   }, []);
 
+  const onCameraModeChange = useCallback((label) => {
+    setCameraMode(label);
+  }, []);
+
   useEffect(() => {
     if (!containerRef.current || gameRef.current) return;
     gameRef.current = initGame(
       containerRef.current, coordRef.current, treeInfoRef.current,
-      onTreeClick, onWeatherUpdate, onAddressUpdate
+      onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange
     );
 
     return () => {
@@ -37,7 +42,7 @@ export default function Game() {
         gameRef.current = null;
       }
     };
-  }, [onTreeClick, onWeatherUpdate, onAddressUpdate]);
+  }, [onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
 
   return (
     <>
@@ -59,8 +64,15 @@ export default function Game() {
       )}
 
       <div ref={treeInfoRef} style={styles.treeInfo} />
+
+      {cameraMode && (
+        <div style={styles.cameraModeHud}>
+          🎥 {cameraMode}
+        </div>
+      )}
+
       <div style={styles.controls}>
-        WASD / Arrow Keys: Move &nbsp; Q/E: Rotate Camera &nbsp; Scroll: Zoom
+        WASD: Move &nbsp; Q/E: Rotate &nbsp; Scroll: Zoom &nbsp; V: Switch View
       </div>
 
       {selectedTree && (
@@ -173,6 +185,21 @@ const styles = {
     transition: 'opacity 0.3s',
     opacity: 0,
     whiteSpace: 'nowrap',
+  },
+  cameraModeHud: {
+    position: 'fixed',
+    bottom: 16,
+    right: 16,
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 600,
+    zIndex: 10,
+    background: 'rgba(0,0,0,0.5)',
+    padding: '8px 14px',
+    borderRadius: 8,
+    backdropFilter: 'blur(4px)',
+    WebkitBackdropFilter: 'blur(4px)',
+    fontFamily: 'system-ui, sans-serif',
   },
   controls: {
     position: 'fixed',
