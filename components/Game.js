@@ -54,11 +54,11 @@ export default function Game() {
 
   const seedQuestsForDistrict = useCallback(async (districtKey) => {
     if (!districtKey || seededAreasRef.current.has(districtKey)) return;
-    const treeIds = gameRef.current?.getVisibleTreeIds() || [];
-    if (treeIds.length === 0) return;
+    const trees = gameRef.current?.getVisibleTrees() || [];
+    if (trees.length === 0) return;
     seededAreasRef.current.add(districtKey);
     try {
-      await generateQuestsForArea(districtKey, treeIds);
+      await generateQuestsForArea(districtKey, trees);
       const quests = await getActiveQuests(districtKey);
       const questTreeIds = quests.map(q => q.tree_id).filter(Boolean);
       gameRef.current?.setQuestTreeIds(questTreeIds);
@@ -107,8 +107,8 @@ export default function Game() {
     const tryInitialSeed = () => {
       attempts++;
       if (!gameRef.current || attempts > 10) return;
-      const treeIds = gameRef.current.getVisibleTreeIds();
-      if (treeIds.length === 0) {
+      const trees = gameRef.current.getVisibleTrees();
+      if (trees.length === 0) {
         setTimeout(tryInitialSeed, 2000);
         return;
       }
