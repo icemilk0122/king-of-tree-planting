@@ -49,12 +49,45 @@ test('current profile normalizes masks and resolves generated standees', async (
   assert.equal(scene.pages[2].portraitSide, 'left');
   assert.equal(scene.pages[2].portrait.facing, 'right');
   assert.equal(scene.pages[2].portrait.mirrorX, false);
-  assert.match(scene.pages[7].text, /遊戲角色的位置/);
-  assert.equal(catalog.normalize('S24_LOCAL_NEIGHBORHOOD').pages[0].speaker, '街坊阿姨');
-  assert.match(catalog.normalize('S13_HERITAGE_557').pages[1].speaker, /永康街樟樹/);
-  assert.match(catalog.normalize('S14_HERITAGE_763').pages[1].speaker, /麗水街麵包樹/);
-  assert.match(catalog.normalize('S14_HERITAGE_763').pages[3].text, /20 點/);
+  assert.equal(scene.pages.length, 3);
+  assert.match(scene.pages[2].text, /附近任務/);
+  assert.match(scene.pages[2].text, /永康街樟樹/);
+  assert.match(scene.pages[2].hint, /附近任務/);
+
+  const neighborhood = catalog.normalize('S24_LOCAL_NEIGHBORHOOD');
+  assert.equal(neighborhood.pages.length, 2);
+  assert.equal(neighborhood.pages[0].speaker, '街坊阿姨');
+
+  const camphor = catalog.normalize('S13_HERITAGE_557');
+  const breadfruit = catalog.normalize('S14_HERITAGE_763');
+  assert.equal(camphor.pages.length, 1);
+  assert.equal(breadfruit.pages.length, 1);
+  assert.match(camphor.pages[0].speaker, /永康街樟樹/);
+  assert.match(breadfruit.pages[0].speaker, /麗水街麵包樹/);
   assert.equal(catalog.normalize('S18_CITY_PLANTING_WEEK'), null);
+});
+
+test('simplified story pack retains 30 pages and 11 enabled pages', async () => {
+  const docs = await loadStoryDocuments();
+  const totalPages = docs.scenes.scenes.reduce((sum, scene) => sum + scene.pages.length, 0);
+  const enabledScenes = new Set(docs.runtimeProfile.enabledScenes);
+  const enabledPages = docs.scenes.scenes
+    .filter(scene => enabledScenes.has(scene.id))
+    .reduce((sum, scene) => sum + scene.pages.length, 0);
+
+  assert.equal(totalPages, 30);
+  assert.equal(enabledPages, 11);
+  assert.deepEqual(docs.runtimeProfile.enabledScenes, [
+    'S00_OPENING',
+    'S02_FIRST_PLANT_TOOL',
+    'S05_PLANT_PROPOSAL_SAVED',
+    'S13_HERITAGE_557',
+    'S14_HERITAGE_763',
+    'S16_GENERAL_REVIEWED',
+    'S17_SPECIAL_REVIEWED',
+    'S24_LOCAL_NEIGHBORHOOD',
+  ]);
+  assert.deepEqual(docs.runtimeProfile.text, {});
 });
 
 test('director enables only proven events and deduplicates by scope', async () => {

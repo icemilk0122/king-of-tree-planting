@@ -111,12 +111,12 @@ function getDefaultDialogue(tree, quest) {
     return `謝謝守護者！這棵${tree?.species || '樹'}的拍照任務已經完成，紀錄也好好保存下來了。`;
   }
   if (quest?.quest_type === 'special') {
-    return `這是特別委託！我是這一帶的老朋友了，最近需要特別關注。能幫我拍張近照嗎？核對可用後共 ${quest.points} 點。`;
+    return '特別委託！幫我拍張全樹照吧！';
   }
   if (quest) {
-    return quest.npc_dialogue || `好久沒人來看我了…路過的話，幫我拍張全樹照吧。核對可用後 +${quest.points} 點。`;
+    return quest.npc_dialogue || '路過嗎？幫我拍張全樹照吧！';
   }
-  return `你好啊，我是這裡的${tree?.species || '樹'}。很高興有人注意到我，要不要認識一下？`;
+  return '你好！想看看我的資料嗎？';
 }
 
 const styles = {

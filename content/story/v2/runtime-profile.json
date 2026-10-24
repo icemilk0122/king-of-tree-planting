@@ -37,24 +37,5 @@
       }
     }
   },
-  "text": {
-    "S00_OPENING.p04.text": "劇情結束後，用 WASD 或手機搖桿，走進你熟悉的街道。",
-    "S00_OPENING.p08.text": "先在遊戲地圖走到想建議的位置，再按「建議種樹」。這是遊戲角色的位置，不是現場定位證明。",
-    "S00_OPENING.p08.hint": "使用遊戲目前位置",
-    "S00_OPENING.p09.text": "選一個生活上的原因，也可以自己寫下觀察。目前提案不會附上街景照片。",
-    "S00_OPENING.p09.hint": "選擇或填寫原因",
-    "S02_FIRST_PLANT_TOOL.p03.text": "目前會使用遊戲角色的位置。回到街區選好位置，再開啟表單；現地觀察時請勿進入車道或私人土地。",
-    "S02_FIRST_PLANT_TOOL.p03.hint": "回到地圖選位置",
-    "S05_PLANT_PROPOSAL_SAVED.p01.text": "你的種樹建議已保存，目前狀態：待評估。這不代表已送交市府或核准種植。",
-    "S05_PLANT_PROPOSAL_SAVED.p01.hint": "遊戲服務已保存／尚未核准",
-    "S05_PLANT_PROPOSAL_SAVED.p03.text": "這裡先留下你的觀察。是否能種樹，仍須由相關單位另行評估。",
-    "S16_GENERAL_REVIEWED.p01.text": "一般任務已完成，這次記入 {{points}} 點。這是系統即時結算，不是人工核對結果。",
-    "S13_HERITAGE_557.p04.text": "從安全的位置拍全樹照。照片與任務保存成功後，系統會立即結算 10 點；不代表人工或市府審核。",
-    "S13_HERITAGE_557.p04.hint": "一般委託：系統結算 10 點",
-    "S14_HERITAGE_763.p04.text": "從安全的位置拍全樹照。照片與任務保存成功後，系統會立即結算這份特別委託的 20 點。",
-    "S14_HERITAGE_763.p04.hint": "特別委託：系統結算 20 點",
-    "S16_GENERAL_REVIEWED.p02.text": "照片與任務紀錄已保存到遊戲服務；是否公開或作為外部依據，仍依平台後續規則。",
-    "S17_SPECIAL_REVIEWED.p01.text": "特別委託已完成，系統已記入 {{points}} 點。",
-    "S17_SPECIAL_REVIEWED.p03.text": "特別委託總獎勵 20 點，不另加一般任務 10 點。"
-  }
+  "text": {}
 }

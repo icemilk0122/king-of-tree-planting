@@ -26,3 +26,12 @@ test('heritage quest migration seeds versioned Daan quests with the intended rew
   assert.match(sql, /'daan'/);
   assert.match(sql, /where not exists/);
 });
+
+test('simplified dialogue migration updates only the two fixed heritage quest lines', async () => {
+  const sql = await read('../supabase/migrations/20261024050000_simplify_heritage_quest_dialogues.sql');
+  assert.match(sql, /tree_id = 'heritage-557'[\s\S]*?content_version = '2\.0-review\.1'/);
+  assert.match(sql, /路過嗎？幫我留張全樹照吧！/);
+  assert.match(sql, /tree_id = 'heritage-763'[\s\S]*?content_version = '2\.0-review\.1'/);
+  assert.match(sql, /麵包樹不賣早餐啦！幫我留張全樹照？/);
+  assert.doesNotMatch(sql, /\bpoints\s*=/);
+});
