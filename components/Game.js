@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
-import ActionBar from './hud/ActionBar';
+import ActionBar, { NearbyQuestCoachmark } from './hud/ActionBar';
 import { getOrCreateQuestForTree, acceptQuest, toggleFollowTree, startRelay, resetUserData } from '../lib/quest-engine';
 import { resolveDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
@@ -49,6 +49,7 @@ export default function Game() {
   const [appearanceSnapshot, setAppearanceSnapshot] = useState(null);
   const [nearbyNpc, setNearbyNpc] = useState(null);
   const [heritageOrigin, setHeritageOrigin] = useState(null);
+  const [showNearbyQuestHint, setShowNearbyQuestHint] = useState(false);
   const storyDirectorRef = useRef(null);
   const initialPlayerCoordsRef = useRef(null);
   const currentDistrictRef = useRef(currentDistrict);
@@ -306,7 +307,15 @@ export default function Game() {
   }
 
   function handleStoryComplete() {
+    if (currentStory?.id === 'S00_OPENING') {
+      setShowNearbyQuestHint(true);
+    }
     setCurrentStory(null);
+  }
+
+  function openNearbyQuests() {
+    setShowNearbyQuestHint(false);
+    setActivePanel('nearby');
   }
 
   async function handleTitleReset() {
@@ -618,16 +627,24 @@ export default function Game() {
       {/* Mobile left nav — vertical below HUD */}
       {isTouchDevice && !showDialogue && activePanel !== 'photo' && activePanel !== 'plant' && (
         <div style={styles.mobileLeftNav}>
-          <button style={styles.mobileNavBtn} onClick={() => setActivePanel('nearby')}>❗</button>
-          <button style={styles.mobileNavBtn} onClick={openHeritageGuide}>🌳</button>
-          <button style={styles.mobileNavBtn} onClick={() => setActivePanel('map')}>🗺️</button>
+          <div style={styles.mobileNearbyAnchor}>
+            {showNearbyQuestHint && (
+              <NearbyQuestCoachmark
+                mobile
+                onDismiss={() => setShowNearbyQuestHint(false)}
+              />
+            )}
+            <button type="button" style={styles.mobileNavBtn} onClick={openNearbyQuests} aria-label="附近任務">❗</button>
+          </div>
+          <button type="button" style={styles.mobileNavBtn} onClick={openHeritageGuide} aria-label="老樹圖鑑">🌳</button>
+          <button type="button" style={styles.mobileNavBtn} onClick={() => setActivePanel('map')} aria-label="地圖">🗺️</button>
         </div>
       )}
 
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
       {!showDialogue && activePanel !== 'photo' && activePanel !== 'plant' && (
         <ActionBar
-          onNearbyQuests={() => setActivePanel('nearby')}
+          onNearbyQuests={openNearbyQuests}
           onHeritageGuide={openHeritageGuide}
           onPhotoReport={() => setActivePanel('photo')}
           onPlantTree={() => {
@@ -636,6 +653,8 @@ export default function Game() {
           }}
           onMap={() => setActivePanel('map')}
           hideMobileNav={isTouchDevice}
+          showNearbyQuestHint={showNearbyQuestHint}
+          onDismissNearbyQuestHint={() => setShowNearbyQuestHint(false)}
         />
       )}
     </>
@@ -847,6 +866,10 @@ const styles = {
     flexDirection: 'column',
     gap: 8,
     zIndex: 10,
+  },
+  mobileNearbyAnchor: {
+    position: 'relative',
+    display: 'flex',
   },
   mobileRightNav: {
     position: 'fixed',

@@ -1,42 +1,76 @@
 'use client';
 
-export default function ActionBar({ onNearbyQuests, onHeritageGuide, onPhotoReport, onPlantTree, onMap, hideMobileNav }) {
+import styles from './ActionBar.module.css';
+
+export function NearbyQuestCoachmark({ mobile = false, onDismiss }) {
+  return (
+    <div
+      className={`${styles.coachmark} ${mobile ? styles.mobileCoachmark : ''}`}
+      role="status"
+      aria-live="polite"
+    >
+      <span>從這裡打開附近任務</span>
+      <button
+        type="button"
+        className={styles.dismissButton}
+        onClick={onDismiss}
+        aria-label="關閉附近任務提示"
+      >×</button>
+    </div>
+  );
+}
+
+export default function ActionBar({
+  onNearbyQuests,
+  onHeritageGuide,
+  onPhotoReport,
+  onPlantTree,
+  onMap,
+  hideMobileNav = false,
+  showNearbyQuestHint = false,
+  onDismissNearbyQuestHint,
+}) {
   return (
     <div style={{
-      ...styles.bar,
+      ...inlineStyles.bar,
       ...(hideMobileNav ? { justifyContent: 'flex-end' } : {}),
     }}>
       {!hideMobileNav && (
-        <div style={styles.left}>
-          <button type="button" style={styles.btn} onClick={onNearbyQuests}>
-            <span style={styles.icon}>❗</span>
-            <span style={styles.label}>附近任務</span>
+        <div style={inlineStyles.left}>
+          <div className={styles.nearbyAnchor}>
+            {showNearbyQuestHint && (
+              <NearbyQuestCoachmark onDismiss={onDismissNearbyQuestHint} />
+            )}
+            <button type="button" style={inlineStyles.btn} onClick={onNearbyQuests}>
+              <span style={inlineStyles.icon}>❗</span>
+              <span style={inlineStyles.label}>附近任務</span>
+            </button>
+          </div>
+          <button type="button" style={inlineStyles.btn} onClick={onHeritageGuide}>
+            <span style={inlineStyles.icon}>🌳</span>
+            <span style={inlineStyles.label}>老樹圖鑑</span>
           </button>
-          <button type="button" style={styles.btn} onClick={onHeritageGuide}>
-            <span style={styles.icon}>🌳</span>
-            <span style={styles.label}>老樹圖鑑</span>
-          </button>
-          <button type="button" style={styles.btn} onClick={onMap}>
-            <span style={styles.icon}>🗺️</span>
-            <span style={styles.label}>地圖</span>
+          <button type="button" style={inlineStyles.btn} onClick={onMap}>
+            <span style={inlineStyles.icon}>🗺️</span>
+            <span style={inlineStyles.label}>地圖</span>
           </button>
         </div>
       )}
-      <div style={styles.right}>
-        <button type="button" style={{ ...styles.btn, ...styles.primaryBtn }} onClick={onPhotoReport}>
-          <span style={styles.icon}>📸</span>
-          <span style={styles.label}>拍照回報</span>
+      <div style={inlineStyles.right}>
+        <button type="button" style={{ ...inlineStyles.btn, ...inlineStyles.primaryBtn }} onClick={onPhotoReport}>
+          <span style={inlineStyles.icon}>📸</span>
+          <span style={inlineStyles.label}>拍照回報</span>
         </button>
-        <button type="button" style={{ ...styles.btn, ...styles.secondaryBtn }} onClick={onPlantTree}>
-          <span style={styles.icon}>🌱</span>
-          <span style={styles.label}>建議種樹</span>
+        <button type="button" style={{ ...inlineStyles.btn, ...inlineStyles.secondaryBtn }} onClick={onPlantTree}>
+          <span style={inlineStyles.icon}>🌱</span>
+          <span style={inlineStyles.label}>建議種樹</span>
         </button>
       </div>
     </div>
   );
 }
 
-const styles = {
+const inlineStyles = {
   bar: {
     position: 'fixed',
     bottom: 0,
