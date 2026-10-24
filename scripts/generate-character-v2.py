@@ -22,6 +22,7 @@ MODEL_DIR = os.path.join(PROJECT_DIR, "public", "models")
 BLEND_DIR = os.path.join(PROJECT_DIR, "assets", "blender")
 PREVIEW_PATH = os.path.join(MODEL_DIR, "character-v2-preview.png")
 FACE_PREVIEW_PATH = os.path.join(MODEL_DIR, "character-v2-face-preview.png")
+BACK_PREVIEW_PATH = os.path.join(MODEL_DIR, "character-v2-back-preview.png")
 GUARDIAN_PREVIEW_PATH = os.path.join(MODEL_DIR, "character-guardian-preview.png")
 VACATION_PREVIEW_PATH = os.path.join(MODEL_DIR, "character-vacation-preview.png")
 BLEND_PATH = os.path.join(BLEND_DIR, "shade-keeper-character.blend")
@@ -490,6 +491,14 @@ def make_character():
         sphere("HairCap", (0, 0.055, 2.96), (0.70, 0.57, 0.45), hair_mat),
         "Head",
     )
+    # The front-facing cap intentionally sits high to keep the face readable.
+    # A second, tucked-back mass fills the occipital and nape area so the head
+    # does not look bald when the character turns away from the camera.
+    add_equip(
+        "hair-default",
+        sphere("RearHairMass", (0, 0.25, 2.72), (0.63, 0.47, 0.50), hair_mat),
+        "Head",
+    )
     curl_locks = [
         # Large front locks, each turning back into itself like a loose spiral.
         ("FrontCurl.L", [
@@ -537,6 +546,28 @@ def make_character():
             (.08,.06,3.48), (.22,-.28,3.61), (.44,-.25,3.54),
             (.58,-.22,3.39), (.51,.06,3.27),
         ], .110),
+        # Rear curls follow the back of the skull from crown to nape. Their
+        # loops overlap slightly to keep a continuous silhouette in motion.
+        ("BackCurl.L", [
+            (-.58,.10,3.17), (-.70,.38,3.18), (-.67,.62,3.02),
+            (-.54,.69,2.84), (-.36,.57,2.73), (-.28,.12,2.84),
+        ], .105),
+        ("BackCurl.CL", [
+            (-.39,.12,3.36), (-.48,.52,3.45), (-.34,.69,3.31),
+            (-.15,.72,3.16), (-.08,.58,2.99), (-.12,.12,3.00),
+        ], .108),
+        ("BackCurl.CR", [
+            (-.04,.12,3.37), (.07,.54,3.48), (.27,.70,3.34),
+            (.36,.70,3.15), (.25,.57,2.99), (.16,.12,3.01),
+        ], .108),
+        ("BackCurl.R", [
+            (.31,.11,3.31), (.55,.43,3.39), (.68,.61,3.20),
+            (.68,.67,2.99), (.55,.65,2.81), (.34,.12,2.82),
+        ], .105),
+        ("NapeCurl.C", [
+            (-.32,.14,2.79), (-.25,.58,2.66), (-.08,.71,2.56),
+            (.11,.70,2.57), (.28,.55,2.69), (.30,.14,2.80),
+        ], .100),
     ]
     for name, points, radius in curl_locks:
         taper = [.72] + [1.0] * (len(points) - 2) + [.68]
@@ -804,6 +835,15 @@ def render_preview(rig, base, equipment):
     scene.render.filepath = FACE_PREVIEW_PATH
     bpy.ops.render.render(write_still=True)
 
+    # Back three-quarter view makes the rear hair coverage easy to review.
+    camera.location = (3.65, 7.6, 3.45)
+    camera.data.lens = 72
+    point_at(camera, (0, 0.18, 2.62))
+    scene.render.resolution_x = 1000
+    scene.render.resolution_y = 1000
+    scene.render.filepath = BACK_PREVIEW_PATH
+    bpy.ops.render.render(write_still=True)
+
     def show_outfit(equip_ids):
         outfit_visible = set(base)
         outfit_visible.add(ground)
@@ -853,5 +893,6 @@ if __name__ == "__main__":
     print("blend", BLEND_PATH)
     print("preview", PREVIEW_PATH)
     print("face preview", FACE_PREVIEW_PATH)
+    print("back preview", BACK_PREVIEW_PATH)
     print("guardian preview", GUARDIAN_PREVIEW_PATH)
     print("vacation preview", VACATION_PREVIEW_PATH)
