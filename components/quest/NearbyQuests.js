@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getActiveQuests } from '../../lib/quest-engine';
 import {
   createNpcNavigationTarget,
+  filterNearbyNpcQuests,
   getNpcPlacementsForDistrict,
 } from '../../lib/npc-placements';
 
@@ -15,7 +16,7 @@ export default function NearbyQuests({ areaId, onNavigateToQuest, onNavigateToSt
   useEffect(() => {
     setLoading(true);
     getActiveQuests(areaId)
-      .then(setQuests)
+      .then(activeQuests => setQuests(filterNearbyNpcQuests(activeQuests, areaId)))
       .catch((e) => console.warn('Failed to load quests:', e))
       .finally(() => setLoading(false));
   }, [areaId]);

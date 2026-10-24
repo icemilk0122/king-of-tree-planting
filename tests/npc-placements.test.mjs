@@ -2,8 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createNpcNavigationTarget,
+  filterNearbyNpcQuests,
   getNpcPlacement,
   getNpcPlacementsForDistrict,
+  isNpcTreeQuest,
   NPC_PLACEMENTS,
 } from '../lib/npc-placements.js';
 import { lonLatToWorld } from '../lib/map.js';
@@ -103,4 +105,19 @@ test('nearby stories are district scoped and produce NPC navigation targets', ()
   assert.equal(target.npc_id, 'guide-ashu');
   assert.equal(target.npc_name, '阿樹');
   assert.equal(target.npc.id, 'guide-ashu');
+});
+
+test('nearby quests include only trees that are explicitly bound to NPCs', () => {
+  const quests = [
+    { id: 'ordinary', tree_id: 'heritage-554', quest_type: 'general', npc_name: null },
+    { id: 'npc-general', tree_id: 'heritage-557', quest_type: 'general', npc_name: '永康街樟樹' },
+    { id: 'npc-special', tree_id: 'heritage-763', quest_type: 'special', npc_name: '麗水街麵包樹' },
+  ];
+
+  assert.equal(isNpcTreeQuest(quests[0], 'daan'), false);
+  assert.equal(isNpcTreeQuest(quests[1], 'daan'), true);
+  assert.deepEqual(
+    filterNearbyNpcQuests(quests, 'daan').map(quest => quest.id),
+    ['npc-general', 'npc-special']
+  );
 });
