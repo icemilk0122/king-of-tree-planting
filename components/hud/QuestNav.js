@@ -40,12 +40,13 @@ export default function QuestNav({ quest, getTargetPos, getPlayerPos, onArrive, 
   return (
     <div style={s.container}>
       <div style={s.arrow} >
-        <div style={{
-          ...s.arrowInner,
-          transform: `rotate(${angle}rad)`,
-        }}>
-          ▲
-        </div>
+        <svg
+          width="24" height="24" viewBox="0 0 24 24"
+          style={{ ...s.arrowInner, transform: `rotate(${angle}rad)` }}
+        >
+          <polygon points="12,2 4,20 12,16 20,20" fill="#5CB8B2" />
+          <polygon points="12,2 9,10 15,10" fill="#FFFCF7" />
+        </svg>
       </div>
       <div style={s.info}>
         <div style={s.name}>{quest?.npc_name || '目標樹'}</div>
@@ -83,9 +84,7 @@ const s = {
     flexShrink: 0,
   },
   arrowInner: {
-    fontSize: 20, color: '#5CB8B2',
     transition: 'transform 0.1s ease-out',
-    lineHeight: 1,
   },
   info: { minWidth: 0 },
   name: { fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },

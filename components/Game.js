@@ -130,18 +130,11 @@ export default function Game() {
   }, []);
 
   const moveJoystickRef = useRef(null);
-  const rotJoystickRef = useRef(null);
+  const dragTouchRef = useRef(null);
 
   const onMoveJoystick = useCallback((dx, dy) => {
     moveJoystickRef.current = { dx, dy };
-    const rotDx = rotJoystickRef.current?.dx || 0;
-    gameRef.current?.setJoystickInput(dx, dy, rotDx);
-  }, []);
-
-  const onRotJoystick = useCallback((dx, _dy) => {
-    rotJoystickRef.current = { dx };
-    const move = moveJoystickRef.current || { dx: 0, dy: 0 };
-    gameRef.current?.setJoystickInput(move.dx, move.dy, dx);
+    gameRef.current?.setJoystickInput(dx, dy);
   }, []);
 
   useEffect(() => {
@@ -159,6 +152,54 @@ export default function Game() {
     window.addEventListener('keydown', onFullscreenShortcut);
     return () => window.removeEventListener('keydown', onFullscreenShortcut);
   }, []);
+
+  useEffect(() => {
+    if (!gameStarted || !containerRef.current || !isTouchDevice) return;
+    const el = containerRef.current;
+    let touchId = null;
+    let lastX = 0;
+
+    function onTouchStart(e) {
+      if (touchId !== null) return;
+      const t = e.changedTouches[0];
+      const x = t.clientX;
+      if (x < window.innerWidth * 0.35) return;
+      touchId = t.identifier;
+      lastX = x;
+    }
+
+    function onTouchMove(e) {
+      for (const t of e.changedTouches) {
+        if (t.identifier === touchId) {
+          const dx = t.clientX - lastX;
+          lastX = t.clientX;
+          gameRef.current?.setAnalogRotation(dx * 0.003);
+          return;
+        }
+      }
+    }
+
+    function onTouchEnd(e) {
+      for (const t of e.changedTouches) {
+        if (t.identifier === touchId) {
+          touchId = null;
+          gameRef.current?.setAnalogRotation(0);
+          return;
+        }
+      }
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('touchcancel', onTouchEnd);
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('touchcancel', onTouchEnd);
+    };
+  }, [gameStarted, isTouchDevice]);
 
   useEffect(() => {
     if (!gameStarted || !containerRef.current || gameRef.current) return;
@@ -186,8 +227,8 @@ export default function Game() {
     gameRef.current?.setInputBlocked?.(blocked);
     if (blocked) {
       moveJoystickRef.current = { dx: 0, dy: 0 };
-      rotJoystickRef.current = { dx: 0 };
-      gameRef.current?.setJoystickInput?.(0, 0, 0);
+      gameRef.current?.setJoystickInput?.(0, 0);
+      gameRef.current?.setAnalogRotation?.(0);
     }
   }, [currentStory, showDialogue, activePanel]);
 
@@ -517,10 +558,7 @@ export default function Game() {
 
       {/* Virtual Joysticks (touch devices only) */}
       {gameStarted && isTouchDevice && !showDialogue && !activePanel && !currentStory && (
-        <>
-          <VirtualJoystick side="left" onInput={onMoveJoystick} />
-          <VirtualJoystick side="right" onInput={onRotJoystick} />
-        </>
+        <VirtualJoystick side="left" onInput={onMoveJoystick} />
       )}
 
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
