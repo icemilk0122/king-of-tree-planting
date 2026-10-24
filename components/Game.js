@@ -18,6 +18,7 @@ import StoryPlayer from './story/StoryPlayer';
 import { STORIES, INTRO_SEQUENCE } from '../lib/stories';
 import VirtualJoystick from './hud/VirtualJoystick';
 import QuestNav from './hud/QuestNav';
+import Wardrobe from './hud/Wardrobe';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -211,6 +212,7 @@ export default function Game() {
       localStorage.removeItem('walk-game-device-id');
       localStorage.removeItem('walk-game-intro-seen');
       localStorage.removeItem('walk-game-player-pos');
+      localStorage.removeItem('walk-game-outfit');
     } catch (e) {
       console.warn('Reset failed:', e);
     }
@@ -255,6 +257,14 @@ export default function Game() {
         onClick={() => setActivePanel(activePanel === 'records' ? null : 'records')}
       >
         🏆 我的紀錄
+      </button>
+
+      {/* Wardrobe button */}
+      <button
+        style={styles.wardrobeBtn}
+        onClick={() => setActivePanel(activePanel === 'wardrobe' ? null : 'wardrobe')}
+      >
+        👕 換裝
       </button>
 
       {/* Proximity tree info */}
@@ -345,6 +355,16 @@ export default function Game() {
       {activePanel === 'community' && (
         <CommunityFeed
           areaId={currentDistrict}
+          onClose={() => setActivePanel(null)}
+        />
+      )}
+
+      {/* Wardrobe */}
+      {activePanel === 'wardrobe' && (
+        <Wardrobe
+          currentOutfit={gameRef.current?.getOutfit() || {}}
+          onChangeEquip={(id) => gameRef.current?.changeEquip(id)}
+          onRemoveEquip={(slot) => gameRef.current?.removeEquip(slot)}
           onClose={() => setActivePanel(null)}
         />
       )}
@@ -444,6 +464,22 @@ const styles = {
   recordsBtn: {
     position: 'fixed',
     top: 'calc(80px + env(safe-area-inset-top, 0px))',
+    right: 16,
+    background: 'rgba(0,0,0,0.6)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    borderRadius: 12,
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 600,
+    padding: '8px 14px',
+    zIndex: 10,
+    cursor: 'pointer',
+  },
+  wardrobeBtn: {
+    position: 'fixed',
+    top: 'calc(120px + env(safe-area-inset-top, 0px))',
     right: 16,
     background: 'rgba(0,0,0,0.6)',
     backdropFilter: 'blur(8px)',
