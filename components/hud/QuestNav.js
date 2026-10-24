@@ -45,7 +45,7 @@ export default function QuestNav({ quest, getTargetPos, getPlayerPos, onArrive, 
           style={{ ...s.arrowInner, transform: `rotate(${angle}rad)` }}
         >
           <polygon points="12,2 4,20 12,16 20,20" fill="#5CB8B2" />
-          <polygon points="12,2 9,10 15,10" fill="#FFFCF7" />
+          <polygon points="12,2 9,10 15,10" fill="#E74C3C" />
         </svg>
       </div>
       <div style={s.info}>
