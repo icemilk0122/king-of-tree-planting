@@ -19,6 +19,7 @@ import { createCurrentStoryDirector } from '../lib/story';
 import VirtualJoystick from './hud/VirtualJoystick';
 import QuestNav from './hud/QuestNav';
 import Wardrobe from './hud/Wardrobe';
+import { OPENING_STORY_POSITION, resetLocalGameSession } from '../lib/game-session';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -43,6 +44,7 @@ export default function Game() {
   const [appearanceSnapshot, setAppearanceSnapshot] = useState(null);
   const seededAreasRef = useRef(new Set());
   const storyDirectorRef = useRef(null);
+  const initialPlayerCoordsRef = useRef(null);
 
   const getStoryDirector = useCallback(() => {
     if (!storyDirectorRef.current && typeof window !== 'undefined') {
@@ -134,8 +136,12 @@ export default function Game() {
     gameRef.current = initGame(
       containerRef.current, coordRef.current, treeInfoRef.current,
       onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange,
-      { onAppearanceChange: setAppearanceSnapshot }
+      {
+        onAppearanceChange: setAppearanceSnapshot,
+        initialPlayerCoords: initialPlayerCoordsRef.current,
+      }
     );
+    initialPlayerCoordsRef.current = null;
     return () => {
       if (gameRef.current?.cleanup) {
         gameRef.current.cleanup();
@@ -228,13 +234,11 @@ export default function Game() {
   async function handleTitleReset() {
     try {
       await resetUserData();
-      localStorage.removeItem('walk-game-device-id');
-      localStorage.removeItem('walk-game-intro-seen');
-      localStorage.removeItem('walk-game-player-pos');
-      localStorage.removeItem('walk-game-outfit');
-      getStoryDirector()?.reset();
     } catch (e) {
-      console.warn('Reset failed:', e);
+      console.warn('Remote reset failed; starting a fresh local game:', e);
+    } finally {
+      resetLocalGameSession(window.localStorage, getStoryDirector());
+      initialPlayerCoordsRef.current = OPENING_STORY_POSITION;
     }
     setGameStarted(true);
     setTimeout(startIntroSequence, 1500);
