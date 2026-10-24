@@ -1,24 +1,28 @@
 'use client';
 
-export default function ActionBar({ onNearbyQuests, onPhotoReport, onPlantTree, onMap, onRecords }) {
+export default function ActionBar({ onNearbyQuests, onHeritageGuide, onPhotoReport, onPlantTree, onMap }) {
   return (
     <div style={styles.bar}>
       <div style={styles.left}>
-        <button style={styles.btn} onClick={onNearbyQuests}>
+        <button type="button" style={styles.btn} onClick={onNearbyQuests}>
           <span style={styles.icon}>❗</span>
           <span style={styles.label}>附近任務</span>
         </button>
-        <button style={styles.btn} onClick={onMap}>
+        <button type="button" style={styles.btn} onClick={onHeritageGuide}>
+          <span style={styles.icon}>🌳</span>
+          <span style={styles.label}>老樹圖鑑</span>
+        </button>
+        <button type="button" style={styles.btn} onClick={onMap}>
           <span style={styles.icon}>🗺️</span>
           <span style={styles.label}>地圖</span>
         </button>
       </div>
       <div style={styles.right}>
-        <button style={{ ...styles.btn, ...styles.primaryBtn }} onClick={onPhotoReport}>
+        <button type="button" style={{ ...styles.btn, ...styles.primaryBtn }} onClick={onPhotoReport}>
           <span style={styles.icon}>📸</span>
           <span style={styles.label}>拍照回報</span>
         </button>
-        <button style={{ ...styles.btn, ...styles.secondaryBtn }} onClick={onPlantTree}>
+        <button type="button" style={{ ...styles.btn, ...styles.secondaryBtn }} onClick={onPlantTree}>
           <span style={styles.icon}>🌱</span>
           <span style={styles.label}>建議種樹</span>
         </button>

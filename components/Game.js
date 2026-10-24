@@ -273,8 +273,7 @@ export default function Game() {
       setShowDialogue(false);
     } else if (action === 'heritage') {
       setShowDialogue(false);
-      setHeritageOrigin(gameRef.current?.getPlayerCoords?.() || OPENING_STORY_POSITION);
-      setActivePanel('heritage');
+      openHeritageGuide();
     } else if (action === 'relay') {
       if (treeQuest && selectedTree?.treeId) {
         try {
@@ -300,6 +299,11 @@ export default function Game() {
   function closeDialogue() {
     setShowDialogue(false);
     setSelectedTree(null);
+  }
+
+  function openHeritageGuide() {
+    setHeritageOrigin(gameRef.current?.getPlayerCoords?.() || OPENING_STORY_POSITION);
+    setActivePanel('heritage');
   }
 
   function startIntroSequence() {
@@ -600,13 +604,13 @@ export default function Game() {
       {!showDialogue && activePanel !== 'photo' && activePanel !== 'plant' && (
         <ActionBar
           onNearbyQuests={() => setActivePanel('nearby')}
+          onHeritageGuide={openHeritageGuide}
           onPhotoReport={() => setActivePanel('photo')}
           onPlantTree={() => {
             setActivePanel('plant');
             emitStoryEvent('proposal.tool_opened');
           }}
           onMap={() => setActivePanel('map')}
-          onRecords={() => setActivePanel('records')}
         />
       )}
     </>
