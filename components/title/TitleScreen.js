@@ -8,31 +8,44 @@ export default function TitleScreen({ onStart, onReset }) {
   const [confirming, setConfirming] = useState(false);
   const canvasRef = useRef(null);
   const bgRef = useRef(null);
+  const textRef = useRef(null);
   const charRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const breathRef = useRef(0);
+  const loadedRef = useRef(0);
 
   useEffect(() => {
-    const img = new Image();
-    img.onload = () => {
-      setPhase('ready');
-      setTimeout(() => setShowMenu(true), 800);
-    };
-    img.src = '/images/title-hero.png';
+    const srcs = ['/images/title-bg.png', '/images/title-text.png', '/images/title-char.png'];
+    srcs.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        loadedRef.current++;
+        if (loadedRef.current >= srcs.length) {
+          setPhase('ready');
+          setTimeout(() => setShowMenu(true), 800);
+        }
+      };
+      img.src = src;
+    });
   }, []);
 
   const updateLayers = useCallback(() => {
-    const dx = (mouseRef.current.x - 0.5) * -10;
-    const dy = (mouseRef.current.y - 0.5) * -6;
-    breathRef.current += 0.018;
-    const breathScale = 1.0 + Math.sin(breathRef.current) * 0.012;
+    const mx = mouseRef.current.x;
+    const my = mouseRef.current.y;
+    const dx = (mx - 0.5) * -8;
+    const dy = (my - 0.5) * -5;
+    breathRef.current += 0.02;
+    const breath = Math.sin(breathRef.current) * 0.015;
 
     if (bgRef.current) {
-      bgRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
+      bgRef.current.style.transform = `scale(1.05) translate(${dx}px, ${dy}px)`;
+    }
+    if (textRef.current) {
+      textRef.current.style.transform = `translate(${dx * 1.2}px, ${dy * 1.2}px)`;
     }
     if (charRef.current) {
       charRef.current.style.transform =
-        `translate(${dx * 1.3}px, ${dy * 1.3}px) scale(${breathScale})`;
+        `translate(${dx * 1.6}px, ${dy * 1.6}px) scale(${1.0 + breath})`;
     }
   }, []);
 
@@ -101,10 +114,7 @@ export default function TitleScreen({ onStart, onReset }) {
         leaf.y += leaf.speed / h;
         leaf.x += leaf.drift * 0.0003 + Math.sin(leaf.y * 6) * 0.0005;
         leaf.rot += leaf.rotSpeed;
-        if (leaf.y > 1.05) {
-          leaf.y = -0.05;
-          leaf.x = Math.random();
-        }
+        if (leaf.y > 1.05) { leaf.y = -0.05; leaf.x = Math.random(); }
         if (leaf.x > 1.1) leaf.x = -0.1;
         if (leaf.x < -0.1) leaf.x = 1.1;
 
@@ -134,13 +144,12 @@ export default function TitleScreen({ onStart, onReset }) {
   }
 
   function handleReset() {
-    if (!confirming) {
-      setConfirming(true);
-      return;
-    }
+    if (!confirming) { setConfirming(true); return; }
     setPhase('leaving');
     setTimeout(() => onReset?.(), 800);
   }
+
+  const fadeIn = phase === 'loading' ? 0 : 1;
 
   return (
     <div style={{
@@ -148,32 +157,19 @@ export default function TitleScreen({ onStart, onReset }) {
       opacity: phase === 'leaving' ? 0 : 1,
       transition: 'opacity 0.8s ease',
     }}>
-      {/* Layer 1: Background (parallax only, no breathing) */}
-      <div style={s.bgWrap}>
-        <img
-          ref={bgRef}
-          src="/images/title-hero.png"
-          alt=""
-          style={{
-            ...s.bgImg,
-            opacity: phase === 'loading' ? 0 : 1,
-            transition: 'opacity 1.2s ease',
-          }}
-        />
+      {/* Layer 1: Background cityscape (parallax only) */}
+      <div style={s.layerWrap}>
+        <img ref={bgRef} src="/images/title-bg.png" alt="" style={{ ...s.layerImg, opacity: fadeIn, transition: 'opacity 1s ease' }} />
       </div>
 
-      {/* Layer 2: Character overlay (parallax + breathing, masked) */}
-      <div style={s.charWrap}>
-        <img
-          ref={charRef}
-          src="/images/title-hero.png"
-          alt=""
-          style={{
-            ...s.charImg,
-            opacity: phase === 'loading' ? 0 : 1,
-            transition: 'opacity 1.2s ease',
-          }}
-        />
+      {/* Layer 2: Character (parallax + breathing) */}
+      <div style={s.layerWrap}>
+        <img ref={charRef} src="/images/title-char.png" alt="" style={{ ...s.layerImg, ...s.charImg, opacity: fadeIn, transition: 'opacity 1s ease 0.2s' }} />
+      </div>
+
+      {/* Layer 3: Title text (parallax, slight) */}
+      <div style={s.layerWrap}>
+        <img ref={textRef} src="/images/title-text.png" alt="樹蔭守護者" style={{ ...s.layerImg, opacity: fadeIn, transition: 'opacity 1s ease 0.4s' }} />
       </div>
 
       <div style={s.vignette} />
@@ -186,21 +182,13 @@ export default function TitleScreen({ onStart, onReset }) {
             <button style={s.btn} onClick={handleContinue}>
               <span style={s.btnIcon}>▶</span> 繼續遊戲
             </button>
-            <button
-              style={{ ...s.btn, ...s.btnSecondary }}
-              onClick={handleReset}
-            >
+            <button style={{ ...s.btn, ...s.btnSecondary }} onClick={handleReset}>
               <span style={s.btnIcon}>↺</span>
               {confirming ? '確定要重新開始？' : '重新開始'}
             </button>
           </div>
         )}
-
-        <div style={{
-          ...s.footer,
-          opacity: showMenu ? 0.4 : 0,
-          transition: 'opacity 1s ease 0.3s',
-        }}>
+        <div style={{ ...s.footer, opacity: showMenu ? 0.4 : 0, transition: 'opacity 1s ease 0.3s' }}>
           v0.1 · 資料來源：台北市政府開放資料
         </div>
       </div>
@@ -221,43 +209,33 @@ const s = {
     background: '#1a1410',
     overflow: 'hidden',
   },
-  bgWrap: {
+  layerWrap: {
     position: 'absolute', inset: '-30px',
     overflow: 'hidden',
-    zIndex: 0,
+    pointerEvents: 'none',
   },
-  bgImg: {
+  layerImg: {
     width: '100%', height: '100%',
-    objectFit: 'cover', objectPosition: '35% 40%',
+    objectFit: 'cover', objectPosition: 'center center',
     willChange: 'transform',
-  },
-  charWrap: {
-    position: 'absolute', inset: '-30px',
-    overflow: 'hidden',
-    zIndex: 1,
-    WebkitMaskImage: 'radial-gradient(ellipse 32% 50% at 62% 45%, black 40%, transparent 100%)',
-    maskImage: 'radial-gradient(ellipse 32% 50% at 62% 45%, black 40%, transparent 100%)',
   },
   charImg: {
-    width: '100%', height: '100%',
-    objectFit: 'cover', objectPosition: '35% 40%',
-    transformOrigin: '62% 45%',
-    willChange: 'transform',
+    transformOrigin: '60% 50%',
   },
   vignette: {
     position: 'absolute', inset: 0,
-    background: 'radial-gradient(ellipse at center, transparent 40%, rgba(20,16,10,0.6) 100%)',
-    pointerEvents: 'none', zIndex: 2,
+    background: 'radial-gradient(ellipse at center, transparent 40%, rgba(20,16,10,0.55) 100%)',
+    pointerEvents: 'none', zIndex: 4,
   },
   leafCanvas: {
     position: 'absolute', inset: 0, width: '100%', height: '100%',
-    pointerEvents: 'none', zIndex: 3,
+    pointerEvents: 'none', zIndex: 5,
   },
   bottomWrap: {
     position: 'absolute', bottom: 0, left: 0, right: 0,
     display: 'flex', flexDirection: 'column', alignItems: 'center',
     paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-    zIndex: 5,
+    zIndex: 10,
     background: 'linear-gradient(transparent 0%, rgba(20,16,10,0.85) 100%)',
     paddingTop: 80,
   },
