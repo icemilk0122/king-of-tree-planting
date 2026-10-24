@@ -587,7 +587,13 @@ export default function Game() {
 
       {/* Virtual Joysticks (touch devices only) */}
       {gameStarted && isTouchDevice && !showDialogue && !activePanel && !currentStory && (
-        <VirtualJoystick side="left" onInput={onMoveJoystick} />
+        <>
+          <VirtualJoystick side="left" onInput={onMoveJoystick} />
+          <button
+            style={styles.resetViewBtn}
+            onClick={() => gameRef.current?.resetCamera()}
+          >⟲</button>
+        </>
       )}
 
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
@@ -782,5 +788,24 @@ const styles = {
     borderRadius: 8,
     backdropFilter: 'blur(4px)',
     WebkitBackdropFilter: 'blur(4px)',
+  },
+  resetViewBtn: {
+    position: 'fixed',
+    bottom: 'calc(60px + env(safe-area-inset-bottom, 0px))',
+    right: 16,
+    width: 48,
+    height: 48,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#FFFCF7',
+    background: 'rgba(42,36,30,0.85)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    borderRadius: '50%',
+    fontSize: 22,
+    zIndex: 30,
+    backdropFilter: 'blur(6px)',
+    WebkitBackdropFilter: 'blur(6px)',
+    cursor: 'pointer',
   },
 };
