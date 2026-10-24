@@ -7,7 +7,8 @@ export default function TitleScreen({ onStart, onReset }) {
   const [showMenu, setShowMenu] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const canvasRef = useRef(null);
-  const imgRef = useRef(null);
+  const bgRef = useRef(null);
+  const charRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const breathRef = useRef(0);
 
@@ -20,25 +21,30 @@ export default function TitleScreen({ onStart, onReset }) {
     img.src = '/images/title-hero.png';
   }, []);
 
-  const updateParallax = useCallback(() => {
-    if (!imgRef.current) return;
-    const dx = (mouseRef.current.x - 0.5) * -12;
-    const dy = (mouseRef.current.y - 0.5) * -8;
-    breathRef.current += 0.015;
-    const breathScale = 1.05 + Math.sin(breathRef.current) * 0.012;
-    imgRef.current.style.transform =
-      `scale(${breathScale}) translate(${dx}px, ${dy}px)`;
+  const updateLayers = useCallback(() => {
+    const dx = (mouseRef.current.x - 0.5) * -10;
+    const dy = (mouseRef.current.y - 0.5) * -6;
+    breathRef.current += 0.018;
+    const breathScale = 1.0 + Math.sin(breathRef.current) * 0.012;
+
+    if (bgRef.current) {
+      bgRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
+    }
+    if (charRef.current) {
+      charRef.current.style.transform =
+        `translate(${dx * 1.3}px, ${dy * 1.3}px) scale(${breathScale})`;
+    }
   }, []);
 
   useEffect(() => {
     let raf;
     function loop() {
-      updateParallax();
+      updateLayers();
       raf = requestAnimationFrame(loop);
     }
     loop();
     return () => cancelAnimationFrame(raf);
-  }, [updateParallax]);
+  }, [updateLayers]);
 
   useEffect(() => {
     function onMove(e) {
@@ -142,13 +148,28 @@ export default function TitleScreen({ onStart, onReset }) {
       opacity: phase === 'leaving' ? 0 : 1,
       transition: 'opacity 0.8s ease',
     }}>
-      <div style={s.imgWrap}>
+      {/* Layer 1: Background (parallax only, no breathing) */}
+      <div style={s.bgWrap}>
         <img
-          ref={imgRef}
+          ref={bgRef}
           src="/images/title-hero.png"
-          alt="樹蔭守護者"
+          alt=""
           style={{
-            ...s.heroImg,
+            ...s.bgImg,
+            opacity: phase === 'loading' ? 0 : 1,
+            transition: 'opacity 1.2s ease',
+          }}
+        />
+      </div>
+
+      {/* Layer 2: Character overlay (parallax + breathing, masked) */}
+      <div style={s.charWrap}>
+        <img
+          ref={charRef}
+          src="/images/title-hero.png"
+          alt=""
+          style={{
+            ...s.charImg,
             opacity: phase === 'loading' ? 0 : 1,
             transition: 'opacity 1.2s ease',
           }}
@@ -200,14 +221,27 @@ const s = {
     background: '#1a1410',
     overflow: 'hidden',
   },
-  imgWrap: {
-    position: 'absolute', inset: '-40px',
+  bgWrap: {
+    position: 'absolute', inset: '-30px',
     overflow: 'hidden',
+    zIndex: 0,
   },
-  heroImg: {
+  bgImg: {
     width: '100%', height: '100%',
     objectFit: 'cover', objectPosition: '35% 40%',
-    transformOrigin: 'center center',
+    willChange: 'transform',
+  },
+  charWrap: {
+    position: 'absolute', inset: '-30px',
+    overflow: 'hidden',
+    zIndex: 1,
+    WebkitMaskImage: 'radial-gradient(ellipse 32% 50% at 62% 45%, black 40%, transparent 100%)',
+    maskImage: 'radial-gradient(ellipse 32% 50% at 62% 45%, black 40%, transparent 100%)',
+  },
+  charImg: {
+    width: '100%', height: '100%',
+    objectFit: 'cover', objectPosition: '35% 40%',
+    transformOrigin: '62% 45%',
     willChange: 'transform',
   },
   vignette: {
