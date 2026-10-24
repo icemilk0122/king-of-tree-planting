@@ -874,7 +874,7 @@ const styles = {
   },
   resetViewBtn: {
     position: 'fixed',
-    bottom: 'calc(60px + env(safe-area-inset-bottom, 0px))',
+    bottom: 'calc(100px + env(safe-area-inset-bottom, 0px))',
     right: 16,
     width: 48,
     height: 48,
