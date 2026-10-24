@@ -1,7 +1,6 @@
 'use client';
 
 import { DISTRICTS } from '../../lib/districts';
-import { NPC_PLACEMENTS } from '../../lib/npc-placements';
 
 const DISTRICT_LAYOUT = [
   [null, 'beitou', null, null],
@@ -40,26 +39,6 @@ export default function DistrictMap({ onTeleport, onClose }) {
                 );
               })}
             </div>
-          ))}
-        </div>
-        <div style={styles.storySection}>
-          <div style={styles.storyEyebrow}>街區故事</div>
-          {NPC_PLACEMENTS.map(npc => (
-            <button
-              key={npc.id}
-              style={styles.storyCell}
-              onClick={() => {
-                onTeleport?.(npc.arrivalLat, npc.arrivalLng, npc.districtKey);
-                onClose();
-              }}
-            >
-              <span style={styles.storyIcon}>{npc.mapIcon || '💬'}</span>
-              <span style={styles.storyCopy}>
-                <strong>{npc.name}</strong>
-                <small>{npc.locationLabel}</small>
-              </span>
-              <span style={styles.storyArrow}>前往 →</span>
-            </button>
           ))}
         </div>
       </div>
@@ -139,52 +118,5 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'background 0.15s, transform 0.1s',
-  },
-  storySection: {
-    marginTop: 18,
-    paddingTop: 16,
-    borderTop: '1px solid rgba(255,255,255,0.12)',
-  },
-  storyEyebrow: {
-    marginBottom: 9,
-    color: '#FFC56D',
-    fontSize: 12,
-    fontWeight: 800,
-    letterSpacing: '0.12em',
-  },
-  storyCell: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 11,
-    color: '#2A241E',
-    background: '#FFF1CB',
-    border: '2px solid #FFB74D',
-    borderRadius: 14,
-    padding: '11px 13px',
-    cursor: 'pointer',
-    textAlign: 'left',
-  },
-  storyIcon: {
-    display: 'grid',
-    placeItems: 'center',
-    width: 36,
-    height: 36,
-    flex: '0 0 36px',
-    borderRadius: 12,
-    background: '#FFD78C',
-    fontSize: 18,
-  },
-  storyCopy: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    gap: 2,
-    fontSize: 14,
-  },
-  storyArrow: {
-    color: '#B34228',
-    fontSize: 12,
-    fontWeight: 800,
   },
 };

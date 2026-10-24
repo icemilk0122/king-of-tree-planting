@@ -5,7 +5,7 @@ import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
 import { getQuestsForTree, acceptQuest, toggleFollowTree, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
-import { detectDistrict } from '../lib/area-detect';
+import { detectDistrict, detectDistrictFromAddress } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
 import MyRecords from './records/MyRecords';
@@ -113,7 +113,7 @@ export default function Game() {
     setAddress(addr);
     if (gameRef.current) {
       const coords = gameRef.current.getPlayerCoords();
-      const district = detectDistrict(coords.lat, coords.lng);
+      const district = detectDistrictFromAddress(addr) || detectDistrict(coords.lat, coords.lng);
       if (district) {
         setCurrentDistrict(district);
         seedQuestsForDistrict(district);
@@ -387,6 +387,10 @@ export default function Game() {
             setNavQuest(q);
             setActivePanel(null);
           }}
+          onNavigateToStory={(storyTarget) => {
+            setNavQuest(storyTarget);
+            setActivePanel(null);
+          }}
           onClose={() => setActivePanel(null)}
         />
       )}
@@ -475,11 +479,17 @@ export default function Game() {
       {navQuest && (
         <QuestNav
           quest={navQuest}
-          getTargetPos={() => gameRef.current?.getTreeWorldPos(navQuest.tree_id)}
+          getTargetPos={() => navQuest.kind === 'npc-story'
+            ? gameRef.current?.getNpcWorldPos(navQuest.npc_id)
+            : gameRef.current?.getTreeWorldPos(navQuest.tree_id)}
           getPlayerPos={() => gameRef.current?.getPlayerWorldPos()}
           onArrive={() => {
             const q = navQuest;
             setNavQuest(null);
+            if (q.kind === 'npc-story') {
+              onNpcInteract(q.npc);
+              return;
+            }
             setTreeQuest(q);
             setSelectedTree({ treeId: q.tree_id, species: '', region: '' });
             setShowDialogue(true);

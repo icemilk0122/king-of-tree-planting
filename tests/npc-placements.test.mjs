@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getNpcPlacement, NPC_PLACEMENTS } from '../lib/npc-placements.js';
+import {
+  createNpcNavigationTarget,
+  getNpcPlacement,
+  getNpcPlacementsForDistrict,
+  NPC_PLACEMENTS,
+} from '../lib/npc-placements.js';
 import { lonLatToWorld } from '../lib/map.js';
 
 test('guide Ashu waits beside the Yongkang Park starting point', () => {
@@ -85,4 +90,17 @@ test('two heritage-tree quests use their dedicated models and exact tree ids', (
 test('NPC placement ids and coordinates are unique', () => {
   assert.equal(new Set(NPC_PLACEMENTS.map(npc => npc.id)).size, NPC_PLACEMENTS.length);
   assert.equal(new Set(NPC_PLACEMENTS.map(npc => `${npc.lat},${npc.lng}`)).size, NPC_PLACEMENTS.length);
+});
+
+test('nearby stories are district scoped and produce NPC navigation targets', () => {
+  const daanStories = getNpcPlacementsForDistrict('daan');
+  assert.equal(daanStories.length, 4);
+  assert.deepEqual(getNpcPlacementsForDistrict('xinyi'), []);
+
+  const guide = getNpcPlacement('guide-ashu');
+  const target = createNpcNavigationTarget(guide);
+  assert.equal(target.kind, 'npc-story');
+  assert.equal(target.npc_id, 'guide-ashu');
+  assert.equal(target.npc_name, '阿樹');
+  assert.equal(target.npc.id, 'guide-ashu');
 });

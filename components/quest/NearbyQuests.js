@@ -2,10 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { getActiveQuests } from '../../lib/quest-engine';
+import {
+  createNpcNavigationTarget,
+  getNpcPlacementsForDistrict,
+} from '../../lib/npc-placements';
 
-export default function NearbyQuests({ areaId, onNavigateToQuest, onClose }) {
+export default function NearbyQuests({ areaId, onNavigateToQuest, onNavigateToStory, onClose }) {
   const [quests, setQuests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const stories = getNpcPlacementsForDistrict(areaId);
 
   useEffect(() => {
     setLoading(true);
@@ -23,43 +28,79 @@ export default function NearbyQuests({ areaId, onNavigateToQuest, onClose }) {
           <button style={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
 
-        {loading && <div style={styles.empty}>載入中…</div>}
+        <div style={styles.content}>
+          {stories.length > 0 && (
+            <section style={styles.section} aria-labelledby="nearby-stories-heading">
+              <div style={styles.sectionHeading}>
+                <span id="nearby-stories-heading">街區故事</span>
+                <small style={styles.sectionHint}>前往角色身邊開始對話</small>
+              </div>
+              <div style={styles.storyList}>
+                {stories.map(npc => (
+                  <button
+                    key={npc.id}
+                    style={styles.storyCard}
+                    onClick={() => onNavigateToStory?.(createNpcNavigationTarget(npc))}
+                  >
+                    <span style={styles.storyIcon}>{npc.mapIcon || '💬'}</span>
+                    <span style={styles.storyCopy}>
+                      <strong>{npc.name}</strong>
+                      <small>{npc.locationLabel}</small>
+                    </span>
+                    <span style={styles.storyArrow}>前往 →</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
-        {!loading && quests.length === 0 && (
-          <div style={styles.empty}>
-            <div style={styles.emptyIcon}>🌿</div>
-            <div>這一帶目前沒有任務</div>
-            <div style={styles.emptyHint}>到處走走，也許會發現需要關注的樹</div>
-          </div>
-        )}
+          <section style={styles.section} aria-labelledby="nearby-tree-quests-heading">
+            <div style={styles.sectionHeading}>
+              <span id="nearby-tree-quests-heading">樹木任務</span>
+              {!loading && <small style={styles.sectionHint}>{quests.length} 個可進行</small>}
+            </div>
 
-        {!loading && quests.length > 0 && (
-          <div style={styles.list}>
-            {quests.map((q) => (
-              <button
-                key={q.id}
-                style={styles.questCard}
-                onClick={() => onNavigateToQuest?.(q)}
-              >
-                <div style={styles.questTop}>
-                  <span style={styles.questType}>
-                    {q.quest_type === 'special' ? '★ 特別' : '◇ 一般'}
-                  </span>
-                  <span style={styles.questPoints}>{q.points} 點</span>
+            {loading && <div style={styles.loading}>正在尋找附近任務…</div>}
+
+            {!loading && quests.length === 0 && (
+              <div style={styles.empty}>
+                <div style={styles.emptyIcon}>🌿</div>
+                <div>這一帶目前沒有樹木任務</div>
+                <div style={styles.emptyHint}>
+                  {stories.length > 0 ? '仍可以前往上方的街區故事' : '換個行政區走走看吧'}
                 </div>
-                <div style={styles.questTitle}>
-                  {q.npc_name || q.title || '近期全樹照'}
-                </div>
-                <div style={styles.questDesc}>
-                  {q.description || '幫我留張全樹照吧。'}
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
+              </div>
+            )}
+
+            {!loading && quests.length > 0 && (
+              <div style={styles.list}>
+                {quests.map((q) => (
+                  <button
+                    key={q.id}
+                    style={styles.questCard}
+                    onClick={() => onNavigateToQuest?.(q)}
+                  >
+                    <div style={styles.questTop}>
+                      <span style={styles.questType}>
+                        {q.quest_type === 'special' ? '★ 特別' : '◇ 一般'}
+                      </span>
+                      <span style={styles.questPoints}>{q.points} 點</span>
+                    </div>
+                    <div style={styles.questTitle}>
+                      {q.npc_name || q.title || '近期全樹照'}
+                    </div>
+                    <div style={styles.questDesc}>
+                      {q.description || '幫我留張全樹照吧。'}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
 
         <div style={styles.footer}>
-          共 {quests.length} 個任務
+          共 {stories.length + quests.length} 個任務與故事
         </div>
       </div>
     </div>
@@ -107,10 +148,74 @@ const styles = {
     cursor: 'pointer',
     padding: '4px 8px',
   },
-  list: {
+  content: {
     flex: 1,
     overflowY: 'auto',
-    padding: '8px 12px',
+    padding: '12px',
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionHeading: {
+    display: 'flex',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    gap: 12,
+    padding: '0 4px 8px',
+    color: '#FFC56D',
+    fontSize: 12,
+    fontWeight: 800,
+    letterSpacing: '0.1em',
+  },
+  sectionHint: {
+    color: 'rgba(255,252,247,0.45)',
+    fontSize: 10,
+    fontWeight: 500,
+    letterSpacing: 0,
+  },
+  storyList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 7,
+  },
+  storyCard: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 11,
+    color: '#FFFCF7',
+    background: 'rgba(255,183,77,0.11)',
+    border: '1px solid rgba(255,183,77,0.42)',
+    borderRadius: 13,
+    padding: '11px 12px',
+    cursor: 'pointer',
+    textAlign: 'left',
+  },
+  storyIcon: {
+    display: 'grid',
+    placeItems: 'center',
+    width: 36,
+    height: 36,
+    flex: '0 0 36px',
+    borderRadius: 11,
+    background: 'rgba(255,197,109,0.18)',
+    fontSize: 18,
+  },
+  storyCopy: {
+    display: 'flex',
+    flex: 1,
+    minWidth: 0,
+    flexDirection: 'column',
+    gap: 2,
+    fontSize: 14,
+  },
+  storyArrow: {
+    color: '#FFC56D',
+    fontSize: 12,
+    fontWeight: 800,
+    whiteSpace: 'nowrap',
+  },
+  list: {
     display: 'flex',
     flexDirection: 'column',
     gap: 8,
@@ -153,20 +258,25 @@ const styles = {
     color: 'rgba(255,255,255,0.6)',
     lineHeight: 1.5,
   },
+  loading: {
+    padding: '22px 12px',
+    textAlign: 'center',
+    color: 'rgba(255,252,247,0.5)',
+    fontSize: 13,
+  },
   empty: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    fontSize: 15,
+    fontSize: 14,
     color: 'rgba(255,255,255,0.5)',
-    padding: 32,
+    padding: '22px 16px 6px',
   },
   emptyIcon: {
-    fontSize: 40,
-    marginBottom: 8,
+    fontSize: 30,
+    marginBottom: 4,
   },
   emptyHint: {
     fontSize: 13,
