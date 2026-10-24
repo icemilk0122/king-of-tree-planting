@@ -5,7 +5,7 @@ export default function ActionBar({ onNearbyQuests, onPhotoReport, onPlantTree, 
     <div style={styles.bar}>
       <div style={styles.left}>
         <button style={styles.btn} onClick={onNearbyQuests}>
-          <span style={styles.icon}>◇</span>
+          <span style={styles.icon}>❗</span>
           <span style={styles.label}>附近任務</span>
         </button>
         <button style={styles.btn} onClick={onMap}>
