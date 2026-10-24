@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "status": "generated-and-integrated",
+  "portraits": [
+    {
+      "id": "player-shade-keeper",
+      "plannedLocalPath": "/assets/story/player-shade-keeper.png",
+      "resolvedLocalPath": "/assets/story/player-shade-keeper.png",
+      "availability": "available",
+      "dialogueSide": "right",
+      "facing": "left",
+      "mirrorX": true,
+      "fallback": "name-card",
+      "disclosure": "主角角色插畫",
+      "sha256": null,
+      "license": "project-generated"
+    },
+    {
+      "id": "guide-ashu-civic-volunteer",
+      "plannedLocalPath": "/assets/story/guide-ashu-civic-volunteer.png",
+      "resolvedLocalPath": "/assets/story/guide-ashu-civic-volunteer.png",
+      "availability": "available",
+      "dialogueSide": "left",
+      "facing": "right",
+      "mirrorX": true,
+      "fallback": "name-card",
+      "disclosure": "角色插畫，非真實樹照",
+      "sha256": null,
+      "license": "project-generated"
+    },
+    {
+      "id": "heritage-557-modern-character",
+      "plannedLocalPath": "/assets/story/heritage-557-modern-character.png",
+      "resolvedLocalPath": "/assets/story/heritage-557-modern-character.png",
+      "availability": "available",
+      "dialogueSide": "left",
+      "facing": "right",
+      "mirrorX": true,
+      "fallback": "name-card",
+      "disclosure": "角色插畫，非真實樹照",
+      "sha256": null,
+      "license": "project-generated"
+    },
+    {
+      "id": "heritage-763-modern-character",
+      "plannedLocalPath": "/assets/story/heritage-763-modern-character.png",
+      "resolvedLocalPath": "/assets/story/heritage-763-modern-character.png",
+      "availability": "available",
+      "dialogueSide": "left",
+      "facing": "right",
+      "mirrorX": true,
+      "fallback": "name-card",
+      "disclosure": "角色插畫，非真實樹照",
+      "sha256": null,
+      "license": "project-generated"
+    },
+    {
+      "id": "local-neighborhood-aunt",
+      "plannedLocalPath": "/assets/story/local-neighborhood-aunt.png",
+      "resolvedLocalPath": "/assets/story/local-neighborhood-aunt.png",
+      "availability": "available",
+      "dialogueSide": "left",
+      "facing": "right",
+      "mirrorX": true,
+      "fallback": "name-card",
+      "disclosure": "角色插畫，非真實樹照",
+      "sha256": null,
+      "license": "project-generated"
+    },
+    {
+      "id": "local-office-worker",
+      "plannedLocalPath": "/assets/story/local-office-worker.png",
+      "resolvedLocalPath": "/assets/story/local-office-worker.png",
+      "availability": "available",
+      "dialogueSide": "left",
+      "facing": "right",
+      "mirrorX": true,
+      "fallback": "name-card",
+      "disclosure": "角色插畫，非真實樹照",
+      "sha256": null,
+      "license": "project-generated"
+    }
+  ]
+}

@@ -1,0 +1,1254 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2.0-review.1",
+  "status": "review-only-not-integrated",
+  "packId": "taipei-modern-street-v2",
+  "scenes": [
+    {
+      "id": "S00_OPENING",
+      "title": "序章｜下午兩點的台北",
+      "revision": 1,
+      "category": "opening",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "per_new_game",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S00_OPENING.p01",
+          "characterId": "narrator",
+          "textKey": "S00_OPENING.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "deep"
+        },
+        {
+          "id": "S00_OPENING.p02",
+          "characterId": "office-worker",
+          "textKey": "S00_OPENING.p02.text",
+          "portraitId": "local-office-worker",
+          "portraitEntrance": "right",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S00_OPENING.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S00_OPENING.p04",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p04.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S00_OPENING.p04.hint"
+        },
+        {
+          "id": "S00_OPENING.p05",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p05.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S00_OPENING.p06",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p06.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S00_OPENING.p07",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p07.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S00_OPENING.p07.hint"
+        },
+        {
+          "id": "S00_OPENING.p08",
+          "characterId": "system",
+          "textKey": "S00_OPENING.p08.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light",
+          "uiHintKey": "S00_OPENING.p08.hint"
+        },
+        {
+          "id": "S00_OPENING.p09",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p09.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S00_OPENING.p09.hint"
+        },
+        {
+          "id": "S00_OPENING.p10",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p10.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S00_OPENING.p11",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p11.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S00_OPENING.p11.hint"
+        },
+        {
+          "id": "S00_OPENING.p12",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p12.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S00_OPENING.p12.hint"
+        },
+        {
+          "id": "S00_OPENING.p13",
+          "characterId": "guide-ashu",
+          "textKey": "S00_OPENING.p13.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "序章｜下午兩點的台北"
+    },
+    {
+      "id": "S01_DAAN_WELCOME",
+      "title": "大安篇｜每天走的路",
+      "revision": 1,
+      "category": "area",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "once_per_area",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S01_DAAN_WELCOME.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S01_DAAN_WELCOME.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S01_DAAN_WELCOME.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S01_DAAN_WELCOME.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S01_DAAN_WELCOME.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S01_DAAN_WELCOME.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "大安篇｜每天走的路"
+    },
+    {
+      "id": "S02_FIRST_PLANT_TOOL",
+      "title": "種樹主線｜這裡可以種嗎？",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "once_per_player",
+      "returnTo": "planting_form",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S02_FIRST_PLANT_TOOL.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S02_FIRST_PLANT_TOOL.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S02_FIRST_PLANT_TOOL.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S02_FIRST_PLANT_TOOL.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S02_FIRST_PLANT_TOOL.p03",
+          "characterId": "system",
+          "textKey": "S02_FIRST_PLANT_TOOL.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light",
+          "uiHintKey": "S02_FIRST_PLANT_TOOL.p03.hint"
+        }
+      ],
+      "sourceTitle": "種樹主線｜這裡可以種嗎？"
+    },
+    {
+      "id": "S03_PLANT_SPOT_SELECTED",
+      "title": "種樹主線｜一張照片很有用",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "proposal-photo",
+        "explicit-location-selection"
+      ],
+      "sourceOncePolicy": "once_per_player",
+      "returnTo": "planting_form",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S03_PLANT_SPOT_SELECTED.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S03_PLANT_SPOT_SELECTED.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S03_PLANT_SPOT_SELECTED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S03_PLANT_SPOT_SELECTED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S03_PLANT_SPOT_SELECTED.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S03_PLANT_SPOT_SELECTED.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜一張照片很有用"
+    },
+    {
+      "id": "S04_PLANT_NEARBY_PROPOSAL",
+      "title": "種樹主線｜原來有人也在意",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "nearby-proposals",
+        "proposal-supplements"
+      ],
+      "sourceOncePolicy": "once_per_player",
+      "returnTo": "planting_form",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S04_PLANT_NEARBY_PROPOSAL.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S04_PLANT_NEARBY_PROPOSAL.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S04_PLANT_NEARBY_PROPOSAL.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S04_PLANT_NEARBY_PROPOSAL.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S04_PLANT_NEARBY_PROPOSAL.p03",
+          "characterId": "system",
+          "textKey": "S04_PLANT_NEARBY_PROPOSAL.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        }
+      ],
+      "sourceTitle": "種樹主線｜原來有人也在意"
+    },
+    {
+      "id": "S05_PLANT_PROPOSAL_SAVED",
+      "title": "種樹主線｜一個街角建議已保存",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "every_successful_submit",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S05_PLANT_PROPOSAL_SAVED.p01",
+          "characterId": "system",
+          "textKey": "S05_PLANT_PROPOSAL_SAVED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light",
+          "uiHintKey": "S05_PLANT_PROPOSAL_SAVED.p01.hint"
+        },
+        {
+          "id": "S05_PLANT_PROPOSAL_SAVED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S05_PLANT_PROPOSAL_SAVED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S05_PLANT_PROPOSAL_SAVED.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S05_PLANT_PROPOSAL_SAVED.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜地圖上多了一個提案"
+    },
+    {
+      "id": "S06_PLANT_NEEDS_INFO",
+      "title": "種樹主線｜還差一點線索",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "review-workflow"
+      ],
+      "sourceOncePolicy": "once_per_revision_request",
+      "returnTo": "my_records",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S06_PLANT_NEEDS_INFO.p01",
+          "characterId": "system",
+          "textKey": "S06_PLANT_NEEDS_INFO.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        },
+        {
+          "id": "S06_PLANT_NEEDS_INFO.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S06_PLANT_NEEDS_INFO.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S06_PLANT_NEEDS_INFO.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S06_PLANT_NEEDS_INFO.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜還差一點線索"
+    },
+    {
+      "id": "S07_PLANT_PROPOSAL_PUBLISHED",
+      "title": "種樹主線｜這個想法被看見了",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "shared-publication"
+      ],
+      "sourceOncePolicy": "once_per_status_version",
+      "returnTo": "proposal_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S07_PLANT_PROPOSAL_PUBLISHED.p01",
+          "characterId": "system",
+          "textKey": "S07_PLANT_PROPOSAL_PUBLISHED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        },
+        {
+          "id": "S07_PLANT_PROPOSAL_PUBLISHED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S07_PLANT_PROPOSAL_PUBLISHED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜這個想法被看見了"
+    },
+    {
+      "id": "S08_PLANT_AGENCY_EVALUATING",
+      "title": "種樹主線｜一棵樹要考慮的事",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "verified-official-data"
+      ],
+      "sourceOncePolicy": "once_per_official_status_version",
+      "returnTo": "proposal_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S08_PLANT_AGENCY_EVALUATING.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S08_PLANT_AGENCY_EVALUATING.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S08_PLANT_AGENCY_EVALUATING.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S08_PLANT_AGENCY_EVALUATING.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S08_PLANT_AGENCY_EVALUATING.p03",
+          "characterId": "system",
+          "textKey": "S08_PLANT_AGENCY_EVALUATING.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light",
+          "uiHintKey": "S08_PLANT_AGENCY_EVALUATING.p03.hint"
+        }
+      ],
+      "sourceTitle": "種樹主線｜一棵樹要考慮的事"
+    },
+    {
+      "id": "S09_PLANT_NOT_SUITABLE",
+      "title": "種樹主線｜這次沒辦法種",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "verified-official-data"
+      ],
+      "sourceOncePolicy": "once_per_official_status_version",
+      "returnTo": "proposal_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S09_PLANT_NOT_SUITABLE.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S09_PLANT_NOT_SUITABLE.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S09_PLANT_NOT_SUITABLE.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S09_PLANT_NOT_SUITABLE.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S09_PLANT_NOT_SUITABLE.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S09_PLANT_NOT_SUITABLE.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜這次沒辦法種"
+    },
+    {
+      "id": "S10_PLANT_PLAN_CONFIRMED",
+      "title": "種樹主線｜街角有了下一步",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "verified-official-data"
+      ],
+      "sourceOncePolicy": "once_per_official_status_version",
+      "returnTo": "proposal_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S10_PLANT_PLAN_CONFIRMED.p01",
+          "characterId": "system",
+          "textKey": "S10_PLANT_PLAN_CONFIRMED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light",
+          "uiHintKey": "S10_PLANT_PLAN_CONFIRMED.p01.hint"
+        },
+        {
+          "id": "S10_PLANT_PLAN_CONFIRMED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S10_PLANT_PLAN_CONFIRMED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S10_PLANT_PLAN_CONFIRMED.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S10_PLANT_PLAN_CONFIRMED.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜街角有了下一步"
+    },
+    {
+      "id": "S11_PLANT_VERIFIED",
+      "title": "種樹主線｜一棵新樹",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "verified-official-data"
+      ],
+      "sourceOncePolicy": "once_per_official_status_version",
+      "returnTo": "proposal_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S11_PLANT_VERIFIED.p01",
+          "characterId": "system",
+          "textKey": "S11_PLANT_VERIFIED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light",
+          "uiHintKey": "S11_PLANT_VERIFIED.p01.hint"
+        },
+        {
+          "id": "S11_PLANT_VERIFIED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S11_PLANT_VERIFIED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S11_PLANT_VERIFIED.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S11_PLANT_VERIFIED.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹主線｜一棵新樹"
+    },
+    {
+      "id": "S12_NEW_TREE_REVISIT",
+      "title": "種樹主線｜新朋友的第一張近況",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "verified-official-data",
+        "new-tree-observation"
+      ],
+      "sourceOncePolicy": "once_per_invitation",
+      "returnTo": "tree_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S12_NEW_TREE_REVISIT.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S12_NEW_TREE_REVISIT.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S12_NEW_TREE_REVISIT.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S12_NEW_TREE_REVISIT.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S12_NEW_TREE_REVISIT.p03",
+          "characterId": "system",
+          "textKey": "S12_NEW_TREE_REVISIT.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        }
+      ],
+      "sourceTitle": "種樹主線｜新朋友的第一張近況"
+    },
+    {
+      "id": "S13_HERITAGE_557",
+      "title": "老樹支線｜永康街的樟樹",
+      "revision": 1,
+      "category": "heritage",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "exact-heritage-record"
+      ],
+      "sourceOncePolicy": "once_per_tree",
+      "returnTo": "tree_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S13_HERITAGE_557.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S13_HERITAGE_557.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S13_HERITAGE_557.p01.hint",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-557",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S13_HERITAGE_557.p02",
+          "characterId": "heritage-557-narrator",
+          "textKey": "S13_HERITAGE_557.p02.text",
+          "portraitId": "heritage-557-modern-character",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-557",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S13_HERITAGE_557.p03",
+          "characterId": "heritage-557-narrator",
+          "textKey": "S13_HERITAGE_557.p03.text",
+          "portraitId": "heritage-557-modern-character",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-557",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S13_HERITAGE_557.p04",
+          "characterId": "guide-ashu",
+          "textKey": "S13_HERITAGE_557.p04.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S13_HERITAGE_557.p04.hint"
+        }
+      ],
+      "sourceTitle": "老樹支線｜永康街的樟樹"
+    },
+    {
+      "id": "S14_HERITAGE_763",
+      "title": "老樹支線｜麗水街的麵包樹",
+      "revision": 1,
+      "category": "heritage",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "exact-heritage-record"
+      ],
+      "sourceOncePolicy": "once_per_tree",
+      "returnTo": "tree_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S14_HERITAGE_763.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S14_HERITAGE_763.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-763",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S14_HERITAGE_763.p02",
+          "characterId": "heritage-763-narrator",
+          "textKey": "S14_HERITAGE_763.p02.text",
+          "portraitId": "heritage-763-modern-character",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-763",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S14_HERITAGE_763.p03",
+          "characterId": "heritage-763-narrator",
+          "textKey": "S14_HERITAGE_763.p03.text",
+          "portraitId": "heritage-763-modern-character",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-763",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S14_HERITAGE_763.p04",
+          "characterId": "guide-ashu",
+          "textKey": "S14_HERITAGE_763.p04.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S14_HERITAGE_763.p04.hint"
+        }
+      ],
+      "sourceTitle": "老樹支線｜麗水街的麵包樹"
+    },
+    {
+      "id": "S15_OBSERVATION_PENDING",
+      "title": "老樹支線｜照片先收到了",
+      "revision": 1,
+      "category": "heritage",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "every_successful_submit",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S15_OBSERVATION_PENDING.p01",
+          "characterId": "system",
+          "textKey": "S15_OBSERVATION_PENDING.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        },
+        {
+          "id": "S15_OBSERVATION_PENDING.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S15_OBSERVATION_PENDING.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "老樹支線｜照片先收到了"
+    },
+    {
+      "id": "S16_GENERAL_REVIEWED",
+      "title": "老樹支線｜這張照片派上用場了",
+      "revision": 1,
+      "category": "heritage",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "per_verified_ledger_event",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S16_GENERAL_REVIEWED.p01",
+          "characterId": "system",
+          "textKey": "S16_GENERAL_REVIEWED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        },
+        {
+          "id": "S16_GENERAL_REVIEWED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S16_GENERAL_REVIEWED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "老樹支線｜這張照片派上用場了"
+    },
+    {
+      "id": "S17_SPECIAL_REVIEWED",
+      "title": "老樹支線｜特別委託完成",
+      "revision": 1,
+      "category": "city_event",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "exact-heritage-quest"
+      ],
+      "sourceOncePolicy": "per_verified_ledger_event",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S17_SPECIAL_REVIEWED.p01",
+          "characterId": "event-notice",
+          "textKey": "S17_SPECIAL_REVIEWED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S17_SPECIAL_REVIEWED.p02",
+          "characterId": "heritage-763-narrator",
+          "textKey": "S17_SPECIAL_REVIEWED.p02.text",
+          "portraitId": "heritage-763-modern-character",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "photoBinding": {
+            "source": "heritage-catalog",
+            "treeId": "heritage-763",
+            "resolver": "localHeritagePhotos",
+            "neverFallbackToAnotherTree": true
+          }
+        },
+        {
+          "id": "S17_SPECIAL_REVIEWED.p03",
+          "characterId": "system",
+          "textKey": "S17_SPECIAL_REVIEWED.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        }
+      ],
+      "sourceTitle": "老樹支線｜特別委託完成"
+    },
+    {
+      "id": "S18_CITY_PLANTING_WEEK",
+      "title": "城市限時事件｜替台北找樹蔭（示範）",
+      "revision": 1,
+      "category": "city_event",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "campaign-adapter",
+        "proposal-photo"
+      ],
+      "sourceOncePolicy": "once_per_campaign",
+      "returnTo": "quest_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S18_CITY_PLANTING_WEEK.p01",
+          "characterId": "neighborhood-board",
+          "textKey": "S18_CITY_PLANTING_WEEK.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S18_CITY_PLANTING_WEEK.p01.hint"
+        },
+        {
+          "id": "S18_CITY_PLANTING_WEEK.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S18_CITY_PLANTING_WEEK.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S18_CITY_PLANTING_WEEK.p03",
+          "characterId": "neighborhood-board",
+          "textKey": "S18_CITY_PLANTING_WEEK.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S18_CITY_PLANTING_WEEK.p04",
+          "characterId": "guide-ashu",
+          "textKey": "S18_CITY_PLANTING_WEEK.p04.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "城市限時事件｜替台北找樹蔭（示範）"
+    },
+    {
+      "id": "S19_CITY_TREEHOLE_WEEK",
+      "title": "城市限時事件｜街角樹穴觀察（示範）",
+      "revision": 1,
+      "category": "city_event",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "campaign-adapter",
+        "verified-treehole-dataset"
+      ],
+      "sourceOncePolicy": "once_per_campaign",
+      "returnTo": "quest_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S19_CITY_TREEHOLE_WEEK.p01",
+          "characterId": "neighborhood-board",
+          "textKey": "S19_CITY_TREEHOLE_WEEK.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S19_CITY_TREEHOLE_WEEK.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S19_CITY_TREEHOLE_WEEK.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S19_CITY_TREEHOLE_WEEK.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S19_CITY_TREEHOLE_WEEK.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S19_CITY_TREEHOLE_WEEK.p04",
+          "characterId": "system",
+          "textKey": "S19_CITY_TREEHOLE_WEEK.p04.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        }
+      ],
+      "sourceTitle": "城市限時事件｜街角樹穴觀察（示範）"
+    },
+    {
+      "id": "S20_CITY_HERITAGE_WEEK",
+      "title": "城市限時事件｜老樹近況更新（示範）",
+      "revision": 1,
+      "category": "city_event",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "campaign-adapter",
+        "exact-heritage-quest"
+      ],
+      "sourceOncePolicy": "once_per_campaign",
+      "returnTo": "quest_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S20_CITY_HERITAGE_WEEK.p01",
+          "characterId": "neighborhood-board",
+          "textKey": "S20_CITY_HERITAGE_WEEK.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium",
+          "uiHintKey": "S20_CITY_HERITAGE_WEEK.p01.hint"
+        },
+        {
+          "id": "S20_CITY_HERITAGE_WEEK.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S20_CITY_HERITAGE_WEEK.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S20_CITY_HERITAGE_WEEK.p03",
+          "characterId": "neighborhood-board",
+          "textKey": "S20_CITY_HERITAGE_WEEK.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "城市限時事件｜老樹近況更新（示範）"
+    },
+    {
+      "id": "S21_CITY_REAL_PLANT_DAY",
+      "title": "城市事件｜這次真的要種了",
+      "revision": 1,
+      "category": "city_event",
+      "stage": "P2",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "verified-official-data"
+      ],
+      "sourceOncePolicy": "once_per_official_event",
+      "returnTo": "event_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S21_CITY_REAL_PLANT_DAY.p01",
+          "characterId": "event-notice",
+          "textKey": "S21_CITY_REAL_PLANT_DAY.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S21_CITY_REAL_PLANT_DAY.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S21_CITY_REAL_PLANT_DAY.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S21_CITY_REAL_PLANT_DAY.p03",
+          "characterId": "guide-ashu",
+          "textKey": "S21_CITY_REAL_PLANT_DAY.p03.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "城市事件｜這次真的要種了"
+    },
+    {
+      "id": "S22_DEMO_EPILOGUE",
+      "title": "尾聲｜這條路多了一個可能",
+      "revision": 1,
+      "category": "ending",
+      "stage": "P0",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter"
+      ],
+      "sourceOncePolicy": "once_per_player",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S22_DEMO_EPILOGUE.p01",
+          "characterId": "guide-ashu",
+          "textKey": "S22_DEMO_EPILOGUE.p01.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S22_DEMO_EPILOGUE.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S22_DEMO_EPILOGUE.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S22_DEMO_EPILOGUE.p03",
+          "characterId": "narrator",
+          "textKey": "S22_DEMO_EPILOGUE.p03.text",
+          "portraitId": null,
+          "portraitEntrance": "right",
+          "backgroundMask": "light"
+        }
+      ],
+      "sourceTitle": "尾聲｜這條路多了一個可能"
+    },
+    {
+      "id": "S23_CAMPAIGN_EXPIRED",
+      "title": "城市事件｜這期活動已結束",
+      "revision": 1,
+      "category": "city_event",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "campaign-adapter"
+      ],
+      "sourceOncePolicy": "every_open_after_expiry",
+      "returnTo": "quest_detail",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S23_CAMPAIGN_EXPIRED.p01",
+          "characterId": "neighborhood-board",
+          "textKey": "S23_CAMPAIGN_EXPIRED.p01.text",
+          "portraitId": null,
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S23_CAMPAIGN_EXPIRED.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S23_CAMPAIGN_EXPIRED.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "城市事件｜這期活動已結束"
+    },
+    {
+      "id": "S24_LOCAL_NEIGHBORHOOD",
+      "title": "種樹支線｜阿姨買菜走的那條路",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "local-story-entry"
+      ],
+      "sourceOncePolicy": "once_per_area",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S24_LOCAL_NEIGHBORHOOD.p01",
+          "characterId": "neighborhood-aunt",
+          "textKey": "S24_LOCAL_NEIGHBORHOOD.p01.text",
+          "portraitId": "local-neighborhood-aunt",
+          "portraitEntrance": "right",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S24_LOCAL_NEIGHBORHOOD.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S24_LOCAL_NEIGHBORHOOD.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S24_LOCAL_NEIGHBORHOOD.p03",
+          "characterId": "neighborhood-aunt",
+          "textKey": "S24_LOCAL_NEIGHBORHOOD.p03.text",
+          "portraitId": "local-neighborhood-aunt",
+          "portraitEntrance": "right",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S24_LOCAL_NEIGHBORHOOD.p04",
+          "characterId": "guide-ashu",
+          "textKey": "S24_LOCAL_NEIGHBORHOOD.p04.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹支線｜阿姨買菜走的那條路"
+    },
+    {
+      "id": "S25_BUSSTOP_DILEMMA",
+      "title": "種樹支線｜等公車也想有樹蔭",
+      "revision": 1,
+      "category": "planting",
+      "stage": "P1",
+      "autoTriggerEnabled": false,
+      "requiresCapabilities": [
+        "story-adapter",
+        "local-story-entry"
+      ],
+      "sourceOncePolicy": "once_per_area",
+      "returnTo": "map",
+      "inputPolicy": "modal-block-world",
+      "pages": [
+        {
+          "id": "S25_BUSSTOP_DILEMMA.p01",
+          "characterId": "office-worker",
+          "textKey": "S25_BUSSTOP_DILEMMA.p01.text",
+          "portraitId": "local-office-worker",
+          "portraitEntrance": "right",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S25_BUSSTOP_DILEMMA.p02",
+          "characterId": "guide-ashu",
+          "textKey": "S25_BUSSTOP_DILEMMA.p02.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S25_BUSSTOP_DILEMMA.p03",
+          "characterId": "office-worker",
+          "textKey": "S25_BUSSTOP_DILEMMA.p03.text",
+          "portraitId": "local-office-worker",
+          "portraitEntrance": "right",
+          "backgroundMask": "medium"
+        },
+        {
+          "id": "S25_BUSSTOP_DILEMMA.p04",
+          "characterId": "guide-ashu",
+          "textKey": "S25_BUSSTOP_DILEMMA.p04.text",
+          "portraitId": "guide-ashu-civic-volunteer",
+          "portraitEntrance": "left",
+          "backgroundMask": "medium"
+        }
+      ],
+      "sourceTitle": "種樹支線｜等公車也想有樹蔭"
+    }
+  ],
+  "titleNote": "sourceTitle 保留原 V2；title 是本次審閱的顯示標題，不能在缺少功能時宣稱地圖已出現提案。"
+}

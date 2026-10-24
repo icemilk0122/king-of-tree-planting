@@ -1,0 +1,347 @@
+{
+  "schemaVersion": 1,
+  "status": "proposed-not-wired",
+  "bindings": [
+    {
+      "sceneId": "S00_OPENING",
+      "event": "game.new_started",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "explicit_new_game"
+      },
+      "dedupeScope": "per_new_game",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S01_DAAN_WELCOME",
+      "event": "area.entered",
+      "filters": {
+        "areaId": "daan"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "area_entered",
+        "areaId": "daan"
+      },
+      "dedupeScope": "once_per_area",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。",
+      "locationPrecisionPolicy": "approximate-unless-known-district"
+    },
+    {
+      "sceneId": "S02_FIRST_PLANT_TOOL",
+      "event": "proposal.tool_opened",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_tool_opened"
+      },
+      "dedupeScope": "once_per_player",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S03_PLANT_SPOT_SELECTED",
+      "event": "proposal.location_confirmed",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_location_selected"
+      },
+      "dedupeScope": "once_per_player",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S04_PLANT_NEARBY_PROPOSAL",
+      "event": "proposal.nearby_match_shown",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "nearby_planting_proposal_shown"
+      },
+      "dedupeScope": "once_per_player",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S05_PLANT_PROPOSAL_SAVED",
+      "event": "proposal.saved",
+      "filters": {
+        "storageMode": "local"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_proposal_saved"
+      },
+      "dedupeScope": "every_successful_submit",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S06_PLANT_NEEDS_INFO",
+      "event": "proposal.revision_requested",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_revision_requested"
+      },
+      "dedupeScope": "once_per_revision_request",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S07_PLANT_PROPOSAL_PUBLISHED",
+      "event": "proposal.published",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_proposal_published"
+      },
+      "dedupeScope": "once_per_status_version",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S08_PLANT_AGENCY_EVALUATING",
+      "event": "proposal.official_status_changed",
+      "filters": {
+        "officialStatus": "evaluating"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "agency_planting_evaluation_confirmed"
+      },
+      "dedupeScope": "once_per_official_status_version",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S09_PLANT_NOT_SUITABLE",
+      "event": "proposal.official_status_changed",
+      "filters": {
+        "officialStatus": "not-suitable"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_evaluation_not_suitable"
+      },
+      "dedupeScope": "once_per_official_status_version",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S10_PLANT_PLAN_CONFIRMED",
+      "event": "proposal.official_status_changed",
+      "filters": {
+        "officialStatus": "planned"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_plan_officially_confirmed"
+      },
+      "dedupeScope": "once_per_official_status_version",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S11_PLANT_VERIFIED",
+      "event": "proposal.official_status_changed",
+      "filters": {
+        "officialStatus": "planted"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "planting_completed_officially_verified"
+      },
+      "dedupeScope": "once_per_official_status_version",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S12_NEW_TREE_REVISIT",
+      "event": "observation.new_tree_invited",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "new_tree_observation_invited"
+      },
+      "dedupeScope": "once_per_invitation",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S13_HERITAGE_557",
+      "event": "tree.interacted",
+      "filters": {
+        "treeId": "heritage-557"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "tree_interacted",
+        "treeId": "heritage-557"
+      },
+      "dedupeScope": "once_per_tree",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S14_HERITAGE_763",
+      "event": "tree.interacted",
+      "filters": {
+        "treeId": "heritage-763"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "tree_interacted",
+        "treeId": "heritage-763"
+      },
+      "dedupeScope": "once_per_tree",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S15_OBSERVATION_PENDING",
+      "event": "observation.saved",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "observation_saved"
+      },
+      "dedupeScope": "every_successful_submit",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。",
+      "profileConstraint": "offline-current",
+      "suppressWhenScenesSelected": [
+        "S16_GENERAL_REVIEWED",
+        "S17_SPECIAL_REVIEWED"
+      ]
+    },
+    {
+      "sceneId": "S16_GENERAL_REVIEWED",
+      "event": "quest.local_reward_committed",
+      "filters": {
+        "questKind": "general"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "quest_review_confirmed",
+        "questKind": "general"
+      },
+      "dedupeScope": "per_committed_ledger_event",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。",
+      "profileConstraint": "offline-current",
+      "sourceDedupeScope": "per_verified_ledger_event"
+    },
+    {
+      "sceneId": "S17_SPECIAL_REVIEWED",
+      "event": "quest.local_reward_committed",
+      "filters": {
+        "treeId": "heritage-763",
+        "questKind": "special"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "quest_review_confirmed",
+        "questId": "daan-elder-week-v1"
+      },
+      "dedupeScope": "per_committed_ledger_event",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。",
+      "profileConstraint": "offline-current",
+      "sourceDedupeScope": "per_verified_ledger_event"
+    },
+    {
+      "sceneId": "S18_CITY_PLANTING_WEEK",
+      "event": "campaign.opened",
+      "filters": {
+        "campaignId": "demo-shade-corner-week"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "special_board_opened",
+        "questId": "demo-shade-corner-week"
+      },
+      "dedupeScope": "once_per_campaign",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S19_CITY_TREEHOLE_WEEK",
+      "event": "campaign.opened",
+      "filters": {
+        "campaignId": "demo-treehole-week"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "special_board_opened",
+        "questId": "demo-treehole-week"
+      },
+      "dedupeScope": "once_per_campaign",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S20_CITY_HERITAGE_WEEK",
+      "event": "campaign.opened",
+      "filters": {
+        "campaignId": "daan-elder-week-v1",
+        "treeId": "heritage-763"
+      },
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "special_board_opened",
+        "questId": "daan-elder-week-v1"
+      },
+      "dedupeScope": "once_per_campaign",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S21_CITY_REAL_PLANT_DAY",
+      "event": "event.official_opened",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "verified_official_planting_day_opened"
+      },
+      "dedupeScope": "once_per_official_event",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S22_DEMO_EPILOGUE",
+      "event": "story.milestone_reconciled",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "story_milestone",
+        "requires": [
+          "planting_proposal_saved",
+          "tree_observation_saved"
+        ]
+      },
+      "dedupeScope": "once_per_player",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。",
+      "requiresFacts": [
+        "proposal.saved",
+        "observation.saved"
+      ]
+    },
+    {
+      "sceneId": "S23_CAMPAIGN_EXPIRED",
+      "event": "campaign.closed_opened",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "special_quest_opened_after_end"
+      },
+      "dedupeScope": "every_open_after_expiry",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S24_LOCAL_NEIGHBORHOOD",
+      "event": "neighborhood.story_opened",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "neighborhood_story_opened"
+      },
+      "dedupeScope": "once_per_area",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S25_BUSSTOP_DILEMMA",
+      "event": "street.story_opened",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "street_story_opened"
+      },
+      "dedupeScope": "once_per_area",
+      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    }
+  ],
+  "contractNote": "filters 只比對標準化事件同名欄位；profileConstraint / requiresFacts / suppressWhenScenesSelected 為 director 的明確政策，不是原始事件欄位。"
+}

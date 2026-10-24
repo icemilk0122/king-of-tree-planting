@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "campaigns": [
+    {
+      "id": "demo-shade-corner-week",
+      "name": "缺蔭街角徵集週",
+      "state": "draft",
+      "mode": "local-demo",
+      "issuer": "街區情境示範",
+      "official": false,
+      "verifiedSource": null,
+      "startsAt": null,
+      "endsAt": null,
+      "displayTimeZone": "Asia/Taipei",
+      "suggestedDurationDays": 7,
+      "evidenceKind": "planting-proposal",
+      "rewardPolicy": "none",
+      "autoEnabled": false,
+      "note": "沒有起訖時間、真實目標與驗收規則前不得啟用。正式委託需另有可信來源；單純 official=true 不構成證據。"
+    },
+    {
+      "id": "demo-treehole-week",
+      "name": "街角樹穴觀察週",
+      "state": "draft",
+      "mode": "local-demo",
+      "issuer": "街區情境示範",
+      "official": false,
+      "verifiedSource": null,
+      "startsAt": null,
+      "endsAt": null,
+      "displayTimeZone": "Asia/Taipei",
+      "suggestedDurationDays": 7,
+      "evidenceKind": "treehole-observation",
+      "rewardPolicy": "none",
+      "autoEnabled": false,
+      "note": "沒有起訖時間、真實目標與驗收規則前不得啟用。正式委託需另有可信來源；單純 official=true 不構成證據。"
+    },
+    {
+      "id": "daan-elder-week-v1",
+      "name": "老樹相簿更新週",
+      "state": "draft",
+      "mode": "local-demo",
+      "issuer": "街區情境示範",
+      "official": false,
+      "verifiedSource": null,
+      "startsAt": null,
+      "endsAt": null,
+      "displayTimeZone": "Asia/Taipei",
+      "suggestedDurationDays": 7,
+      "evidenceKind": "whole-tree-photo",
+      "rewardPolicy": "existing-quest-ledger-only",
+      "autoEnabled": false,
+      "note": "沒有起訖時間、真實目標與驗收規則前不得啟用。正式委託需另有可信來源；單純 official=true 不構成證據。"
+    }
+  ]
+}

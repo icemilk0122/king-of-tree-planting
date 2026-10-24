@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { OUTFIT_PRESETS } from '../../lib/equipment';
 
 const presetForOutfit = (outfit) => Object.entries(OUTFIT_PRESETS).find(([, preset]) =>
@@ -9,10 +9,30 @@ const presetForOutfit = (outfit) => Object.entries(OUTFIT_PRESETS).find(([, pres
 
 export default function Wardrobe({ currentOutfit, onApplyOutfit, onClose }) {
   const [selectedPreset, setSelectedPreset] = useState(() => presetForOutfit(currentOutfit));
+  const [applyingPreset, setApplyingPreset] = useState(null);
+  const [error, setError] = useState('');
 
-  const applyPreset = (id, preset) => {
-    setSelectedPreset(id);
-    onApplyOutfit(preset.outfit);
+  useEffect(() => {
+    setSelectedPreset(presetForOutfit(currentOutfit));
+  }, [currentOutfit]);
+
+  const applyPreset = async (id, preset) => {
+    if (applyingPreset) return;
+    setApplyingPreset(id);
+    setError('');
+    try {
+      const result = await onApplyOutfit(preset.outfit);
+      if (result?.status === 'applied' || result?.status === 'unchanged') {
+        setSelectedPreset(id);
+        if (result.persisted === false) setError('造型已套用，但無法保存到瀏覽器。');
+      } else if (result?.status !== 'superseded') {
+        setError(result?.message || '目前無法套用這套造型。');
+      }
+    } catch (e) {
+      setError(e.message || '目前無法套用這套造型。');
+    } finally {
+      setApplyingPreset(null);
+    }
   };
 
   return (
@@ -32,13 +52,16 @@ export default function Wardrobe({ currentOutfit, onApplyOutfit, onClose }) {
               key={id}
               style={{ ...s.presetBtn, ...(selectedPreset === id ? s.presetActive : {}) }}
               onClick={() => applyPreset(id, preset)}
+              disabled={!!applyingPreset}
             >
               <span style={s.presetName}>{preset.name}</span>
               <span style={s.presetDescription}>{preset.description}</span>
               {selectedPreset === id && <span style={s.equipped}>穿戴中</span>}
+              {applyingPreset === id && <span style={s.equipped}>套用中…</span>}
             </button>
           ))}
         </div>
+        {error && <div style={s.error}>{error}</div>}
       </div>
     </div>
   );
@@ -82,5 +105,8 @@ const s = {
     position: 'absolute', right: 12, top: 12,
     fontSize: 11, color: '#F07B5E', fontWeight: 600,
     padding: '2px 8px', background: 'rgba(232,93,58,0.2)', borderRadius: 6,
+  },
+  error: {
+    marginTop: 12, color: '#ff9b86', fontSize: 13, lineHeight: 1.5,
   },
 };

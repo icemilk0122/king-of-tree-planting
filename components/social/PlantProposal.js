@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { submitPlantingProposal } from '../../lib/quest-engine';
 
 const REASON_PRESETS = [
@@ -17,21 +17,37 @@ export default function PlantProposal({ playerCoords, currentDistrict, onClose, 
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const requestIdRef = useRef(null);
+
+  function getRequestId() {
+    if (!requestIdRef.current) {
+      requestIdRef.current = globalThis.crypto?.randomUUID?.()
+        || `proposal-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    }
+    return requestIdRef.current;
+  }
 
   async function handleSubmit() {
     if (!reason.trim()) return;
+    if (!Number.isFinite(playerCoords?.lat) || !Number.isFinite(playerCoords?.lng)) {
+      setError('目前無法取得提案位置，請回到地圖後再試');
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
-      await submitPlantingProposal({
-        lat: playerCoords?.lat || 0,
-        lng: playerCoords?.lng || 0,
+      const proposal = await submitPlantingProposal({
+        lat: playerCoords.lat,
+        lng: playerCoords.lng,
         reason: reason.trim(),
         photoUrl: null,
         areaId: currentDistrict,
+        locationSource: 'game-player',
+        evidenceKind: 'planting-site',
+        clientRequestId: getRequestId(),
       });
       setSuccess(true);
-      onSubmitted?.();
+      onSubmitted?.(proposal);
     } catch (e) {
       setError(e.message || '提交失敗');
     }
@@ -43,8 +59,8 @@ export default function PlantProposal({ playerCoords, currentDistrict, onClose, 
       <div style={styles.overlay}>
         <div style={styles.panel}>
           <div style={styles.successIcon}>🌱</div>
-          <div style={styles.successTitle}>提案已送出！</div>
-          <div style={styles.successHint}>社區夥伴會看到你的建議</div>
+          <div style={styles.successTitle}>建議已保存！</div>
+          <div style={styles.successHint}>這是待評估的城市觀察，不代表已核准種植或公開顯示。</div>
           <button style={styles.doneBtn} onClick={onClose}>好的</button>
         </div>
       </div>
@@ -95,9 +111,9 @@ export default function PlantProposal({ playerCoords, currentDistrict, onClose, 
         {error && <div style={styles.error}>{error}</div>}
 
         <button
-          style={{ ...styles.submitBtn, opacity: submitting || !reason.trim() ? 0.5 : 1 }}
+          style={{ ...styles.submitBtn, opacity: submitting || !reason.trim() || !playerCoords ? 0.5 : 1 }}
           onClick={handleSubmit}
-          disabled={submitting || !reason.trim()}
+          disabled={submitting || !reason.trim() || !playerCoords}
         >
           {submitting ? '提交中…' : '送出建議'}
         </button>

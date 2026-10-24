@@ -84,3 +84,36 @@ button:active {
   from { opacity: 0; transform: translateX(-30px); }
   to { opacity: 1; transform: translateX(0); }
 }
+
+.story-portrait--left {
+  left: max(0px, calc(50% - 470px));
+}
+
+.story-portrait--right {
+  right: max(0px, calc(50% - 470px));
+}
+
+@media (max-width: 640px) {
+  .story-portrait {
+    bottom: 112px !important;
+  }
+
+  .story-portrait--left {
+    left: -6vw;
+  }
+
+  .story-portrait--right {
+    right: -6vw;
+  }
+
+  .story-portrait__image {
+    width: min(74vw, 340px) !important;
+    height: min(58vh, 500px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-portrait {
+    animation: none !important;
+  }
+}

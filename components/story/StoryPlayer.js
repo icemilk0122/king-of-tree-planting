@@ -4,10 +4,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 const CHAR_SPEED = 35;
 
-const PORTRAITS = {
-  elder: { emoji: '🌳', color: '#C44A2B' },
-};
-
 export default function StoryPlayer({ story, onComplete }) {
   const [pageIdx, setPageIdx] = useState(0);
   const [displayedText, setDisplayedText] = useState('');
@@ -78,15 +74,29 @@ export default function StoryPlayer({ story, onComplete }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [handleTap]);
 
-  const portrait = page.portrait ? PORTRAITS[page.portrait] : null;
+  const portrait = page.portrait || null;
+  const portraitSide = page.portraitSide === 'right' ? 'right' : 'left';
 
   return (
-    <div style={{ ...s.overlay, background: `rgba(0,0,0,${page.overlay || 0.5})` }} onClick={handleTap}>
+    <div style={{ ...s.overlay, background: `rgba(0,0,0,${page.overlay ?? 0.5})` }} onClick={handleTap}>
       {portrait && (
-        <div style={s.portraitWrap}>
-          <div style={{ ...s.portrait, borderColor: portrait.color }}>
-            <span style={s.portraitEmoji}>{portrait.emoji}</span>
-          </div>
+        <div
+          className={`story-portrait story-portrait--${portraitSide}`}
+          style={s.portraitWrap}
+        >
+          {portrait.type === 'image' ? (
+            <img
+              className="story-portrait__image"
+              src={portrait.src}
+              alt={portrait.label || ''}
+              style={{ ...s.portraitImage, transform: portrait.mirrorX ? 'scaleX(-1)' : 'none' }}
+            />
+          ) : (
+            <div style={s.portraitCard}>
+                <span style={s.portraitMark}>{(portrait.label || '?').slice(0, 1)}</span>
+                <span style={s.portraitLabel}>{portrait.label}</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -97,6 +107,7 @@ export default function StoryPlayer({ story, onComplete }) {
             {displayedText}
             {isTyping && <span style={s.cursor}>|</span>}
           </div>
+          {page.hint && !isTyping && <div style={s.hint}>{page.hint}</div>}
           {showPrompt && (
             <div style={s.prompt}>
               {isLast ? '點擊開始冒險' : '點擊繼續'}
@@ -122,18 +133,31 @@ const s = {
   },
   portraitWrap: {
     position: 'absolute',
-    left: '10%', bottom: 200,
-    animation: 'portraitIn 0.4s ease-out',
+    bottom: 78,
+    zIndex: 1,
+    pointerEvents: 'none',
+    animation: 'portraitIn 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
   },
-  portrait: {
-    width: 100, height: 100, borderRadius: 20,
+  portraitCard: {
+    width: 112, height: 112, borderRadius: 20,
     background: 'rgba(42,36,30,0.8)',
-    border: '3px solid',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    border: '2px solid rgba(92,184,178,0.65)',
+    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+    gap: 4, overflow: 'hidden',
     backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
   },
-  portraitEmoji: { fontSize: 48, lineHeight: 1 },
+  portraitImage: {
+    display: 'block',
+    width: 'clamp(250px, 38vw, 440px)',
+    height: 'min(68vh, 660px)',
+    objectFit: 'contain',
+    objectPosition: 'bottom center',
+    filter: 'drop-shadow(0 18px 22px rgba(0,0,0,0.38))',
+  },
+  portraitMark: { fontSize: 36, lineHeight: 1, color: '#F07B5E', fontWeight: 800 },
+  portraitLabel: { fontSize: 12, color: '#FFFCF7', fontWeight: 700 },
   dialogueWrap: {
+    position: 'relative', zIndex: 2,
     width: '100%', maxWidth: 700, padding: '0 16px',
     marginBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
   },
@@ -157,6 +181,11 @@ const s = {
   text: {
     color: '#FFFCF7', fontSize: 16, lineHeight: 1.8,
     fontWeight: 400,
+  },
+  hint: {
+    display: 'inline-block', marginTop: 12, padding: '5px 10px',
+    borderRadius: 8, background: 'rgba(92,184,178,0.14)',
+    color: '#8ED7D1', fontSize: 12, fontWeight: 700,
   },
   cursor: {
     color: '#F07B5E',

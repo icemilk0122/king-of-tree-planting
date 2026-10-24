@@ -64,7 +64,18 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 blender --background --python scripts/generate-character.py
 ```
 
-在 `public/models/` 生成 base + 14 件裝備 GLB 檔。未生成時遊戲自動使用幾何體角色。
+在 `public/models/` 生成角色本體與完整套裝所需的 GLB 檔。未生成時遊戲自動使用幾何體角色。
+
+### 資料庫 migration
+
+照片任務的點數結算與 V2 劇情事件依賴 `supabase/migrations/`。部署新版前，請先在對應的 Supabase 專案審查 RLS，並依序套用 migration；未套用時前端會停止結算，不會退回可能重複加點的舊流程。
+
+```bash
+npm test
+npm run build
+```
+
+整合範圍與部署順序請見 [`docs/v2-story-database-integration.md`](docs/v2-story-database-integration.md)。
 
 ## 專案結構
 
@@ -86,14 +97,16 @@ blender --background --python scripts/generate-character.py
 │   ├── trees.js            # TreeManager（90K 棵樹的 LOD 載入）
 │   ├── buildings.js        # 建築物 3D 渲染
 │   ├── character.js        # 模組化 GLB 角色 + 裝備系統
-│   ├── equipment.js        # 裝備定義（6 slot × 15 件）
+│   ├── equipment.js        # 7 個裝備欄位、三套完整造型與版本化存檔
 │   ├── quest-engine.js     # 任務 CRUD + 接力賽
-│   ├── stories.js          # 劇情腳本
+│   ├── story/              # V2 劇情正規化、事件導演與進度 sidecar
 │   ├── supabase.js         # Supabase client（Proxy 延遲初始化）
 │   └── weather.js          # Open-Meteo 天氣查詢
 ├── public/
 │   ├── data/               # trees.json (90K)、buildings.json
 │   └── images/             # 標題畫面美術圖
+├── content/story/v2/       # V2 劇情交接資料與目前執行環境 profile
+├── supabase/migrations/    # 可審查、依序部署的資料庫變更
 └── scripts/
     └── generate-character.py  # Blender 角色生成腳本
 ```

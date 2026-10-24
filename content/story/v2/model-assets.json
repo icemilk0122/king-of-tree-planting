@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "status": "not-provided-in-archives",
+  "baseModel": {
+    "id": "char-base",
+    "path": "/models/char-base.glb",
+    "availability": "missing",
+    "requiredAnimationNames": [
+      "idle",
+      "walk"
+    ]
+  },
+  "equipment": [
+    {
+      "id": "hair-default",
+      "slot": "hair",
+      "name": "自然短髮",
+      "path": "/models/equip-hair-default.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "hair-spiky",
+      "slot": "hair",
+      "name": "刺蝟頭",
+      "path": "/models/equip-hair-spiky.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "hat-explorer",
+      "slot": "hat",
+      "name": "探險家帽",
+      "path": "/models/equip-hat-explorer.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "hat-straw",
+      "slot": "hat",
+      "name": "草帽",
+      "path": "/models/equip-hat-straw.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "hat-cap",
+      "slot": "hat",
+      "name": "棒球帽",
+      "path": "/models/equip-hat-cap.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "top-blue",
+      "slot": "top",
+      "name": "藍色T恤",
+      "path": "/models/equip-top-blue.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "top-green",
+      "slot": "top",
+      "name": "綠色T恤",
+      "path": "/models/equip-top-green.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "top-vest",
+      "slot": "top",
+      "name": "背心外套",
+      "path": "/models/equip-top-vest.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "bottom-grey",
+      "slot": "bottom",
+      "name": "灰色長褲",
+      "path": "/models/equip-bottom-grey.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "bottom-khaki",
+      "slot": "bottom",
+      "name": "卡其短褲",
+      "path": "/models/equip-bottom-khaki.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "shoes-brown",
+      "slot": "shoes",
+      "name": "棕色皮鞋",
+      "path": "/models/equip-shoes-brown.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "shoes-sneaker",
+      "slot": "shoes",
+      "name": "白色球鞋",
+      "path": "/models/equip-shoes-sneaker.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "acc-backpack",
+      "slot": "acc",
+      "name": "探險背包",
+      "path": "/models/equip-acc-backpack.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "acc-camera",
+      "slot": "acc",
+      "name": "相機",
+      "path": "/models/equip-acc-camera.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    },
+    {
+      "id": "acc-magnifier",
+      "slot": "acc",
+      "name": "放大鏡",
+      "path": "/models/equip-acc-magnifier.glb",
+      "availability": "missing",
+      "generatorDefinitionFound": true,
+      "rigVerified": false,
+      "sha256": null
+    }
+  ],
+  "npcModels": [
+    {
+      "id": "npc-guide-ashu",
+      "characterId": "guide-ashu",
+      "path": "/models/npc-guide-ashu.glb",
+      "previewPath": "/models/npc-guide-ashu-preview.png",
+      "availability": "available",
+      "animated": true
+    },
+    {
+      "id": "npc-office-worker",
+      "characterId": "office-worker",
+      "path": "/models/npc-office-worker.glb",
+      "previewPath": "/models/npc-office-worker-preview.png",
+      "availability": "available",
+      "animated": true
+    },
+    {
+      "id": "npc-neighborhood-aunt",
+      "characterId": "neighborhood-aunt",
+      "path": "/models/npc-neighborhood-aunt.glb",
+      "previewPath": "/models/npc-neighborhood-aunt-preview.png",
+      "availability": "available",
+      "animated": true
+    },
+    {
+      "id": "npc-heritage-557",
+      "characterId": "heritage-557-narrator",
+      "path": "/models/npc-heritage-557.glb",
+      "previewPath": "/models/npc-heritage-557-preview.png",
+      "availability": "available",
+      "animated": false
+    },
+    {
+      "id": "npc-heritage-763",
+      "characterId": "heritage-763-narrator",
+      "path": "/models/npc-heritage-763.glb",
+      "previewPath": "/models/npc-heritage-763-preview.png",
+      "availability": "available",
+      "animated": false
+    }
+  ],
+  "runtimePolicy": "基礎 GLB 缺失時回退幾何角色且停用換裝；不能把保存設定當作可見換裝成功。"
+}

@@ -28,6 +28,8 @@ export default function PhotoCapture({ tree, quest, onClose, onSubmitted }) {
     if (!file || !quest) return;
     setSubmitting(true);
     setError(null);
+    let uploadedPath = null;
+    let submissionCommitted = false;
     try {
       const ext = file.name.split('.').pop() || 'jpg';
       const path = `photos/${getDeviceId()}/${quest.id}_${Date.now()}.${ext}`;
@@ -35,6 +37,7 @@ export default function PhotoCapture({ tree, quest, onClose, onSubmitted }) {
         .from('quest-photos')
         .upload(path, file, { contentType: file.type });
       if (uploadErr) throw uploadErr;
+      uploadedPath = path;
 
       const { data: { publicUrl } } = supabase.storage
         .from('quest-photos')
@@ -46,10 +49,17 @@ export default function PhotoCapture({ tree, quest, onClose, onSubmitted }) {
         comment: comment.trim() || null,
         isDemo: false,
       });
+      submissionCommitted = true;
       setResult(res);
       onSubmitted?.(res);
     } catch (e) {
       console.error('Photo submit error:', e);
+      if (uploadedPath && !submissionCommitted) {
+        const { error: cleanupError } = await supabase.storage
+          .from('quest-photos')
+          .remove([uploadedPath]);
+        if (cleanupError) console.warn('Uploaded photo cleanup failed:', cleanupError);
+      }
       setError(e.message || '上傳失敗，請再試一次');
     }
     setSubmitting(false);

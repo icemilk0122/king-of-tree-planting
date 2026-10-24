@@ -15,7 +15,7 @@ import PlantProposal from './social/PlantProposal';
 import CommunityFeed from './social/CommunityFeed';
 import TitleScreen from './title/TitleScreen';
 import StoryPlayer from './story/StoryPlayer';
-import { STORIES, INTRO_SEQUENCE } from '../lib/stories';
+import { createCurrentStoryDirector } from '../lib/story';
 import VirtualJoystick from './hud/VirtualJoystick';
 import QuestNav from './hud/QuestNav';
 import Wardrobe from './hud/Wardrobe';
@@ -40,7 +40,21 @@ export default function Game() {
   const [navQuest, setNavQuest] = useState(null);
   const [storyQueue, setStoryQueue] = useState([]);
   const [currentStory, setCurrentStory] = useState(null);
+  const [appearanceSnapshot, setAppearanceSnapshot] = useState(null);
   const seededAreasRef = useRef(new Set());
+  const storyDirectorRef = useRef(null);
+
+  const getStoryDirector = useCallback(() => {
+    if (!storyDirectorRef.current && typeof window !== 'undefined') {
+      storyDirectorRef.current = createCurrentStoryDirector(window.localStorage);
+    }
+    return storyDirectorRef.current;
+  }, []);
+
+  const emitStoryEvent = useCallback((eventName, payload = {}) => {
+    const story = getStoryDirector()?.emit(eventName, payload);
+    if (story) setStoryQueue(queue => [...queue, story]);
+  }, [getStoryDirector]);
 
   const onTreeClick = useCallback(async (data) => {
     if (!data) {
@@ -119,7 +133,8 @@ export default function Game() {
     if (!gameStarted || !containerRef.current || gameRef.current) return;
     gameRef.current = initGame(
       containerRef.current, coordRef.current, treeInfoRef.current,
-      onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange
+      onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange,
+      { onAppearanceChange: setAppearanceSnapshot }
     );
     return () => {
       if (gameRef.current?.cleanup) {
@@ -128,6 +143,22 @@ export default function Game() {
       }
     };
   }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
+
+  useEffect(() => {
+    const blocked = !!currentStory || showDialogue || !!activePanel;
+    gameRef.current?.setInputBlocked?.(blocked);
+    if (blocked) {
+      moveJoystickRef.current = { dx: 0, dy: 0 };
+      rotJoystickRef.current = { dx: 0 };
+      gameRef.current?.setJoystickInput?.(0, 0, 0);
+    }
+  }, [currentStory, showDialogue, activePanel]);
+
+  useEffect(() => {
+    if (currentStory || storyQueue.length === 0) return;
+    setCurrentStory(storyQueue[0]);
+    setStoryQueue(queue => queue.slice(1));
+  }, [currentStory, storyQueue]);
 
   useEffect(() => {
     if (!gameStarted) return;
@@ -187,23 +218,11 @@ export default function Game() {
   }
 
   function startIntroSequence() {
-    const seen = localStorage.getItem('walk-game-intro-seen');
-    if (seen) return;
-    const queue = [...INTRO_SEQUENCE];
-    const first = queue.shift();
-    setStoryQueue(queue);
-    setCurrentStory(STORIES[first]);
+    emitStoryEvent('game.new_started');
   }
 
   function handleStoryComplete() {
-    if (storyQueue.length > 0) {
-      const next = storyQueue[0];
-      setStoryQueue(storyQueue.slice(1));
-      setCurrentStory(STORIES[next]);
-    } else {
-      setCurrentStory(null);
-      try { localStorage.setItem('walk-game-intro-seen', '1'); } catch {}
-    }
+    setCurrentStory(null);
   }
 
   async function handleTitleReset() {
@@ -213,6 +232,7 @@ export default function Game() {
       localStorage.removeItem('walk-game-intro-seen');
       localStorage.removeItem('walk-game-player-pos');
       localStorage.removeItem('walk-game-outfit');
+      getStoryDirector()?.reset();
     } catch (e) {
       console.warn('Reset failed:', e);
     }
@@ -309,10 +329,11 @@ export default function Game() {
           tree={selectedTree}
           quest={treeQuest}
           onClose={() => { setActivePanel(null); setSelectedTree(null); setTreeQuest(null); }}
-          onSubmitted={() => {
+          onSubmitted={(result) => {
             if (selectedTree?.treeId) {
               gameRef.current?.removeQuestTreeId(selectedTree.treeId);
             }
+            emitStoryEvent('quest.local_reward_committed', result);
           }}
         />
       )}
@@ -347,7 +368,13 @@ export default function Game() {
           playerCoords={gameRef.current?.getPlayerCoords()}
           currentDistrict={currentDistrict}
           onClose={() => setActivePanel(null)}
-          onSubmitted={() => {}}
+          onSubmitted={(proposal) => {
+            emitStoryEvent('proposal.saved', {
+              eventId: `proposal.saved:${proposal.id}`,
+              proposalId: proposal.id,
+              storageMode: 'supabase',
+            });
+          }}
         />
       )}
 
@@ -362,7 +389,9 @@ export default function Game() {
       {/* Wardrobe */}
       {activePanel === 'wardrobe' && (
         <Wardrobe
-          currentOutfit={gameRef.current?.getOutfit() || {}}
+          currentOutfit={appearanceSnapshot
+            ? Object.fromEntries(Object.entries(appearanceSnapshot.slots).map(([slot, state]) => [slot, state.appliedId]))
+            : (gameRef.current?.getOutfit() || {})}
           onApplyOutfit={(outfit) => gameRef.current?.applyOutfit(outfit)}
           onClose={() => setActivePanel(null)}
         />
@@ -391,7 +420,7 @@ export default function Game() {
       )}
 
       {/* Virtual Joysticks (touch devices only) */}
-      {gameStarted && isTouchDevice && !showDialogue && !activePanel && (
+      {gameStarted && isTouchDevice && !showDialogue && !activePanel && !currentStory && (
         <>
           <VirtualJoystick side="left" onInput={onMoveJoystick} />
           <VirtualJoystick side="right" onInput={onRotJoystick} />
@@ -403,7 +432,10 @@ export default function Game() {
         <ActionBar
           onNearbyQuests={() => setActivePanel('nearby')}
           onPhotoReport={() => setActivePanel('photo')}
-          onPlantTree={() => setActivePanel('plant')}
+          onPlantTree={() => {
+            setActivePanel('plant');
+            emitStoryEvent('proposal.tool_opened');
+          }}
           onMap={() => setActivePanel('map')}
           onRecords={() => setActivePanel('records')}
         />

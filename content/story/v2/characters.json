@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "status": "integrated-with-generated-assets",
+  "characters": [
+    {
+      "id": "narrator",
+      "displayName": "旁白",
+      "role": "text-speaker",
+      "portraitId": null,
+      "treeId": null,
+      "fictionDisclosure": null,
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "npcWorldModelRequired": false
+    },
+    {
+      "id": "system",
+      "displayName": "系統提示",
+      "role": "text-speaker",
+      "portraitId": null,
+      "treeId": null,
+      "fictionDisclosure": null,
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "npcWorldModelRequired": false
+    },
+    {
+      "id": "neighborhood-board",
+      "displayName": "街區任務看板",
+      "role": "text-speaker",
+      "portraitId": null,
+      "treeId": null,
+      "fictionDisclosure": null,
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "npcWorldModelRequired": false
+    },
+    {
+      "id": "event-notice",
+      "displayName": "活動公告",
+      "role": "text-speaker",
+      "portraitId": null,
+      "treeId": null,
+      "fictionDisclosure": null,
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "npcWorldModelRequired": false
+    },
+    {
+      "id": "guide-ashu",
+      "displayName": "阿樹",
+      "role": "civic-character",
+      "portraitId": "guide-ashu-civic-volunteer",
+      "treeId": null,
+      "fictionDisclosure": "虛構街坊角色",
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "appearanceDescription": "年輕的台灣街區志工，短而蓬鬆的深棕捲髮、明亮友善的眼神；穿綠色短袖上衣、沙色工作背心與卡其短褲，配綠色球鞋、葉片徽章和棕色斜背田調小包。整體感覺親切、可靠、樂於帶路。",
+      "modelAssetPath": "/models/npc-guide-ashu.glb",
+      "npcWorldModelRequired": true
+    },
+    {
+      "id": "office-worker",
+      "displayName": "上班族",
+      "role": "civic-character",
+      "portraitId": "local-office-worker",
+      "treeId": null,
+      "fictionDisclosure": "虛構街坊角色",
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "appearanceDescription": "現代台灣通勤族，俐落黑色側分短髮；穿淺藍短袖襯衫、深藍長褲和深色通勤鞋，背海軍藍斜背包。表情禮貌而略帶被太陽曬熱的疲憊感，代表每天等車與步行的上班族。",
+      "modelAssetPath": "/models/npc-office-worker.glb",
+      "npcWorldModelRequired": true
+    },
+    {
+      "id": "neighborhood-aunt",
+      "displayName": "街坊阿姨",
+      "role": "civic-character",
+      "portraitId": "local-neighborhood-aunt",
+      "treeId": null,
+      "fictionDisclosure": "虛構街坊角色",
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "appearanceDescription": "親切的台灣街坊中年女性，深灰短波浪髮帶一小撮銀白髮；穿珊瑚色短袖上衣、青綠色七分褲和舒適便鞋，隨身帶著裝有蔬菜的米色環保購物袋。笑容爽朗，帶有熟悉街區生活的溫度。",
+      "modelAssetPath": "/models/npc-neighborhood-aunt.glb",
+      "npcWorldModelRequired": true
+    },
+    {
+      "id": "heritage-557-narrator",
+      "displayName": "永康街樟樹（擬人化旁白）",
+      "role": "tree-narrator",
+      "portraitId": "heritage-557-modern-character",
+      "treeId": "heritage-557",
+      "fictionDisclosure": "角色化旁白；不是樹木事實或實際人物引述",
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "appearanceDescription": "以真實樟樹輪廓為本體：粗壯而帶斑駁質感的樹幹、圓闊的深綠樹冠與橢圓形葉片；只在樹皮上加入低調的長者眉毛、閉眼與溫和笑容，不做人形手腳或奇幻發光效果。角色感像熟悉的街坊長輩。",
+      "modelAssetPath": "/models/npc-heritage-557.glb",
+      "npcWorldModelRequired": true
+    },
+    {
+      "id": "heritage-763-narrator",
+      "displayName": "麗水街麵包樹（擬人化旁白）",
+      "role": "tree-narrator",
+      "portraitId": "heritage-763-modern-character",
+      "treeId": "heritage-763",
+      "fictionDisclosure": "角色化旁白；不是樹木事實或實際人物引述",
+      "visualTone": "現代台灣街區；無奇幻、科幻設定",
+      "appearanceDescription": "以真實麵包樹輪廓為本體：溫暖棕色樹幹、圓潤樹冠、辨識度高的大片深裂葉與少量綠色果實；樹皮上只有簡潔的閉眼與俏皮笑容，不做人形手腳。性格較活潑幽默，但仍是城市中的真實樹木。",
+      "modelAssetPath": "/models/npc-heritage-763.glb",
+      "npcWorldModelRequired": true
+    }
+  ]
+}
