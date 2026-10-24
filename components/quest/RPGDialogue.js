@@ -49,7 +49,7 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
     setTimeout(() => setShowChoices(true), 100);
   }
 
-  const choices = loading
+  const baseChoices = loading
     ? []
     : quest?.satisfied
       ? [
@@ -69,6 +69,13 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
         { label: '❤️ 加入關注', action: 'follow' },
         { label: '🚶 下次再來', action: 'close' },
       ];
+  const choices = heritage
+    ? [
+        ...baseChoices.filter(choice => choice.action !== 'close'),
+        { label: '📖 查看附近老樹圖鑑', action: 'heritage' },
+        ...baseChoices.filter(choice => choice.action === 'close'),
+      ]
+    : baseChoices;
 
   return (
     <div style={styles.overlay} onClick={skipTyping}>

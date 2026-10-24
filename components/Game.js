@@ -24,6 +24,7 @@ import { shouldShowTreeDialogue } from '../lib/dialogue-visibility';
 import { DEFAULT_DISTRICT } from '../lib/districts';
 import { isEditableTarget, toggleFullscreen } from '../lib/fullscreen';
 import { NPC_INTERACTION_SOURCE, shouldStartNpcInteraction } from '../lib/npc-interaction';
+import NearbyHeritagePanel from './heritage/NearbyHeritagePanel';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -48,6 +49,7 @@ export default function Game() {
   const [currentStory, setCurrentStory] = useState(null);
   const [appearanceSnapshot, setAppearanceSnapshot] = useState(null);
   const [nearbyNpc, setNearbyNpc] = useState(null);
+  const [heritageOrigin, setHeritageOrigin] = useState(null);
   const storyDirectorRef = useRef(null);
   const initialPlayerCoordsRef = useRef(null);
   const currentDistrictRef = useRef(currentDistrict);
@@ -269,6 +271,10 @@ export default function Game() {
       setActivePanel('records');
     } else if (action === 'info') {
       setShowDialogue(false);
+    } else if (action === 'heritage') {
+      setShowDialogue(false);
+      setHeritageOrigin(gameRef.current?.getPlayerCoords?.() || OPENING_STORY_POSITION);
+      setActivePanel('heritage');
     } else if (action === 'relay') {
       if (treeQuest && selectedTree?.treeId) {
         try {
@@ -486,6 +492,23 @@ export default function Game() {
         />
       )}
 
+      {/* Nearby Heritage Field Guide */}
+      {activePanel === 'heritage' && (
+        <NearbyHeritagePanel
+          origin={heritageOrigin}
+          onClose={() => setActivePanel(null)}
+          onNavigate={(tree) => {
+            setNavQuest({
+              kind: 'heritage-guide',
+              tree_id: tree.treeId,
+              npc_name: `${tree.species || '老樹'} #${tree.heritageId}`,
+              tree,
+            });
+            setActivePanel(null);
+          }}
+        />
+      )}
+
       {/* My Records Panel */}
       {activePanel === 'records' && (
         <MyRecords onClose={() => setActivePanel(null)} areaId={currentDistrict} />
@@ -552,6 +575,11 @@ export default function Game() {
               if (shouldStartNpcInteraction(NPC_INTERACTION_SOURCE.NAVIGATION)) {
                 onNpcInteract(q.npc);
               }
+              return;
+            }
+            if (q.kind === 'heritage-guide') {
+              const tree = gameRef.current?.getTreeData?.(q.tree_id) || q.tree;
+              onTreeClick(tree);
               return;
             }
             const tree = gameRef.current?.getTreeData?.(q.tree_id) || { treeId: q.tree_id };
