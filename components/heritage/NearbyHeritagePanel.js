@@ -54,7 +54,6 @@ function TreeDetail({ tree, onNavigate }) {
       <div className={styles.detailMedia}>
         <HeritagePhoto tree={tree} detail />
         <div className={styles.distanceBadge}>
-          <span>{tree.direction || '附近'}</span>
           <strong>{formatDistance(tree.distanceMeters)}</strong>
         </div>
       </div>
@@ -68,7 +67,6 @@ function TreeDetail({ tree, onNavigate }) {
         <dl className={styles.facts}>
           <div><dt>直徑</dt><dd>{Number.isFinite(tree.diameter) ? `${tree.diameter} cm` : '—'}</dd></div>
           <div><dt>樹高</dt><dd>{Number.isFinite(tree.height) ? `${tree.height} m` : '—'}</dd></div>
-          <div><dt>方位</dt><dd>{tree.direction || '—'}</dd></div>
         </dl>
         <div className={styles.actions}>
           <button type="button" className={styles.navigateButton} onClick={() => onNavigate?.(tree)}>
@@ -152,10 +150,7 @@ export default function NearbyHeritagePanel({ origin, onClose, onNavigate }) {
         aria-labelledby="nearby-heritage-title"
       >
         <header className={styles.header}>
-          <div>
-            <span className={styles.eyebrow}>NEARBY FIELD GUIDE</span>
-            <h2 id="nearby-heritage-title">主角附近的老樹</h2>
-          </div>
+          <h2 id="nearby-heritage-title">附近的老樹</h2>
           <button type="button" className={styles.closeButton} onClick={onClose} aria-label="關閉附近老樹">×</button>
         </header>
 
@@ -214,7 +209,7 @@ export default function NearbyHeritagePanel({ origin, onClose, onNavigate }) {
                     <span className={styles.rowIndex}>{String(index + 1).padStart(2, '0')}</span>
                     <span className={styles.thumbFrame}><HeritagePhoto tree={tree} /></span>
                     <span className={styles.rowCopy}>
-                      <small>#{tree.heritageId} · {tree.direction}</small>
+                      <small>#{tree.heritageId}</small>
                       <strong>{tree.species || '樹種待確認'}</strong>
                       <span>{tree.address || tree.region}</span>
                     </span>

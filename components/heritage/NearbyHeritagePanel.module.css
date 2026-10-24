@@ -39,25 +39,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 76px;
+  min-height: 68px;
   padding: calc(13px + env(safe-area-inset-top, 0px)) 18px 12px;
   background: var(--hud-surface);
   border-bottom: 1px solid var(--hud-line);
 }
 
 .header h2 {
-  margin: 2px 0 0;
+  margin: 0;
   font-family: var(--font-family);
   font-size: clamp(20px, 4vw, 25px);
   font-weight: 800;
   letter-spacing: 0.01em;
-}
-
-.eyebrow {
-  color: var(--coral);
-  font-size: 9px;
-  font-weight: 850;
-  letter-spacing: 0.16em;
 }
 
 .closeButton {
@@ -264,9 +257,7 @@
 }
 
 .distanceBadge strong {
-  padding-left: 6px;
   color: var(--teal);
-  border-left: 1px solid var(--teal-dark);
 }
 
 .detailCopy {
@@ -317,7 +308,7 @@
 
 .facts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin: 0 0 8px;
   background: var(--hud-bg);
   border-block: 1px solid var(--hud-line);
