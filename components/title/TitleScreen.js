@@ -164,17 +164,17 @@ export default function TitleScreen({ onStart, onReset }) {
     }}>
       {/* Layer 1: Background cityscape (parallax only) */}
       <div style={s.layerWrap}>
-        <img ref={bgRef} src="/images/title-bg.png" alt="" style={{ ...s.layerImg, ...(isMobile && s.mobileImg), opacity: fadeIn, transition: 'opacity 1s ease' }} />
+        <img ref={bgRef} src="/images/title-bg.png" alt="" style={{ ...s.layerImg, opacity: fadeIn, transition: 'opacity 1s ease' }} />
       </div>
 
       {/* Layer 2: Character (parallax + breathing) */}
       <div style={s.layerWrap}>
-        <img ref={charRef} src="/images/title-char.png" alt="" style={{ ...s.layerImg, ...s.charImg, ...(isMobile && s.mobileImg), opacity: fadeIn, transition: 'opacity 1s ease 0.2s' }} />
+        <img ref={charRef} src="/images/title-char.png" alt="" style={{ ...s.layerImg, ...s.charImg, ...(isMobile && s.mobileCharImg), opacity: fadeIn, transition: 'opacity 1s ease 0.2s' }} />
       </div>
 
       {/* Layer 3: Title text (parallax, slight) */}
       <div style={s.layerWrap}>
-        <img ref={textRef} src="/images/title-text.png" alt="樹蔭守護者" style={{ ...s.layerImg, ...(isMobile && s.mobileImg), opacity: fadeIn, transition: 'opacity 1s ease 0.4s' }} />
+        <img ref={textRef} src="/images/title-text.png" alt="樹蔭守護者" style={{ ...s.layerImg, ...(isMobile && s.mobileTextImg), opacity: fadeIn, transition: 'opacity 1s ease 0.4s' }} />
       </div>
 
       <div style={s.vignette} />
@@ -224,8 +224,12 @@ const s = {
     objectFit: 'cover', objectPosition: 'center center',
     willChange: 'transform',
   },
-  mobileImg: {
-    objectPosition: '35% center',
+  mobileTextImg: {
+    objectFit: 'contain',
+    objectPosition: 'center 8%',
+  },
+  mobileCharImg: {
+    objectPosition: '60% center',
   },
   charImg: {
     transformOrigin: '60% 50%',
