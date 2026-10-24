@@ -68,6 +68,8 @@ function TreeDetail({ tree, onNavigate }) {
           <div><dt>直徑</dt><dd>{Number.isFinite(tree.diameter) ? `${tree.diameter} cm` : '—'}</dd></div>
           <div><dt>樹高</dt><dd>{Number.isFinite(tree.height) ? `${tree.height} m` : '—'}</dd></div>
         </dl>
+      </div>
+      <div className={styles.detailFooter}>
         <div className={styles.actions}>
           <button type="button" className={styles.navigateButton} onClick={() => onNavigate?.(tree)}>
             <span aria-hidden="true">➜</span> 帶我去這棵樹

@@ -261,7 +261,13 @@
 }
 
 .detailCopy {
-  padding: 10px 12px 11px;
+  min-width: 0;
+  padding: 10px 12px 4px;
+}
+
+.detailFooter {
+  min-width: 0;
+  padding: 0 12px 11px;
 }
 
 .treeNumber {
@@ -544,10 +550,15 @@
   .detailCard {
     display: grid;
     grid-template-columns: 42% 58%;
+    grid-template-areas:
+      "media copy"
+      "media footer";
+    grid-template-rows: 1fr auto;
     min-height: 190px;
   }
 
   .detailMedia {
+    grid-area: media;
     height: 100%;
     min-height: 190px;
     border-right: 1px solid var(--hud-line);
@@ -555,9 +566,80 @@
   }
 
   .detailCopy {
+    grid-area: copy;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
+  }
+
+  .detailFooter {
+    grid-area: footer;
+  }
+}
+
+@container (max-width: 459px) {
+  .detailCard {
+    display: grid;
+    grid-template-columns: 42% minmax(0, 58%);
+    grid-template-areas:
+      "media copy"
+      "footer footer";
+    grid-template-rows: 132px auto;
+    margin-bottom: 8px;
+  }
+
+  .detailMedia {
+    grid-area: media;
+    height: 132px;
+    border-right: 1px solid var(--hud-line);
+    border-bottom: 0;
+  }
+
+  .detailCopy {
+    grid-area: copy;
+    padding: 8px 10px 4px;
+  }
+
+  .detailFooter {
+    grid-area: footer;
+    padding: 8px 10px 9px;
+    border-top: 1px solid var(--hud-line);
+  }
+
+  .titleRow h3 {
+    font-size: 18px;
+  }
+
+  .address {
+    margin-bottom: 6px;
+  }
+
+  .facts {
+    margin-bottom: 0;
+  }
+
+  .actions > * {
+    min-height: 36px;
+    padding-inline: 8px;
+    font-size: 9px;
+  }
+
+  .credit {
+    margin-top: 5px;
+  }
+
+  .treeRow {
+    grid-template-columns: 18px 44px minmax(0, 1fr);
+  }
+
+  .thumbFrame {
+    width: 44px;
+    height: 44px;
+  }
+
+  .rowDistance {
+    grid-column: 3;
+    margin-top: -2px;
   }
 }
 
@@ -583,32 +665,13 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 459px) {
   .overlay {
     background: transparent;
   }
 
   .panel {
     border-left: 0;
-  }
-
-  .body {
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-
-  .detailMedia {
-    height: 90px;
-  }
-
-  .detailCard {
-    margin-bottom: 8px;
-  }
-
-  .treeList {
-    min-height: auto;
-    overflow-y: visible;
-    flex: none;
   }
 
   .summaryCount {
@@ -628,19 +691,6 @@
     padding-inline: 4px;
   }
 
-  .treeRow {
-    grid-template-columns: 18px 44px minmax(0, 1fr);
-  }
-
-  .thumbFrame {
-    width: 44px;
-    height: 44px;
-  }
-
-  .rowDistance {
-    grid-column: 3;
-    margin-top: -2px;
-  }
 }
 
 @keyframes shimmer {
