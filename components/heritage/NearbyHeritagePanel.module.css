@@ -592,6 +592,25 @@
     border-left: 0;
   }
 
+  .body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .detailMedia {
+    height: 90px;
+  }
+
+  .detailCard {
+    margin-bottom: 8px;
+  }
+
+  .treeList {
+    min-height: auto;
+    overflow-y: visible;
+    flex: none;
+  }
+
   .summaryCount {
     min-width: 86px;
   }
