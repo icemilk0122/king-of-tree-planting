@@ -48,6 +48,7 @@ test('current profile normalizes masks and resolves generated standees', async (
   assert.equal(scene.pages[2].portrait.src, '/assets/story/guide-ashu-civic-volunteer.png');
   assert.equal(scene.pages[2].portraitSide, 'left');
   assert.equal(scene.pages[2].portrait.facing, 'right');
+  assert.equal(scene.pages[2].portrait.mirrorX, false);
   assert.match(scene.pages[7].text, /遊戲角色的位置/);
   assert.equal(catalog.normalize('S18_CITY_PLANTING_WEEK'), null);
 });

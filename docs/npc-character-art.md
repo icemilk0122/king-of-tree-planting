@@ -25,5 +25,5 @@
 
 - PNG、RGBA 透明背景。
 - 桌面版最大寬度 440px、高度 68vh；下半部由對話框覆蓋。
-- 所有 NPC 固定在左側並面朝右；主角固定在右側並面朝左。方向由 `portraits.json` 的 `dialogueSide`、`facing` 與 `mirrorX` 控制，不受個別場景原始 `portraitEntrance` 影響。
+- 所有 NPC 固定在左側、主角固定在右側。立繪已統一水平反轉至目前核定方向；方向由 `portraits.json` 的 `dialogueSide`、`facing` 與 `mirrorX` 控制，不受個別場景原始 `portraitEntrance` 影響。
 - 旁白、系統提示、任務看板與活動公告仍使用文字，不配置人物立繪。
