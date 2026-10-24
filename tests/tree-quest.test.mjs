@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createTreeQuestDraft } from '../lib/tree-quest.js';
+import { createTreeQuestDraft, getTreeInteractionName } from '../lib/tree-quest.js';
 import { CURRENT_QUEST_CONTENT_VERSION } from '../lib/quest-version.js';
 
 test('every identified tree can become a complete general quest', () => {
@@ -31,4 +31,31 @@ test('every identified tree can become a complete general quest', () => {
 
 test('quest creation rejects trees without a stable id', () => {
   assert.throws(() => createTreeQuestDraft({ species: '榕樹' }, 'daan'), /Tree id is required/);
+});
+
+test('ordinary tree quests keep the tree identity instead of creating an NPC name', () => {
+  const tree = {
+    treeId: 'heritage-554',
+    species: '榕樹',
+    region: '新生南路二段',
+  };
+
+  const quest = createTreeQuestDraft(tree, 'daan', { dialogue: '幫我拍張全樹照吧！' });
+
+  assert.equal(quest.npc_name, null);
+  assert.equal(getTreeInteractionName(tree), '榕樹・新生南路二段');
+});
+
+test('explicit NPC interactions keep one stable NPC name before and after quest loading', () => {
+  const tree = {
+    treeId: 'heritage-557',
+    species: '樟樹',
+    region: '永康街13巷6號旁停車場',
+    npcName: '永康街樟樹',
+  };
+
+  const quest = createTreeQuestDraft(tree, 'daan', { dialogue: '幫我拍張全樹照吧！' });
+
+  assert.equal(quest.npc_name, '永康街樟樹');
+  assert.equal(getTreeInteractionName(tree), '永康街樟樹');
 });

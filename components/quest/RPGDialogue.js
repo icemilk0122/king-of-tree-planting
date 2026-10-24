@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { getHeritagePresentation } from '../../lib/heritage';
+import { getTreeInteractionName } from '../../lib/tree-quest';
 
 const CHAR_SPEED = 40;
 
@@ -8,12 +10,19 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [showChoices, setShowChoices] = useState(false);
+  const [photoFailed, setPhotoFailed] = useState(false);
   const timerRef = useRef(null);
 
-  const npcName = quest?.npc_name || `${tree?.species || '樹'}・${tree?.region || '台北'}`;
+  const interactionName = getTreeInteractionName(tree);
   const dialogue = loading
     ? '讓我找找今天的守護任務…'
     : getDefaultDialogue(tree, quest);
+  const heritage = getHeritagePresentation(tree);
+  const showHeritagePhoto = heritage?.photo && !photoFailed;
+
+  useEffect(() => {
+    setPhotoFailed(false);
+  }, [tree?.treeId]);
 
   useEffect(() => {
     setDisplayedText('');
@@ -64,8 +73,31 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
   return (
     <div style={styles.overlay} onClick={skipTyping}>
       <div style={styles.container} onClick={(e) => e.stopPropagation()}>
+        {heritage && (
+          <figure style={styles.heritageMedia}>
+            {showHeritagePhoto ? (
+              <img
+                src={heritage.photo.src}
+                alt={`${tree.species || '老樹'}，受保護樹木編號 ${heritage.heritageId}`}
+                style={styles.heritagePhoto}
+                loading="lazy"
+                decoding="async"
+                onError={() => setPhotoFailed(true)}
+              />
+            ) : (
+              <div style={styles.heritageEmpty} role="status">
+                <span style={styles.heritageEmptyIcon}>樹</span>
+                <span>{photoFailed ? '照片載入失敗，請稍後再試' : heritage.emptyMessage}</span>
+              </div>
+            )}
+            <figcaption style={styles.heritageCaption}>
+              <span>受保護樹木 #{heritage.heritageId}</span>
+              <span style={styles.heritageStatus}>{heritage.statusLabel}</span>
+            </figcaption>
+          </figure>
+        )}
         <div style={styles.nameTag}>
-          {quest?.quest_type === 'special' ? '★' : '◇'} {npcName}
+          {quest?.quest_type === 'special' ? '★' : '◇'} {interactionName}
         </div>
         <div style={styles.dialogueBox}>
           <div style={styles.portrait}>
@@ -94,6 +126,23 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
             )}
           </div>
         </div>
+        {heritage && (
+          <div style={styles.heritageSource}>
+            <span style={styles.heritageCredit}>{heritage.photoCredit}</span>
+            {heritage.sourcePage && (
+              <a
+                className="heritage-source-link"
+                href={heritage.sourcePage}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.heritageLink}
+                aria-label={`查看受保護樹木 ${heritage.heritageId} 的文化局資料（另開新視窗）`}
+              >
+                查看文化局老樹資料 <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
+        )}
         {quest && (
           <div style={styles.pointsBadge}>
             {quest.satisfied
@@ -135,6 +184,93 @@ const styles = {
     width: '100%',
     maxWidth: 600,
     margin: '0 8px',
+    maxHeight: 'calc(100dvh - 28px - env(safe-area-inset-top, 0px))',
+    overflowY: 'auto',
+    overscrollBehavior: 'contain',
+    scrollbarWidth: 'thin',
+  },
+  heritageMedia: {
+    position: 'relative',
+    margin: '0 0 8px',
+    background: '#171E17',
+    border: '2px solid #C89A45',
+    borderRadius: 18,
+    overflow: 'hidden',
+  },
+  heritagePhoto: {
+    display: 'block',
+    width: '100%',
+    height: 'clamp(180px, 32vh, 300px)',
+    objectFit: 'contain',
+    background: '#171E17',
+  },
+  heritageEmpty: {
+    minHeight: 'clamp(150px, 26vh, 240px)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    padding: 24,
+    color: '#F5E7C7',
+    textAlign: 'center',
+    lineHeight: 1.5,
+  },
+  heritageEmptyIcon: {
+    display: 'grid',
+    placeItems: 'center',
+    width: 48,
+    height: 48,
+    border: '1px solid #C89A45',
+    borderRadius: '50%',
+    color: '#E8BD68',
+    fontFamily: 'serif',
+    fontSize: 22,
+  },
+  heritageCaption: {
+    position: 'absolute',
+    inset: 'auto 0 0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+    padding: '22px 14px 10px',
+    color: '#FFF4D8',
+    background: 'linear-gradient(transparent, rgba(20,27,20,0.92))',
+    fontSize: 12,
+    fontWeight: 750,
+    letterSpacing: '0.04em',
+  },
+  heritageStatus: {
+    color: '#E8BD68',
+    textAlign: 'right',
+  },
+  heritageSource: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+    marginTop: 6,
+    padding: '9px 12px 9px 16px',
+    background: '#202820',
+    border: '1px solid #5F6E53',
+    borderRadius: 12,
+  },
+  heritageCredit: {
+    color: '#CAD2BF',
+    fontSize: 11,
+    lineHeight: 1.35,
+  },
+  heritageLink: {
+    minHeight: 44,
+    display: 'inline-flex',
+    alignItems: 'center',
+    flexShrink: 0,
+    color: '#FFE09B',
+    fontSize: 12,
+    fontWeight: 800,
+    textDecoration: 'none',
+    padding: '0 4px',
   },
   nameTag: {
     display: 'inline-block',

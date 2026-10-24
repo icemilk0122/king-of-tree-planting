@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getOrCreateQuestForTree, acceptQuest, toggleFollowTree, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
+import { getOrCreateQuestForTree, acceptQuest, toggleFollowTree, startRelay, resetUserData } from '../lib/quest-engine';
 import { detectDistrict, detectDistrictFromAddress } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
@@ -45,7 +45,6 @@ export default function Game() {
   const [currentStory, setCurrentStory] = useState(null);
   const [appearanceSnapshot, setAppearanceSnapshot] = useState(null);
   const [nearbyNpc, setNearbyNpc] = useState(null);
-  const seededAreasRef = useRef(new Set());
   const storyDirectorRef = useRef(null);
   const initialPlayerCoordsRef = useRef(null);
   const currentDistrictRef = useRef(currentDistrict);
@@ -73,14 +72,15 @@ export default function Game() {
       setShowDialogue(false);
       return;
     }
-    setSelectedTree(data);
+    const liveTreeData = gameRef.current?.getTreeData?.(data.treeId);
+    const treeData = { ...(liveTreeData || {}), ...data };
+    setSelectedTree(treeData);
     setTreeQuest(null);
     setShowDialogue(true);
     setQuestLoading(true);
     try {
-      const quest = await getOrCreateQuestForTree(data, currentDistrictRef.current);
+      const quest = await getOrCreateQuestForTree(treeData, currentDistrictRef.current);
       setTreeQuest(quest);
-      gameRef.current?.addQuestTreeId(data.treeId);
     } catch (e) {
       console.warn('Quest fetch or creation failed:', e);
     }
@@ -88,7 +88,13 @@ export default function Game() {
   }, []);
 
   const onNpcInteract = useCallback((npc) => {
-    if (npc.tree) onTreeClick(npc.tree);
+    if (npc.tree) {
+      onTreeClick({
+        ...npc.tree,
+        npcId: npc.id,
+        npcName: npc.name,
+      });
+    }
     emitStoryEvent(npc.storyEvent, {
       areaId: npc.districtKey,
       npcId: npc.id,
@@ -96,17 +102,11 @@ export default function Game() {
     });
   }, [emitStoryEvent, onTreeClick]);
 
-  const seedQuestsForDistrict = useCallback(async (districtKey) => {
-    if (!districtKey || seededAreasRef.current.has(districtKey)) return;
-    seededAreasRef.current.add(districtKey);
-    try {
-      const quests = await getActiveQuests(districtKey);
-      const questTreeIds = quests.map(q => q.tree_id).filter(Boolean);
-      gameRef.current?.setQuestTreeIds(questTreeIds);
-    } catch (e) {
-      console.warn('Quest load failed:', e);
-      seededAreasRef.current.delete(districtKey);
-    }
+  const syncQuestMarkersForDistrict = useCallback((districtKey) => {
+    if (!districtKey) return;
+    // Regular tree quests are discovered through interaction and the nearby list.
+    // Only actual NPC models own an exclamation marker, rendered by NpcManager.
+    gameRef.current?.setQuestTreeIds([]);
   }, []);
 
   const onWeatherUpdate = useCallback((data) => {
@@ -120,10 +120,10 @@ export default function Game() {
       const district = detectDistrictFromAddress(addr) || detectDistrict(coords.lat, coords.lng);
       if (district) {
         setCurrentDistrict(district);
-        seedQuestsForDistrict(district);
+        syncQuestMarkersForDistrict(district);
       }
     }
-  }, [seedQuestsForDistrict]);
+  }, [syncQuestMarkersForDistrict]);
 
   const onCameraModeChange = useCallback((label) => {
     setCameraMode(label);
@@ -193,11 +193,11 @@ export default function Game() {
       const district = detectDistrict(coords.lat, coords.lng);
       if (district) {
         setCurrentDistrict(district);
-        seedQuestsForDistrict(district);
+        syncQuestMarkersForDistrict(district);
       }
     }, 2000);
     return () => clearTimeout(timer);
-  }, [gameStarted, seedQuestsForDistrict]);
+  }, [gameStarted, syncQuestMarkersForDistrict]);
 
   async function handleDialogueAction(action) {
     if (action === 'photo') {
@@ -421,7 +421,7 @@ export default function Game() {
             gameRef.current?.teleport(lat, lng);
             if (districtKey) {
               setCurrentDistrict(districtKey);
-              setTimeout(() => seedQuestsForDistrict(districtKey), 1000);
+              setTimeout(() => syncQuestMarkersForDistrict(districtKey), 1000);
             }
           }}
           onClose={() => setActivePanel(null)}
@@ -494,8 +494,9 @@ export default function Game() {
               onNpcInteract(q.npc);
               return;
             }
+            const tree = gameRef.current?.getTreeData?.(q.tree_id) || { treeId: q.tree_id };
             setTreeQuest(q);
-            setSelectedTree({ treeId: q.tree_id, species: '', region: '' });
+            setSelectedTree(tree);
             setShowDialogue(true);
           }}
           onCancel={() => setNavQuest(null)}
