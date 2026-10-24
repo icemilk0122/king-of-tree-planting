@@ -45,12 +45,16 @@ export default function TitleScreen({ onStart, onReset }) {
     if (bgRef.current) {
       bgRef.current.style.transform = `scale(1.05) translate(${dx}px, ${dy}px)`;
     }
+    const mobile = window.innerWidth < 600;
     if (textRef.current) {
-      textRef.current.style.transform = `translate(${dx * 1.2}px, ${dy * 1.2}px)`;
+      textRef.current.style.transform = mobile
+        ? `translate(${70 + dx * 1.2}px, ${30 + dy * 1.2}px) scale(1.12)`
+        : `translate(${dx * 1.2}px, ${dy * 1.2}px)`;
     }
     if (charRef.current) {
-      charRef.current.style.transform =
-        `translate(${dx * 1.6}px, ${dy * 1.6}px) scale(${1.0 + breath})`;
+      charRef.current.style.transform = mobile
+        ? `translate(${dx * 1.6}px, ${dy * 1.6}px) scale(${0.82 + breath})`
+        : `translate(${dx * 1.6}px, ${dy * 1.6}px) scale(${1.0 + breath})`;
     }
   }, []);
 
@@ -226,7 +230,7 @@ const s = {
   },
   mobileTextImg: {
     objectFit: 'contain',
-    objectPosition: 'center 8%',
+    objectPosition: '42% 12%',
   },
   mobileCharImg: {
     objectPosition: '60% center',
