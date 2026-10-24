@@ -77,7 +77,8 @@ test('director enables only proven events and deduplicates by scope', async () =
   assert.equal(director.emit('proposal.saved', { storageMode: 'supabase', eventId: 'p2' }).id, 'S05_PLANT_PROPOSAL_SAVED');
 
   assert.equal(director.emit('tree.interacted', { treeId: 'heritage-557' }).id, 'S13_HERITAGE_557');
-  assert.equal(director.emit('tree.interacted', { treeId: 'heritage-557' }), null);
+  assert.equal(director.emit('tree.interacted', { treeId: 'heritage-557' }).id, 'S13_HERITAGE_557');
+  assert.equal(director.emit('tree.interacted', { treeId: 'heritage-763' }).id, 'S14_HERITAGE_763');
   assert.equal(director.emit('tree.interacted', { treeId: 'heritage-763' }).id, 'S14_HERITAGE_763');
 
   const reward = director.emit('quest.local_reward_committed', {
@@ -100,8 +101,8 @@ test('director enables only proven events and deduplicates by scope', async () =
 
   assert.equal(director.canEmit('neighborhood.story_opened', { areaId: 'daan' }), true);
   assert.equal(director.emit('neighborhood.story_opened', { areaId: 'daan' }).id, 'S24_LOCAL_NEIGHBORHOOD');
-  assert.equal(director.canEmit('neighborhood.story_opened', { areaId: 'daan' }), false);
-  assert.equal(director.emit('neighborhood.story_opened', { areaId: 'daan' }), null);
+  assert.equal(director.canEmit('neighborhood.story_opened', { areaId: 'daan' }), true);
+  assert.equal(director.emit('neighborhood.story_opened', { areaId: 'daan' }).id, 'S24_LOCAL_NEIGHBORHOOD');
   assert.equal(director.emit('neighborhood.story_opened', { areaId: 'xinyi' }).id, 'S24_LOCAL_NEIGHBORHOOD');
-  assert.equal(director.emit('neighborhood.story_opened'), null);
+  assert.equal(director.emit('neighborhood.story_opened').id, 'S24_LOCAL_NEIGHBORHOOD');
 });

@@ -20,6 +20,7 @@ import VirtualJoystick from './hud/VirtualJoystick';
 import QuestNav from './hud/QuestNav';
 import Wardrobe from './hud/Wardrobe';
 import { OPENING_STORY_POSITION, resetLocalGameSession } from '../lib/game-session';
+import { shouldShowTreeDialogue } from '../lib/dialogue-visibility';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -363,7 +364,12 @@ export default function Game() {
       </div>
 
       {/* RPG Dialogue */}
-      {showDialogue && selectedTree && (
+      {shouldShowTreeDialogue({
+        showDialogue,
+        selectedTree,
+        currentStory,
+        storyQueueLength: storyQueue.length,
+      }) && (
         <RPGDialogue
           tree={selectedTree}
           quest={treeQuest}

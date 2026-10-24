@@ -182,8 +182,8 @@
         "type": "tree_interacted",
         "treeId": "heritage-557"
       },
-      "dedupeScope": "once_per_tree",
-      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+      "dedupeScope": "every_interaction",
+      "notes": "每次與永康街樟樹互動都重播角色劇情；劇情本身不寫入點數或官方狀態。"
     },
     {
       "sceneId": "S14_HERITAGE_763",
@@ -196,8 +196,8 @@
         "type": "tree_interacted",
         "treeId": "heritage-763"
       },
-      "dedupeScope": "once_per_tree",
-      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+      "dedupeScope": "every_interaction",
+      "notes": "每次與麗水街麵包樹互動都重播角色劇情；劇情本身不寫入點數或官方狀態。"
     },
     {
       "sceneId": "S15_OBSERVATION_PENDING",
@@ -340,8 +340,8 @@
       "sourceTrigger": {
         "type": "neighborhood_story_opened"
       },
-      "dedupeScope": "once_per_area",
-      "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+      "dedupeScope": "every_interaction",
+      "notes": "每次與街坊阿姨互動都重播街區故事；劇情本身不寫入點數或官方狀態。"
     },
     {
       "sceneId": "S25_BUSSTOP_DILEMMA",

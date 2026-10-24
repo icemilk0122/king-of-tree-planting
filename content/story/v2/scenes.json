@@ -643,7 +643,7 @@
         "story-adapter",
         "exact-heritage-record"
       ],
-      "sourceOncePolicy": "once_per_tree",
+      "sourceOncePolicy": "every_interaction",
       "returnTo": "tree_detail",
       "inputPolicy": "modal-block-world",
       "pages": [
@@ -713,7 +713,7 @@
         "story-adapter",
         "exact-heritage-record"
       ],
-      "sourceOncePolicy": "once_per_tree",
+      "sourceOncePolicy": "every_interaction",
       "returnTo": "tree_detail",
       "inputPolicy": "modal-block-world",
       "pages": [
@@ -1160,7 +1160,7 @@
         "story-adapter",
         "local-story-entry"
       ],
-      "sourceOncePolicy": "once_per_area",
+      "sourceOncePolicy": "every_interaction",
       "returnTo": "map",
       "inputPolicy": "modal-block-world",
       "pages": [
