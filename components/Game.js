@@ -812,7 +812,7 @@ const styles = {
   },
   mobileLeftNav: {
     position: 'fixed',
-    top: 'calc(110px + env(safe-area-inset-top, 0px))',
+    top: 'calc(145px + env(safe-area-inset-top, 0px))',
     left: 12,
     display: 'flex',
     flexDirection: 'column',
@@ -821,7 +821,7 @@ const styles = {
   },
   mobileRightNav: {
     position: 'fixed',
-    top: 'calc(110px + env(safe-area-inset-top, 0px))',
+    top: 'calc(145px + env(safe-area-inset-top, 0px))',
     right: 12,
     display: 'flex',
     flexDirection: 'column',
