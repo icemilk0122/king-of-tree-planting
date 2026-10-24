@@ -409,7 +409,7 @@ export default function Game() {
                 {nearbyNpc.treeId ? `查看${nearbyNpc.name}任務` : `和${nearbyNpc.name}聊聊`}
               </span>
               <span style={styles.npcPromptHint}>
-                點擊這個按鈕開始互動
+                {isTouchDevice ? '點一下開始互動' : '按 Space、按鈕或點擊目標'}
               </span>
             </span>
           </button>
