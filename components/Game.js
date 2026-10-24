@@ -23,6 +23,7 @@ import { OPENING_STORY_POSITION, resetLocalGameSession } from '../lib/game-sessi
 import { shouldShowTreeDialogue } from '../lib/dialogue-visibility';
 import { DEFAULT_DISTRICT } from '../lib/districts';
 import { isEditableTarget, toggleFullscreen } from '../lib/fullscreen';
+import { NPC_INTERACTION_SOURCE, shouldStartNpcInteraction } from '../lib/npc-interaction';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -395,7 +396,11 @@ export default function Game() {
           <button
             type="button"
             style={styles.npcPrompt}
-            onClick={() => onNpcInteract(nearbyNpc)}
+            onClick={() => {
+              if (shouldStartNpcInteraction(NPC_INTERACTION_SOURCE.PROMPT)) {
+                onNpcInteract(nearbyNpc);
+              }
+            }}
             aria-label={nearbyNpc.treeId ? `查看${nearbyNpc.name}任務` : `和${nearbyNpc.name}聊聊`}
           >
             <span style={styles.npcPromptIcon}>{nearbyNpc.treeId ? '❗' : '💬'}</span>
@@ -404,7 +409,7 @@ export default function Game() {
                 {nearbyNpc.treeId ? `查看${nearbyNpc.name}任務` : `和${nearbyNpc.name}聊聊`}
               </span>
               <span style={styles.npcPromptHint}>
-                {isTouchDevice ? '點一下開始互動' : '按 Space 或點擊目標'}
+                點擊這個按鈕開始互動
               </span>
             </span>
           </button>
@@ -544,7 +549,9 @@ export default function Game() {
             const q = navQuest;
             setNavQuest(null);
             if (q.kind === 'npc-story') {
-              onNpcInteract(q.npc);
+              if (shouldStartNpcInteraction(NPC_INTERACTION_SOURCE.NAVIGATION)) {
+                onNpcInteract(q.npc);
+              }
               return;
             }
             const tree = gameRef.current?.getTreeData?.(q.tree_id) || { treeId: q.tree_id };
