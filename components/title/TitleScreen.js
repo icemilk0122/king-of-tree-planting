@@ -1,23 +1,84 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-
-const TITLE_EN = 'SHADE KEEPERS';
-const TITLE_ZH = '樹蔭守護者';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 export default function TitleScreen({ onStart, onReset }) {
-  const [phase, setPhase] = useState('intro');
-  const [titleIdx, setTitleIdx] = useState(0);
+  const [phase, setPhase] = useState('loading');
   const [showMenu, setShowMenu] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const canvasRef = useRef(null);
+  const imgRef = useRef(null);
+  const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const breathRef = useRef(0);
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      setPhase('ready');
+      setTimeout(() => setShowMenu(true), 800);
+    };
+    img.src = '/images/title-hero.png';
+  }, []);
+
+  const updateParallax = useCallback(() => {
+    if (!imgRef.current) return;
+    const dx = (mouseRef.current.x - 0.5) * -12;
+    const dy = (mouseRef.current.y - 0.5) * -8;
+    breathRef.current += 0.015;
+    const breathScale = 1.05 + Math.sin(breathRef.current) * 0.012;
+    imgRef.current.style.transform =
+      `scale(${breathScale}) translate(${dx}px, ${dy}px)`;
+  }, []);
+
+  useEffect(() => {
+    let raf;
+    function loop() {
+      updateParallax();
+      raf = requestAnimationFrame(loop);
+    }
+    loop();
+    return () => cancelAnimationFrame(raf);
+  }, [updateParallax]);
+
+  useEffect(() => {
+    function onMove(e) {
+      mouseRef.current = {
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight,
+      };
+    }
+    function onGyro(e) {
+      if (e.gamma == null) return;
+      mouseRef.current = {
+        x: 0.5 + (e.gamma / 45) * 0.5,
+        y: 0.5 + ((e.beta - 45) / 45) * 0.5,
+      };
+    }
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('deviceorientation', onGyro);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('deviceorientation', onGyro);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let raf;
-    let t = 0;
+
+    const leaves = Array.from({ length: 18 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      size: 3 + Math.random() * 5,
+      speed: 0.15 + Math.random() * 0.3,
+      drift: Math.random() * 2 - 1,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.03,
+      hue: 80 + Math.random() * 60,
+      alpha: 0.3 + Math.random() * 0.4,
+    }));
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -27,35 +88,28 @@ export default function TitleScreen({ onStart, onReset }) {
     window.addEventListener('resize', resize);
 
     function draw() {
-      t += 0.003;
       const w = canvas.width, h = canvas.height;
-      ctx.fillStyle = '#1a1410';
-      ctx.fillRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h);
 
-      const cols = 24, rows = 18;
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          const cx = (w / cols) * (i + 0.5);
-          const cy = (h / rows) * (j + 0.5);
-          const wave = Math.sin(t + i * 0.3 + j * 0.2) * 0.5 + 0.5;
-          const alpha = 0.03 + wave * 0.06;
-          const hue = 15 + Math.sin(t * 0.5 + i * 0.15) * 20;
-          ctx.fillStyle = `hsla(${hue}, 60%, 35%, ${alpha})`;
-          const r = 8 + wave * 12;
-          ctx.beginPath();
-          ctx.arc(cx, cy + Math.sin(t * 2 + i) * 3, r, 0, Math.PI * 2);
-          ctx.fill();
+      for (const leaf of leaves) {
+        leaf.y += leaf.speed / h;
+        leaf.x += leaf.drift * 0.0003 + Math.sin(leaf.y * 6) * 0.0005;
+        leaf.rot += leaf.rotSpeed;
+        if (leaf.y > 1.05) {
+          leaf.y = -0.05;
+          leaf.x = Math.random();
         }
-      }
+        if (leaf.x > 1.1) leaf.x = -0.1;
+        if (leaf.x < -0.1) leaf.x = 1.1;
 
-      for (let k = 0; k < 40; k++) {
-        const px = ((k * 137.5 + t * 30) % w);
-        const py = ((k * 97.3 + Math.sin(t + k) * 20) % h);
-        const s = Math.sin(t * 3 + k) * 0.5 + 0.5;
-        ctx.fillStyle = `rgba(232, 147, 110, ${s * 0.15})`;
+        ctx.save();
+        ctx.translate(leaf.x * w, leaf.y * h);
+        ctx.rotate(leaf.rot);
+        ctx.fillStyle = `hsla(${leaf.hue}, 55%, 42%, ${leaf.alpha})`;
         ctx.beginPath();
-        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, leaf.size, leaf.size * 0.5, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
       }
 
       raf = requestAnimationFrame(draw);
@@ -67,20 +121,6 @@ export default function TitleScreen({ onStart, onReset }) {
       window.removeEventListener('resize', resize);
     };
   }, []);
-
-  useEffect(() => {
-    if (phase !== 'intro') return;
-    const full = TITLE_EN;
-    if (titleIdx < full.length) {
-      const timer = setTimeout(() => setTitleIdx(titleIdx + 1), 80);
-      return () => clearTimeout(timer);
-    }
-    const menuTimer = setTimeout(() => {
-      setPhase('menu');
-      setShowMenu(true);
-    }, 600);
-    return () => clearTimeout(menuTimer);
-  }, [phase, titleIdx]);
 
   function handleContinue() {
     setPhase('leaving');
@@ -102,36 +142,26 @@ export default function TitleScreen({ onStart, onReset }) {
       opacity: phase === 'leaving' ? 0 : 1,
       transition: 'opacity 0.8s ease',
     }}>
-      <canvas ref={canvasRef} style={s.canvas} />
+      <div style={s.imgWrap}>
+        <img
+          ref={imgRef}
+          src="/images/title-hero.png"
+          alt="樹蔭守護者"
+          style={{
+            ...s.heroImg,
+            opacity: phase === 'loading' ? 0 : 1,
+            transition: 'opacity 1.2s ease',
+          }}
+        />
+      </div>
 
-      <div style={s.center}>
-        <div style={{
-          ...s.zhTitle,
-          opacity: titleIdx > 0 ? 1 : 0,
-          transform: titleIdx > 0 ? 'translateY(0)' : 'translateY(12px)',
-          transition: 'opacity 0.6s, transform 0.6s',
-        }}>
-          {TITLE_ZH}
-        </div>
+      <div style={s.vignette} />
 
-        <div style={s.enTitle}>
-          {TITLE_EN.slice(0, titleIdx)}
-          {titleIdx < TITLE_EN.length && <span style={s.cursor}>_</span>}
-        </div>
+      <canvas ref={canvasRef} style={s.leafCanvas} />
 
-        <div style={{
-          ...s.subtitle,
-          opacity: showMenu ? 0.6 : 0,
-          transition: 'opacity 0.8s ease 0.2s',
-        }}>
-          台北市行道樹守護 RPG
-        </div>
-
+      <div style={s.bottomWrap}>
         {showMenu && (
-          <div style={{
-            ...s.menu,
-            animation: 'slideUp 0.5s ease-out',
-          }}>
+          <div style={{ ...s.menu, animation: 'titleSlideUp 0.6s ease-out' }}>
             <button style={s.btn} onClick={handleContinue}>
               <span style={s.btnIcon}>▶</span> 繼續遊戲
             </button>
@@ -144,23 +174,20 @@ export default function TitleScreen({ onStart, onReset }) {
             </button>
           </div>
         )}
-      </div>
 
-      <div style={{
-        ...s.footer,
-        opacity: showMenu ? 0.3 : 0,
-        transition: 'opacity 1s ease 0.6s',
-      }}>
-        v0.1 · 資料來源：台北市政府開放資料
+        <div style={{
+          ...s.footer,
+          opacity: showMenu ? 0.4 : 0,
+          transition: 'opacity 1s ease 0.3s',
+        }}>
+          v0.1 · 資料來源：台北市政府開放資料
+        </div>
       </div>
 
       <style>{`
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(24px); }
+        @keyframes titleSlideUp {
+          from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes blink {
-          50% { opacity: 0; }
         }
       `}</style>
     </div>
@@ -170,58 +197,61 @@ export default function TitleScreen({ onStart, onReset }) {
 const s = {
   root: {
     position: 'fixed', inset: 0, zIndex: 100,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    flexDirection: 'column',
+    background: '#1a1410',
+    overflow: 'hidden',
   },
-  canvas: {
+  imgWrap: {
+    position: 'absolute', inset: '-40px',
+    overflow: 'hidden',
+  },
+  heroImg: {
+    width: '100%', height: '100%',
+    objectFit: 'cover', objectPosition: '35% 40%',
+    transformOrigin: 'center center',
+    willChange: 'transform',
+  },
+  vignette: {
+    position: 'absolute', inset: 0,
+    background: 'radial-gradient(ellipse at center, transparent 40%, rgba(20,16,10,0.6) 100%)',
+    pointerEvents: 'none', zIndex: 2,
+  },
+  leafCanvas: {
     position: 'absolute', inset: 0, width: '100%', height: '100%',
+    pointerEvents: 'none', zIndex: 3,
   },
-  center: {
-    position: 'relative', zIndex: 1,
+  bottomWrap: {
+    position: 'absolute', bottom: 0, left: 0, right: 0,
     display: 'flex', flexDirection: 'column', alignItems: 'center',
-    gap: 8, padding: '0 24px', textAlign: 'center',
-  },
-  zhTitle: {
-    fontSize: 20, fontWeight: 400, color: 'rgba(240,123,94,0.85)',
-    letterSpacing: '6px', marginBottom: 4,
-  },
-  enTitle: {
-    fontSize: 'clamp(32px, 7vw, 56px)', fontWeight: 800,
-    color: '#FFFCF7', letterSpacing: '4px',
-    fontFamily: 'system-ui, sans-serif',
-    textShadow: '0 0 40px rgba(232,93,58,0.4), 0 2px 12px rgba(0,0,0,0.5)',
-  },
-  cursor: {
-    color: '#E85D3A', animation: 'blink 0.7s step-end infinite',
-  },
-  subtitle: {
-    fontSize: 14, color: 'rgba(255,252,247,0.6)',
-    letterSpacing: '2px', marginTop: 8,
+    paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+    zIndex: 5,
+    background: 'linear-gradient(transparent 0%, rgba(20,16,10,0.85) 100%)',
+    paddingTop: 80,
   },
   menu: {
     display: 'flex', flexDirection: 'column', gap: 12,
-    marginTop: 40, width: '100%', maxWidth: 280,
+    width: '100%', maxWidth: 280, padding: '0 24px',
   },
   btn: {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     gap: 8, padding: '14px 24px',
-    background: 'rgba(232,93,58,0.2)',
-    border: '1px solid rgba(232,93,58,0.5)',
-    borderRadius: 12, color: '#FFFCF7',
+    background: 'rgba(232,93,58,0.25)',
+    border: '1.5px solid rgba(232,93,58,0.55)',
+    borderRadius: 14, color: '#FFFCF7',
     fontSize: 16, fontWeight: 700, cursor: 'pointer',
-    backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+    backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
     transition: 'background 0.2s, border-color 0.2s',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
   },
   btnSecondary: {
-    background: 'rgba(255,255,255,0.05)',
-    borderColor: 'rgba(255,255,255,0.15)',
-    color: 'rgba(255,255,255,0.5)',
+    background: 'rgba(255,255,255,0.08)',
+    borderColor: 'rgba(255,255,255,0.2)',
+    color: 'rgba(255,255,255,0.6)',
     fontSize: 14, fontWeight: 500,
+    boxShadow: 'none',
   },
   btnIcon: { fontSize: 14 },
   footer: {
-    position: 'absolute', bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-    color: 'rgba(255,252,247,0.3)', fontSize: 11, letterSpacing: '1px',
-    zIndex: 1,
+    color: 'rgba(255,252,247,0.4)', fontSize: 11, letterSpacing: '1px',
+    marginTop: 16,
   },
 };
