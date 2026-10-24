@@ -181,7 +181,7 @@ export default function NearbyHeritagePanel({ origin, onClose, onNavigate }) {
           </section>
 
           <label className={styles.searchField}>
-            <span aria-hidden="true">⌕</span>
+            <span className={styles.searchLabel}>搜尋</span>
             <input
               type="search"
               value={query}
@@ -197,11 +197,11 @@ export default function NearbyHeritagePanel({ origin, onClose, onNavigate }) {
             <>
               <TreeDetail tree={selectedTree} onNavigate={onNavigate} />
 
-              <div className={styles.listHeading}>
+              <div className={styles.listHeading} id="nearby-heritage-list-title">
                 <span>由近到遠</span>
                 <small>{visibleTrees.length} / {nearbyTrees.length}</small>
               </div>
-              <div className={styles.treeList} aria-busy={loading}>
+              <div className={styles.treeList} aria-busy={loading} aria-labelledby="nearby-heritage-list-title">
                 {loading && [0, 1, 2].map(item => <div className={styles.skeleton} key={item} />)}
                 {!loading && visibleTrees.map((tree, index) => (
                   <button
