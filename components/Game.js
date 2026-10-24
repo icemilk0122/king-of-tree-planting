@@ -22,6 +22,7 @@ import Wardrobe from './hud/Wardrobe';
 import { OPENING_STORY_POSITION, resetLocalGameSession } from '../lib/game-session';
 import { shouldShowTreeDialogue } from '../lib/dialogue-visibility';
 import { DEFAULT_DISTRICT } from '../lib/districts';
+import { isEditableTarget, toggleFullscreen } from '../lib/fullscreen';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -145,6 +146,18 @@ export default function Game() {
 
   useEffect(() => {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  useEffect(() => {
+    const onFullscreenShortcut = (event) => {
+      if (event.key.toLowerCase() !== 'f' || event.repeat || isEditableTarget(event.target)) return;
+      event.preventDefault();
+      toggleFullscreen(document).catch((error) => {
+        console.warn('Fullscreen toggle failed:', error);
+      });
+    };
+    window.addEventListener('keydown', onFullscreenShortcut);
+    return () => window.removeEventListener('keydown', onFullscreenShortcut);
   }, []);
 
   useEffect(() => {
@@ -363,7 +376,7 @@ export default function Game() {
 
       {/* Controls hint */}
       <div style={styles.controls}>
-        WASD: 移動 &nbsp; Q/E: 旋轉 &nbsp; 滾輪: 縮放 &nbsp; V: 視角
+        WASD: 移動 &nbsp; Q/E: 旋轉 &nbsp; 滾輪: 縮放 &nbsp; V: 視角 &nbsp; F: 全螢幕
       </div>
 
       {/* RPG Dialogue */}
