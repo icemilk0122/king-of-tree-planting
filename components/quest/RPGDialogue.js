@@ -11,7 +11,9 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
   const timerRef = useRef(null);
 
   const npcName = quest?.npc_name || `${tree?.species || '樹'}・${tree?.region || '台北'}`;
-  const dialogue = quest?.npc_dialogue || getDefaultDialogue(tree, quest);
+  const dialogue = loading
+    ? '讓我找找今天的守護任務…'
+    : getDefaultDialogue(tree, quest);
 
   useEffect(() => {
     setDisplayedText('');
@@ -38,7 +40,15 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
     setTimeout(() => setShowChoices(true), 100);
   }
 
-  const choices = quest
+  const choices = loading
+    ? []
+    : quest?.satisfied
+      ? [
+          { label: '👀 查看守護紀錄', action: 'records' },
+          { label: '❤️ 加入關注', action: 'follow' },
+          { label: '🚶 下次再來', action: 'close' },
+        ]
+      : quest
     ? [
         { label: '📸 好啊，我來拍！', action: 'photo' },
         { label: '🤝 發起社區接力', action: 'relay' },
@@ -86,7 +96,9 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
         </div>
         {quest && (
           <div style={styles.pointsBadge}>
-            {quest.quest_type === 'special' ? '★' : '◇'} {quest.points} 點
+            {quest.satisfied
+              ? '✓ 任務已完成'
+              : `${quest.quest_type === 'special' ? '★' : '◇'} ${quest.points} 點`}
           </div>
         )}
       </div>
@@ -95,11 +107,14 @@ export default function RPGDialogue({ tree, quest, loading, onAction, onClose })
 }
 
 function getDefaultDialogue(tree, quest) {
+  if (quest?.satisfied) {
+    return `謝謝守護者！這棵${tree?.species || '樹'}的拍照任務已經完成，紀錄也好好保存下來了。`;
+  }
   if (quest?.quest_type === 'special') {
     return `這是特別委託！我是這一帶的老朋友了，最近需要特別關注。能幫我拍張近照嗎？核對可用後共 ${quest.points} 點。`;
   }
   if (quest) {
-    return `好久沒人來看我了…路過的話，幫我拍張全樹照吧。核對可用後 +${quest.points} 點。`;
+    return quest.npc_dialogue || `好久沒人來看我了…路過的話，幫我拍張全樹照吧。核對可用後 +${quest.points} 點。`;
   }
   return `你好啊，我是這裡的${tree?.species || '樹'}。很高興有人注意到我，要不要認識一下？`;
 }

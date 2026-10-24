@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
-import { getQuestsForTree, acceptQuest, toggleFollowTree, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
+import { getOrCreateQuestForTree, acceptQuest, toggleFollowTree, getActiveQuests, startRelay, resetUserData } from '../lib/quest-engine';
 import { detectDistrict, detectDistrictFromAddress } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
@@ -48,6 +48,11 @@ export default function Game() {
   const seededAreasRef = useRef(new Set());
   const storyDirectorRef = useRef(null);
   const initialPlayerCoordsRef = useRef(null);
+  const currentDistrictRef = useRef(currentDistrict);
+
+  useEffect(() => {
+    currentDistrictRef.current = currentDistrict;
+  }, [currentDistrict]);
 
   const getStoryDirector = useCallback(() => {
     if (!storyDirectorRef.current && typeof window !== 'undefined') {
@@ -73,12 +78,11 @@ export default function Game() {
     setShowDialogue(true);
     setQuestLoading(true);
     try {
-      const quests = await getQuestsForTree(data.treeId);
-      if (quests.length > 0) {
-        setTreeQuest(quests[0]);
-      }
+      const quest = await getOrCreateQuestForTree(data, currentDistrictRef.current);
+      setTreeQuest(quest);
+      gameRef.current?.addQuestTreeId(data.treeId);
     } catch (e) {
-      console.warn('Quest fetch failed:', e);
+      console.warn('Quest fetch or creation failed:', e);
     }
     setQuestLoading(false);
   }, []);
