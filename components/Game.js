@@ -337,13 +337,21 @@ export default function Game() {
 
       {/* Top-left HUD */}
       <div style={styles.hud}>
-        <div style={styles.title}>樹蔭守護者</div>
+        <div style={styles.hudTopRow}>
+          <div style={styles.title}>樹蔭守護者</div>
+          {isTouchDevice && weather && (
+            <div style={styles.weatherInline}>
+              <span style={styles.weatherIconSmall}>{weather.icon}</span>
+              <span style={styles.weatherTempSmall}>{weather.temp}°C</span>
+            </div>
+          )}
+        </div>
         <div ref={coordRef} style={styles.coord}>25.0316, 121.5298</div>
         {address && <div style={styles.address}>📍 {address}</div>}
       </div>
 
-      {/* Weather */}
-      {weather && (
+      {/* Weather — desktop only (mobile is inline above) */}
+      {weather && !isTouchDevice && (
         <div style={styles.weatherHud}>
           <div style={styles.weatherIcon}>{weather.icon}</div>
           <div>
@@ -650,10 +658,31 @@ const styles = {
     lineHeight: 1.6,
     fontFamily: 'var(--font-family)',
   },
+  hudTopRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+    marginBottom: 4,
+  },
   title: {
     fontSize: 18,
     fontWeight: 700,
-    marginBottom: 4,
+  },
+  weatherInline: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+    flexShrink: 0,
+  },
+  weatherIconSmall: {
+    fontSize: 18,
+    lineHeight: 1,
+  },
+  weatherTempSmall: {
+    fontSize: 14,
+    fontWeight: 700,
+    fontVariantNumeric: 'tabular-nums',
   },
   coord: {
     fontVariantNumeric: 'tabular-nums',
