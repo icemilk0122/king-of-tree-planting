@@ -355,7 +355,7 @@ export default function Game() {
             </div>
           )}
         </div>
-        <div ref={coordRef} style={styles.coord}>25.0316, 121.5298</div>
+        <div ref={coordRef} style={styles.coord}>25.0322, 121.5301</div>
         {address && <div style={styles.address}>📍 {address}</div>}
       </div>
 
