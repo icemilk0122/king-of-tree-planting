@@ -34,6 +34,7 @@ export default function Game() {
   const [weather, setWeather] = useState(null);
   const [address, setAddress] = useState('');
   const [cameraMode, setCameraMode] = useState('');
+  const [weatherSimOn, setWeatherSimOn] = useState(false);
   const [showDialogue, setShowDialogue] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
   const [questLoading, setQuestLoading] = useState(false);
@@ -272,6 +273,23 @@ export default function Game() {
             <div style={styles.weatherTemp}>{weather.temp}°C</div>
             <div style={styles.weatherLabel}>{weather.label}</div>
           </div>
+          <button
+            style={{
+              ...styles.weatherToggle,
+              background: weatherSimOn ? 'rgba(232,93,58,0.7)' : 'rgba(255,255,255,0.15)',
+            }}
+            onClick={() => {
+              const next = !weatherSimOn;
+              setWeatherSimOn(next);
+              gameRef.current?.setWeatherSimEnabled(next);
+            }}
+            title={weatherSimOn ? '關閉天氣模擬' : '開啟天氣模擬'}
+          >
+            <div style={{
+              ...styles.weatherToggleKnob,
+              transform: weatherSimOn ? 'translateX(14px)' : 'translateX(0)',
+            }} />
+          </button>
         </div>
       )}
 
@@ -497,6 +515,27 @@ const styles = {
   weatherIcon: { fontSize: 32, lineHeight: 1 },
   weatherTemp: { fontSize: 20, fontWeight: 700, fontVariantNumeric: 'tabular-nums' },
   weatherLabel: { fontSize: 13, opacity: 0.8 },
+  weatherToggle: {
+    width: 32,
+    height: 18,
+    borderRadius: 9,
+    border: 'none',
+    cursor: 'pointer',
+    padding: 2,
+    display: 'flex',
+    alignItems: 'center',
+    transition: 'background 0.2s',
+    flexShrink: 0,
+    marginLeft: 4,
+  },
+  weatherToggleKnob: {
+    width: 14,
+    height: 14,
+    borderRadius: '50%',
+    background: '#FFFCF7',
+    transition: 'transform 0.2s',
+    boxShadow: '0 1px 2px rgba(0,0,0,0.3)',
+  },
   recordsBtn: {
     position: 'fixed',
     top: 'calc(80px + env(safe-area-inset-top, 0px))',
