@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "contentVersion": "2.0-review.1",
-  "status": "review-only-milestones-not-runtime-quests",
+  "status": "story-milestones-with-versioned-runtime-quests",
   "missions": [
     {
       "id": "M01",
@@ -181,11 +181,11 @@
       "sourcePriority": "P0",
       "sourceCompletionEvent": "tree_interacted",
       "sourceRewardPoints": 0,
-      "autoEnabled": false,
+      "autoEnabled": true,
       "kind": "story-milestone",
       "awardPolicy": "never-award-from-story",
       "currentRuntimeQuestId": null,
-      "integrationNote": "內容目標，不是可直接匯入 offline-seed 的 runtime quest。現有點數只能由 quest-engine/ledger 記入。",
+      "integrationNote": "已由 heritage-557 的地圖模型互動觸發樹籍故事。",
       "proposedStage": "P0",
       "exactTreeIds": [
         "heritage-557"
@@ -201,11 +201,11 @@
       "sourcePriority": "P0",
       "sourceCompletionEvent": "quest_review_confirmed",
       "sourceRewardPoints": 10,
-      "autoEnabled": false,
+      "autoEnabled": true,
       "kind": "story-milestone",
       "awardPolicy": "never-award-from-story",
-      "currentRuntimeQuestId": null,
-      "integrationNote": "內容目標，不是可直接匯入 offline-seed 的 runtime quest。現有點數只能由 quest-engine/ledger 記入。",
+      "currentRuntimeQuestId": "05570557-0557-4055-8055-700000000557",
+      "integrationNote": "已建立 2.0-review.1 runtime quest；照片與任務保存成功後由 quest-engine/ledger 結算 10 點。",
       "proposedStage": "P1",
       "exactTreeIds": [
         "heritage-557"
@@ -215,17 +215,17 @@
     },
     {
       "id": "M13",
-      "name": "【示範】麗水街麵包樹",
+      "name": "麗水街麵包樹特別委託",
       "storyArc": "city_event",
       "action": "期限內補充 heritage-763 全樹照並核對",
       "sourcePriority": "P0",
       "sourceCompletionEvent": "quest_review_confirmed",
       "sourceRewardPoints": 20,
-      "autoEnabled": false,
+      "autoEnabled": true,
       "kind": "story-milestone",
       "awardPolicy": "never-award-from-story",
-      "currentRuntimeQuestId": null,
-      "integrationNote": "內容目標，不是可直接匯入 offline-seed 的 runtime quest。現有點數只能由 quest-engine/ledger 記入。",
+      "currentRuntimeQuestId": "07630763-0763-4076-8076-300000000763",
+      "integrationNote": "已建立 2.0-review.1 special runtime quest；照片與任務保存成功後由 quest-engine/ledger 結算總額 20 點。",
       "proposedStage": "P1",
       "exactTreeIds": [
         "heritage-763"

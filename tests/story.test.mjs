@@ -50,6 +50,10 @@ test('current profile normalizes masks and resolves generated standees', async (
   assert.equal(scene.pages[2].portrait.facing, 'right');
   assert.equal(scene.pages[2].portrait.mirrorX, false);
   assert.match(scene.pages[7].text, /遊戲角色的位置/);
+  assert.equal(catalog.normalize('S24_LOCAL_NEIGHBORHOOD').pages[0].speaker, '街坊阿姨');
+  assert.match(catalog.normalize('S13_HERITAGE_557').pages[1].speaker, /永康街樟樹/);
+  assert.match(catalog.normalize('S14_HERITAGE_763').pages[1].speaker, /麗水街麵包樹/);
+  assert.match(catalog.normalize('S14_HERITAGE_763').pages[3].text, /20 點/);
   assert.equal(catalog.normalize('S18_CITY_PLANTING_WEEK'), null);
 });
 
@@ -65,10 +69,16 @@ test('director enables only proven events and deduplicates by scope', async () =
 
   assert.equal(director.emit('game.new_started').id, 'S00_OPENING');
   assert.equal(director.emit('game.new_started'), null);
+  assert.equal(director.emit('guide.opening_replayed', { npcId: 'guide-ashu' }).id, 'S00_OPENING');
+  assert.equal(director.emit('guide.opening_replayed', { npcId: 'guide-ashu' }).id, 'S00_OPENING');
   assert.equal(director.emit('proposal.saved', { storageMode: 'local', eventId: 'p0' }), null);
   assert.equal(director.emit('proposal.saved', { storageMode: 'supabase', eventId: 'p1' }).id, 'S05_PLANT_PROPOSAL_SAVED');
   assert.equal(director.emit('proposal.saved', { storageMode: 'supabase', eventId: 'p1' }), null);
   assert.equal(director.emit('proposal.saved', { storageMode: 'supabase', eventId: 'p2' }).id, 'S05_PLANT_PROPOSAL_SAVED');
+
+  assert.equal(director.emit('tree.interacted', { treeId: 'heritage-557' }).id, 'S13_HERITAGE_557');
+  assert.equal(director.emit('tree.interacted', { treeId: 'heritage-557' }), null);
+  assert.equal(director.emit('tree.interacted', { treeId: 'heritage-763' }).id, 'S14_HERITAGE_763');
 
   const reward = director.emit('quest.local_reward_committed', {
     eventId: 'ledger-1',
@@ -81,5 +91,17 @@ test('director enables only proven events and deduplicates by scope', async () =
   assert.equal(director.emit('quest.local_reward_committed', {
     eventId: 'ledger-2', questKind: 'special', points: 20, totalPoints: 60,
   }), null);
+  const specialReward = director.emit('quest.local_reward_committed', {
+    eventId: 'ledger-3', treeId: 'heritage-763', questKind: 'special', points: 20, totalPoints: 60,
+  });
+  assert.equal(specialReward.id, 'S17_SPECIAL_REVIEWED');
+  assert.match(specialReward.pages[0].text, /20 點/);
   assert.equal(director.emit('campaign.opened', { campaignId: 'demo-shade-corner-week' }), null);
+
+  assert.equal(director.canEmit('neighborhood.story_opened', { areaId: 'daan' }), true);
+  assert.equal(director.emit('neighborhood.story_opened', { areaId: 'daan' }).id, 'S24_LOCAL_NEIGHBORHOOD');
+  assert.equal(director.canEmit('neighborhood.story_opened', { areaId: 'daan' }), false);
+  assert.equal(director.emit('neighborhood.story_opened', { areaId: 'daan' }), null);
+  assert.equal(director.emit('neighborhood.story_opened', { areaId: 'xinyi' }).id, 'S24_LOCAL_NEIGHBORHOOD');
+  assert.equal(director.emit('neighborhood.story_opened'), null);
 });

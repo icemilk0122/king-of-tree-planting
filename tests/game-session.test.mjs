@@ -33,8 +33,7 @@ test('new game clears the old position and resets story progress locally', () =>
 });
 
 test('opening story position is a valid explicit restart point', () => {
-  assert.equal(Number.isFinite(OPENING_STORY_POSITION.lat), true);
-  assert.equal(Number.isFinite(OPENING_STORY_POSITION.lng), true);
+  assert.deepEqual(OPENING_STORY_POSITION, { lat: 25.0316, lng: 121.5298 });
 });
 
 test('stored player position rejects malformed coordinates', () => {

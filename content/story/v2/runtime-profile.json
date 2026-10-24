@@ -5,7 +5,11 @@
     "S00_OPENING",
     "S02_FIRST_PLANT_TOOL",
     "S05_PLANT_PROPOSAL_SAVED",
-    "S16_GENERAL_REVIEWED"
+    "S13_HERITAGE_557",
+    "S14_HERITAGE_763",
+    "S16_GENERAL_REVIEWED",
+    "S17_SPECIAL_REVIEWED",
+    "S24_LOCAL_NEIGHBORHOOD"
   ],
   "capabilities": {
     "story-adapter": true,
@@ -22,7 +26,9 @@
     "review-workflow": false,
     "shared-publication": false,
     "new-tree-observation": false,
-    "exact-heritage-quest": false
+    "exact-heritage-record": true,
+    "exact-heritage-quest": true,
+    "local-story-entry": true
   },
   "bindingOverrides": {
     "S05_PLANT_PROPOSAL_SAVED": {
@@ -43,6 +49,12 @@
     "S05_PLANT_PROPOSAL_SAVED.p01.hint": "遊戲服務已保存／尚未核准",
     "S05_PLANT_PROPOSAL_SAVED.p03.text": "這裡先留下你的觀察。是否能種樹，仍須由相關單位另行評估。",
     "S16_GENERAL_REVIEWED.p01.text": "一般任務已完成，這次記入 {{points}} 點。這是系統即時結算，不是人工核對結果。",
-    "S16_GENERAL_REVIEWED.p02.text": "照片與任務紀錄已保存到遊戲服務；是否公開或作為外部依據，仍依平台後續規則。"
+    "S13_HERITAGE_557.p04.text": "從安全的位置拍全樹照。照片與任務保存成功後，系統會立即結算 10 點；不代表人工或市府審核。",
+    "S13_HERITAGE_557.p04.hint": "一般委託：系統結算 10 點",
+    "S14_HERITAGE_763.p04.text": "從安全的位置拍全樹照。照片與任務保存成功後，系統會立即結算這份特別委託的 20 點。",
+    "S14_HERITAGE_763.p04.hint": "特別委託：系統結算 20 點",
+    "S16_GENERAL_REVIEWED.p02.text": "照片與任務紀錄已保存到遊戲服務；是否公開或作為外部依據，仍依平台後續規則。",
+    "S17_SPECIAL_REVIEWED.p01.text": "特別委託已完成，系統已記入 {{points}} 點。",
+    "S17_SPECIAL_REVIEWED.p03.text": "特別委託總獎勵 20 點，不另加一般任務 10 點。"
   }
 }

@@ -43,6 +43,7 @@ export default function Game() {
   const [storyQueue, setStoryQueue] = useState([]);
   const [currentStory, setCurrentStory] = useState(null);
   const [appearanceSnapshot, setAppearanceSnapshot] = useState(null);
+  const [nearbyNpc, setNearbyNpc] = useState(null);
   const seededAreasRef = useRef(new Set());
   const storyDirectorRef = useRef(null);
   const initialPlayerCoordsRef = useRef(null);
@@ -57,6 +58,7 @@ export default function Game() {
   const emitStoryEvent = useCallback((eventName, payload = {}) => {
     const story = getStoryDirector()?.emit(eventName, payload);
     if (story) setStoryQueue(queue => [...queue, story]);
+    return story;
   }, [getStoryDirector]);
 
   const onTreeClick = useCallback(async (data) => {
@@ -79,6 +81,15 @@ export default function Game() {
     }
     setQuestLoading(false);
   }, []);
+
+  const onNpcInteract = useCallback((npc) => {
+    if (npc.tree) onTreeClick(npc.tree);
+    emitStoryEvent(npc.storyEvent, {
+      areaId: npc.districtKey,
+      npcId: npc.id,
+      treeId: npc.treeId,
+    });
+  }, [emitStoryEvent, onTreeClick]);
 
   const seedQuestsForDistrict = useCallback(async (districtKey) => {
     if (!districtKey || seededAreasRef.current.has(districtKey)) return;
@@ -139,6 +150,8 @@ export default function Game() {
       onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange,
       {
         onAppearanceChange: setAppearanceSnapshot,
+        onNpcInteract,
+        onNpcProximityChange: setNearbyNpc,
         initialPlayerCoords: initialPlayerCoordsRef.current,
       }
     );
@@ -149,7 +162,7 @@ export default function Game() {
         gameRef.current = null;
       }
     };
-  }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange]);
+  }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange, onNpcInteract]);
 
   useEffect(() => {
     const blocked = !!currentStory || showDialogue || !!activePanel;
@@ -261,7 +274,7 @@ export default function Game() {
       {/* Top-left HUD */}
       <div style={styles.hud}>
         <div style={styles.title}>樹蔭守護者</div>
-        <div ref={coordRef} style={styles.coord}>25.0330, 121.5654</div>
+        <div ref={coordRef} style={styles.coord}>25.0316, 121.5298</div>
         {address && <div style={styles.address}>📍 {address}</div>}
       </div>
 
@@ -311,6 +324,33 @@ export default function Game() {
 
       {/* Proximity tree info */}
       <div ref={treeInfoRef} style={styles.treeInfo} />
+
+      {nearbyNpc
+        && !currentStory
+        && !showDialogue
+        && !activePanel
+        && (nearbyNpc.treeId || getStoryDirector()?.canEmit(nearbyNpc.storyEvent, {
+          areaId: nearbyNpc.districtKey,
+          npcId: nearbyNpc.id,
+          treeId: nearbyNpc.treeId,
+        })) && (
+          <button
+            type="button"
+            style={styles.npcPrompt}
+            onClick={() => onNpcInteract(nearbyNpc)}
+            aria-label={nearbyNpc.treeId ? `查看${nearbyNpc.name}任務` : `和${nearbyNpc.name}聊聊`}
+          >
+            <span style={styles.npcPromptIcon}>{nearbyNpc.treeId ? '❗' : '💬'}</span>
+            <span>
+              <span style={styles.npcPromptTitle}>
+                {nearbyNpc.treeId ? `查看${nearbyNpc.name}任務` : `和${nearbyNpc.name}聊聊`}
+              </span>
+              <span style={styles.npcPromptHint}>
+                {isTouchDevice ? '點一下開始互動' : '按 Space 或點擊目標'}
+              </span>
+            </span>
+          </button>
+        )}
 
       {/* Camera mode */}
       {cameraMode && (
@@ -586,6 +626,49 @@ const styles = {
     transition: 'opacity 0.3s, border-color 0.3s',
     opacity: 0,
     whiteSpace: 'nowrap',
+  },
+  npcPrompt: {
+    position: 'fixed',
+    bottom: 108,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    minWidth: 220,
+    color: '#2A241E',
+    background: '#FFF8E8',
+    border: '2px solid #E85D3A',
+    borderRadius: 18,
+    boxShadow: '0 8px 24px rgba(42,36,30,0.28)',
+    padding: '10px 16px',
+    zIndex: 18,
+    cursor: 'pointer',
+    fontFamily: 'var(--font-family)',
+    textAlign: 'left',
+  },
+  npcPromptIcon: {
+    display: 'grid',
+    placeItems: 'center',
+    width: 34,
+    height: 34,
+    flex: '0 0 34px',
+    borderRadius: 12,
+    background: '#FFE3A8',
+    fontSize: 18,
+  },
+  npcPromptTitle: {
+    display: 'block',
+    fontSize: 15,
+    fontWeight: 800,
+    lineHeight: 1.25,
+  },
+  npcPromptHint: {
+    display: 'block',
+    marginTop: 2,
+    color: '#756A5E',
+    fontSize: 11,
+    fontWeight: 600,
   },
   cameraModeHud: {
     position: 'fixed',

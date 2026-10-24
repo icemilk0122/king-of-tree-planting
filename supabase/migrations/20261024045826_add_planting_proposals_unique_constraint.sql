@@ -1,0 +1,3 @@
+ALTER TABLE planting_proposals
+ADD CONSTRAINT planting_proposals_user_id_client_request_id_key
+UNIQUE (user_id, client_request_id);

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "proposed-not-wired",
+  "status": "runtime-wired-for-enabled-scenes",
   "bindings": [
     {
       "sceneId": "S00_OPENING",
@@ -12,6 +12,18 @@
       },
       "dedupeScope": "per_new_game",
       "notes": "規格草案；須由成功業務結果與能力旗標觸發，不能因播放劇情直接寫點數或官方狀態。"
+    },
+    {
+      "sceneId": "S00_OPENING",
+      "event": "guide.opening_replayed",
+      "filters": {},
+      "autoTriggerEnabled": false,
+      "sourceTrigger": {
+        "type": "guide_npc_interaction",
+        "npcId": "guide-ashu"
+      },
+      "dedupeScope": "every_interaction",
+      "notes": "玩家與永康公園的阿樹互動時，可重複回顧開場教學。"
     },
     {
       "sceneId": "S01_DAAN_WELCOME",

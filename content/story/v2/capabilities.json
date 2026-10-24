@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "status": "observed-baseline-not-feature-implementation",
+  "status": "current-implementation-snapshot",
   "currentSnapshot": {
     "offline-storage": true,
     "proposal-basic-save": true,
     "quest-photo": true,
     "heritage-browser": true,
-    "story-adapter": false,
+    "story-adapter": true,
     "proposal-photo": false,
     "explicit-location-selection": false,
     "nearby-proposals": false,
@@ -17,9 +17,9 @@
     "review-workflow": false,
     "shared-publication": false,
     "new-tree-observation": false,
-    "exact-heritage-record": "resolve-per-id-from-full-catalog",
-    "exact-heritage-quest": false,
-    "local-story-entry": false
+    "exact-heritage-record": true,
+    "exact-heritage-quest": true,
+    "local-story-entry": true
   },
   "note": "實際版本開通與資產核對後逐項改；本檔不會讓程式憑空新增能力。"
 }
