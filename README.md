@@ -2,7 +2,7 @@
 
 台北市行道樹守護 RPG — 在真實街道地圖上探索、接任務、拍照回報樹木狀態。
 
-![Title Screen](public/images/title-hero.png)
+![Title Screen](public/images/title-hero.webp)
 
 ## 技術架構
 

@@ -4,8 +4,8 @@
   "portraits": [
     {
       "id": "player-shade-keeper",
-      "plannedLocalPath": "/assets/story/player-shade-keeper.png",
-      "resolvedLocalPath": "/assets/story/player-shade-keeper.png",
+      "plannedLocalPath": "/assets/story/player-shade-keeper.webp",
+      "resolvedLocalPath": "/assets/story/player-shade-keeper.webp",
       "availability": "available",
       "dialogueSide": "right",
       "facing": "left",
@@ -17,8 +17,8 @@
     },
     {
       "id": "guide-ashu-civic-volunteer",
-      "plannedLocalPath": "/assets/story/guide-ashu-civic-volunteer.png",
-      "resolvedLocalPath": "/assets/story/guide-ashu-civic-volunteer.png",
+      "plannedLocalPath": "/assets/story/guide-ashu-civic-volunteer.webp",
+      "resolvedLocalPath": "/assets/story/guide-ashu-civic-volunteer.webp",
       "availability": "available",
       "dialogueSide": "left",
       "facing": "right",
@@ -30,8 +30,8 @@
     },
     {
       "id": "heritage-557-modern-character",
-      "plannedLocalPath": "/assets/story/heritage-557-modern-character.png",
-      "resolvedLocalPath": "/assets/story/heritage-557-modern-character.png",
+      "plannedLocalPath": "/assets/story/heritage-557-modern-character.webp",
+      "resolvedLocalPath": "/assets/story/heritage-557-modern-character.webp",
       "availability": "available",
       "dialogueSide": "left",
       "facing": "right",
@@ -43,8 +43,8 @@
     },
     {
       "id": "heritage-763-modern-character",
-      "plannedLocalPath": "/assets/story/heritage-763-modern-character.png",
-      "resolvedLocalPath": "/assets/story/heritage-763-modern-character.png",
+      "plannedLocalPath": "/assets/story/heritage-763-modern-character.webp",
+      "resolvedLocalPath": "/assets/story/heritage-763-modern-character.webp",
       "availability": "available",
       "dialogueSide": "left",
       "facing": "right",
@@ -56,8 +56,8 @@
     },
     {
       "id": "local-neighborhood-aunt",
-      "plannedLocalPath": "/assets/story/local-neighborhood-aunt.png",
-      "resolvedLocalPath": "/assets/story/local-neighborhood-aunt.png",
+      "plannedLocalPath": "/assets/story/local-neighborhood-aunt.webp",
+      "resolvedLocalPath": "/assets/story/local-neighborhood-aunt.webp",
       "availability": "available",
       "dialogueSide": "left",
       "facing": "right",
@@ -69,8 +69,8 @@
     },
     {
       "id": "local-office-worker",
-      "plannedLocalPath": "/assets/story/local-office-worker.png",
-      "resolvedLocalPath": "/assets/story/local-office-worker.png",
+      "plannedLocalPath": "/assets/story/local-office-worker.webp",
+      "resolvedLocalPath": "/assets/story/local-office-worker.webp",
       "availability": "available",
       "dialogueSide": "left",
       "facing": "right",
