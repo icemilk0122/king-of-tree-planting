@@ -198,7 +198,7 @@ export default function TitleScreen({ onStart, onReset }) {
           </div>
         )}
         <div style={{ ...s.footer, opacity: showMenu ? 0.4 : 0, transition: 'opacity 1s ease 0.3s' }}>
-          v0.1 · 資料來源：台北市政府開放資料
+          v0.1 · 資料來源：台北市政府開放資料 · Map © Thunderforest, © OpenStreetMap contributors
         </div>
       </div>
 

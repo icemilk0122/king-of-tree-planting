@@ -12,7 +12,7 @@
 | UI | [React](https://react.dev/) 19 | 元件化介面 |
 | 3D 引擎 | [Three.js](https://threejs.org/) 0.186 | WebGL 地圖渲染、角色、樹木、建築 |
 | 後端 / 資料庫 | [Supabase](https://supabase.com/) (PostgreSQL + Storage) | 任務資料、照片儲存、RLS 權限控制 |
-| 地圖圖磚 | [OpenStreetMap](https://www.openstreetmap.org/) | 衛星/街道底圖 (`tile.openstreetmap.org`) |
+| 地圖圖磚 | [Thunderforest](https://www.thunderforest.com/) Transport + [OpenStreetMap](https://www.openstreetmap.org/) fallback | 街道底圖（超額自動退回 OSM） |
 | 天氣 | [Open-Meteo](https://open-meteo.com/) | 即時天氣 API（免費、免 API key） |
 | 3D 角色建模 | [Blender](https://www.blender.org/) + Python 腳本 | Q 版模組化角色（7 部位 × 23 件裝備 + 3 套預設造型） |
 
@@ -22,7 +22,8 @@
 |------|------|------|
 | 台北市行道樹（90,395 棵） | [台北市政府開放資料](https://data.taipei/) | 政府資料開放授權條款 |
 | 台北市建築物輪廓 | 台北市政府開放資料 | 政府資料開放授權條款 |
-| 地圖圖磚 | OpenStreetMap 貢獻者 | [ODbL 1.0](https://opendatacommons.org/licenses/odbl/) |
+| 地圖圖磚 | [Thunderforest](https://www.thunderforest.com/) Transport | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| 地圖資料 | OpenStreetMap 貢獻者 | [ODbL 1.0](https://opendatacommons.org/licenses/odbl/) |
 | 天氣資料 | Open-Meteo | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 
 ## AI 開發工具
@@ -54,6 +55,7 @@ npm run dev
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_THUNDERFOREST_API_KEY=your-thunderforest-api-key  # 可選，未設定時自動使用 OSM 圖磚
 ```
 
 ### 角色模型生成（可選）
@@ -101,7 +103,7 @@ npm run build
 │   └── records/            # MyRecords（個人紀錄）
 ├── lib/
 │   ├── engine.js           # 3D 引擎（相機、輸入、動畫迴圈）
-│   ├── map.js              # OSM 圖磚管理 + 座標轉換
+│   ├── map.js              # Thunderforest/OSM 圖磚管理 + 座標轉換
 │   ├── trees.js            # TreeManager（90K 棵樹的 LOD 載入）
 │   ├── buildings.js        # 建築物 3D 渲染
 │   ├── character.js        # 模組化 GLB 角色 + 裝備系統
@@ -155,4 +157,4 @@ relay_chains / relay_legs: 接力賽任務鏈
 - **程式碼：** [MIT License](LICENSE)
 - **資料與文件：** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - **行道樹資料：** 依台北市政府資料開放授權條款使用
-- **地圖圖磚：** (c) OpenStreetMap contributors, ODbL 1.0
+- **地圖圖磚：** Map © [Thunderforest](https://www.thunderforest.com/), CC BY-SA 4.0；data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, ODbL 1.0

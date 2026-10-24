@@ -453,6 +453,12 @@ export default function Game() {
         WASD: 移動 &nbsp; Q/E: 旋轉 &nbsp; 滾輪: 縮放 &nbsp; V: 視角 &nbsp; F: 全螢幕
       </div>
 
+      {/* Map attribution */}
+      <div style={styles.mapAttribution}>
+        Map © <a href="https://www.thunderforest.com/" target="_blank" rel="noopener noreferrer" style={styles.attrLink}>Thunderforest</a>,
+        data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" style={styles.attrLink}>OpenStreetMap</a> contributors
+      </div>
+
       {/* RPG Dialogue */}
       {shouldShowTreeDialogue({
         showDialogue,
@@ -857,6 +863,18 @@ const styles = {
     borderRadius: 8,
     backdropFilter: 'blur(4px)',
     WebkitBackdropFilter: 'blur(4px)',
+  },
+  mapAttribution: {
+    position: 'fixed',
+    bottom: 4,
+    left: 16,
+    color: 'rgba(255,255,255,0.35)',
+    fontSize: 9,
+    zIndex: 10,
+  },
+  attrLink: {
+    color: 'rgba(255,255,255,0.45)',
+    textDecoration: 'none',
   },
   mobileLeftNav: {
     position: 'fixed',
