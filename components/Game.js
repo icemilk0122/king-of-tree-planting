@@ -363,8 +363,7 @@ export default function Game() {
       {activePanel === 'wardrobe' && (
         <Wardrobe
           currentOutfit={gameRef.current?.getOutfit() || {}}
-          onChangeEquip={(id) => gameRef.current?.changeEquip(id)}
-          onRemoveEquip={(slot) => gameRef.current?.removeEquip(slot)}
+          onApplyOutfit={(outfit) => gameRef.current?.applyOutfit(outfit)}
           onClose={() => setActivePanel(null)}
         />
       )}

@@ -24,6 +24,14 @@ import bpy
 import bmesh
 import math
 import os
+import runpy
+
+# The production character now lives in the refined v2 generator. Keep this
+# historical entry point working so the documented Blender command always
+# produces the current modular character rather than overwriting it with the
+# original primitive prototype.
+runpy.run_path(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'generate-character-v2.py'), run_name='__main__')
+raise SystemExit(0)
 
 # ── Output dir ───────────────────────────────────────────────
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -39,7 +47,9 @@ def clean_scene():
 def make_mat(name, color, roughness=0.6):
     mat = bpy.data.materials.new(name)
     mat.use_nodes = True
-    bsdf = mat.node_tree.nodes['Principled BSDF']
+    # Node display names are localized (for example, Chinese Blender uses
+    # "原則化 BSDF"), so identify the shader by its stable node type.
+    bsdf = next(node for node in mat.node_tree.nodes if node.type == 'BSDF_PRINCIPLED')
     bsdf.inputs['Base Color'].default_value = (*color, 1)
     bsdf.inputs['Roughness'].default_value = roughness
     bsdf.inputs['Metallic'].default_value = 0.0
@@ -56,8 +66,11 @@ def smooth_shade(obj):
 def subdivide(obj, levels=2):
     bpy.context.view_layer.objects.active = obj
     bpy.ops.object.modifier_add(type='SUBSURF')
-    obj.modifiers['Subdivision'].levels = levels
-    bpy.ops.object.modifier_apply(modifier='Subdivision')
+    # Modifier display names are localized; keep the object returned through
+    # the active modifier collection instead of looking it up by an English name.
+    modifier = obj.modifiers[-1]
+    modifier.levels = levels
+    bpy.ops.object.modifier_apply(modifier=modifier.name)
 
 def delete_below(obj, z_threshold):
     bpy.context.view_layer.objects.active = obj
