@@ -38,7 +38,6 @@ export default function Game() {
   const [treeQuest, setTreeQuest] = useState(null);
   const [weather, setWeather] = useState(null);
   const [address, setAddress] = useState('');
-  const [cameraMode, setCameraMode] = useState('');
   const [weatherSimOn, setWeatherSimOn] = useState(false);
   const [showDialogue, setShowDialogue] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
@@ -128,10 +127,6 @@ export default function Game() {
     }
   }, [syncQuestMarkersForDistrict]);
 
-  const onCameraModeChange = useCallback((label) => {
-    setCameraMode(label);
-  }, []);
-
   const moveJoystickRef = useRef(null);
   const dragTouchRef = useRef(null);
 
@@ -208,7 +203,7 @@ export default function Game() {
     if (!gameStarted || !containerRef.current || gameRef.current) return;
     gameRef.current = initGame(
       containerRef.current, coordRef.current, treeInfoRef.current,
-      onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange,
+      onTreeClick, onWeatherUpdate, onAddressUpdate,
       {
         onAppearanceChange: setAppearanceSnapshot,
         onNpcInteract,
@@ -223,7 +218,7 @@ export default function Game() {
         gameRef.current = null;
       }
     };
-  }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onCameraModeChange, onNpcInteract]);
+  }, [gameStarted, onTreeClick, onWeatherUpdate, onAddressUpdate, onNpcInteract]);
 
   useEffect(() => {
     const blocked = !!currentStory || showDialogue || !!activePanel;
@@ -424,11 +419,6 @@ export default function Game() {
             </span>
           </button>
         )}
-
-      {/* Camera mode */}
-      {cameraMode && (
-        <div style={styles.cameraModeHud}>🎥 {cameraMode}</div>
-      )}
 
       {/* Controls hint */}
       <div style={styles.controls}>
@@ -779,20 +769,6 @@ const styles = {
     color: '#756A5E',
     fontSize: 11,
     fontWeight: 600,
-  },
-  cameraModeHud: {
-    position: 'fixed',
-    bottom: 60,
-    right: 16,
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: 600,
-    zIndex: 10,
-    background: 'rgba(42,36,30,0.8)',
-    padding: '8px 14px',
-    borderRadius: 8,
-    backdropFilter: 'blur(4px)',
-    WebkitBackdropFilter: 'blur(4px)',
   },
   controls: {
     position: 'fixed',
