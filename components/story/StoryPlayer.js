@@ -81,6 +81,7 @@ export default function StoryPlayer({ story, onComplete }) {
     <div style={{ ...s.overlay, background: `rgba(0,0,0,${page.overlay ?? 0.5})` }} onClick={handleTap}>
       {portrait && (
         <div
+          key={`portrait-${safeIdx}`}
           className={`story-portrait story-portrait--${portraitSide}`}
           style={s.portraitWrap}
         >
