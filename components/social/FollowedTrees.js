@@ -82,13 +82,13 @@ const styles = {
   panel: {
     width: '100%',
     maxWidth: 360,
-    background: 'linear-gradient(180deg, rgba(25,45,25,0.96), rgba(18,32,18,0.98))',
+    background: 'linear-gradient(180deg, rgba(42,36,30,0.96), rgba(32,28,22,0.98))',
     backdropFilter: 'blur(16px)',
     WebkitBackdropFilter: 'blur(16px)',
-    borderLeft: '1px solid rgba(80,140,80,0.3)',
+    borderLeft: '1px solid rgba(232,93,58,0.3)',
     display: 'flex',
     flexDirection: 'column',
-    color: '#e8f0e8',
+    color: '#FFFCF7',
     paddingTop: 'env(safe-area-inset-top, 0px)',
   },
   header: {
@@ -96,7 +96,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '16px 16px 12px',
-    borderBottom: '1px solid rgba(80,140,80,0.2)',
+    borderBottom: '1px solid rgba(232,93,58,0.2)',
   },
   headerTitle: {
     fontSize: 18,
@@ -123,7 +123,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     background: 'rgba(255,255,255,0.06)',
-    border: '1px solid rgba(120,180,120,0.2)',
+    border: '1px solid rgba(232,93,58,0.2)',
     borderRadius: 14,
     padding: '12px 16px',
   },
@@ -177,7 +177,7 @@ const styles = {
     padding: '12px 16px',
     fontSize: 12,
     color: 'rgba(255,255,255,0.4)',
-    borderTop: '1px solid rgba(80,140,80,0.15)',
+    borderTop: '1px solid rgba(232,93,58,0.15)',
     textAlign: 'center',
   },
 };

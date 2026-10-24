@@ -141,13 +141,13 @@ const styles = {
   panel: {
     width: '100%',
     maxWidth: 380,
-    background: 'linear-gradient(180deg, rgba(25,45,25,0.96), rgba(18,32,18,0.98))',
+    background: 'linear-gradient(180deg, rgba(42,36,30,0.96), rgba(32,28,22,0.98))',
     backdropFilter: 'blur(16px)',
     WebkitBackdropFilter: 'blur(16px)',
-    borderLeft: '1px solid rgba(80,140,80,0.3)',
+    borderLeft: '1px solid rgba(232,93,58,0.3)',
     display: 'flex',
     flexDirection: 'column',
-    color: '#e8f0e8',
+    color: '#FFFCF7',
     paddingTop: 'env(safe-area-inset-top, 0px)',
   },
   header: {
@@ -155,7 +155,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '16px 16px 12px',
-    borderBottom: '1px solid rgba(80,140,80,0.2)',
+    borderBottom: '1px solid rgba(232,93,58,0.2)',
   },
   headerTitle: {
     fontSize: 18,
@@ -172,7 +172,7 @@ const styles = {
   tabs: {
     display: 'flex',
     gap: 0,
-    borderBottom: '1px solid rgba(80,140,80,0.2)',
+    borderBottom: '1px solid rgba(232,93,58,0.2)',
   },
   tab: {
     flex: 1,
@@ -187,8 +187,8 @@ const styles = {
     textAlign: 'center',
   },
   tabActive: {
-    color: '#a5d6a7',
-    borderBottomColor: '#4caf50',
+    color: '#F07B5E',
+    borderBottomColor: '#E85D3A',
   },
   content: {
     flex: 1,
@@ -203,7 +203,7 @@ const styles = {
   statCard: {
     flex: 1,
     background: 'rgba(255,255,255,0.06)',
-    border: '1px solid rgba(120,180,120,0.2)',
+    border: '1px solid rgba(232,93,58,0.2)',
     borderRadius: 14,
     padding: '16px',
     textAlign: 'center',
@@ -211,7 +211,7 @@ const styles = {
   statValue: {
     fontSize: 28,
     fontWeight: 700,
-    color: '#d4a017',
+    color: '#5CB8B2',
     fontVariantNumeric: 'tabular-nums',
   },
   statLabel: {
@@ -227,7 +227,7 @@ const styles = {
   },
   activityCard: {
     background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(120,180,120,0.15)',
+    border: '1px solid rgba(232,93,58,0.15)',
     borderRadius: 12,
     padding: '12px 14px',
     marginBottom: 8,
@@ -286,7 +286,7 @@ const styles = {
     gap: 10,
     padding: '12px 14px',
     background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(120,180,120,0.12)',
+    border: '1px solid rgba(232,93,58,0.12)',
     borderRadius: 12,
     marginBottom: 6,
   },
@@ -304,7 +304,7 @@ const styles = {
   lbPoints: {
     fontSize: 14,
     fontWeight: 700,
-    color: '#d4a017',
+    color: '#5CB8B2',
     fontVariantNumeric: 'tabular-nums',
   },
 };

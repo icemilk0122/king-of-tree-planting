@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 const CHAR_SPEED = 35;
 
 const PORTRAITS = {
-  elder: { emoji: '🌳', color: '#2e7d32' },
+  elder: { emoji: '🌳', color: '#C44A2B' },
 };
 
 export default function StoryPlayer({ story, onComplete }) {
@@ -127,7 +127,7 @@ const s = {
   },
   portrait: {
     width: 100, height: 100, borderRadius: 20,
-    background: 'rgba(30,50,30,0.8)',
+    background: 'rgba(42,36,30,0.8)',
     border: '3px solid',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
@@ -139,15 +139,15 @@ const s = {
   },
   nameTag: {
     display: 'inline-block',
-    background: 'rgba(212,160,23,0.9)',
-    color: '#fff', fontSize: 14, fontWeight: 700,
+    background: 'rgba(232,93,58,0.9)',
+    color: '#FFFCF7', fontSize: 14, fontWeight: 700,
     padding: '6px 18px',
     borderRadius: '12px 12px 0 0',
     marginLeft: 12,
   },
   dialogueBox: {
-    background: 'linear-gradient(135deg, rgba(20,35,20,0.95), rgba(15,25,15,0.98))',
-    border: '2px solid rgba(120,180,120,0.4)',
+    background: 'linear-gradient(135deg, rgba(42,36,30,0.95), rgba(32,28,22,0.98))',
+    border: '2px solid rgba(232,93,58,0.3)',
     borderRadius: '0 16px 16px 16px',
     padding: '20px 24px',
     minHeight: 100,
@@ -155,15 +155,15 @@ const s = {
     cursor: 'pointer',
   },
   text: {
-    color: '#e8f0e8', fontSize: 16, lineHeight: 1.8,
+    color: '#FFFCF7', fontSize: 16, lineHeight: 1.8,
     fontWeight: 400,
   },
   cursor: {
-    color: '#8fc98f',
+    color: '#F07B5E',
     animation: 'blink 0.7s step-end infinite',
   },
   prompt: {
-    color: 'rgba(200,230,200,0.6)', fontSize: 13,
+    color: 'rgba(255,252,247,0.6)', fontSize: 13,
     textAlign: 'right', marginTop: 12,
     animation: 'pulse 1.5s ease-in-out infinite',
   },

@@ -29,7 +29,7 @@ export default function TitleScreen({ onStart, onReset }) {
     function draw() {
       t += 0.003;
       const w = canvas.width, h = canvas.height;
-      ctx.fillStyle = '#0a1a0a';
+      ctx.fillStyle = '#1a1410';
       ctx.fillRect(0, 0, w, h);
 
       const cols = 24, rows = 18;
@@ -39,7 +39,7 @@ export default function TitleScreen({ onStart, onReset }) {
           const cy = (h / rows) * (j + 0.5);
           const wave = Math.sin(t + i * 0.3 + j * 0.2) * 0.5 + 0.5;
           const alpha = 0.03 + wave * 0.06;
-          const hue = 120 + Math.sin(t * 0.5 + i * 0.15) * 20;
+          const hue = 15 + Math.sin(t * 0.5 + i * 0.15) * 20;
           ctx.fillStyle = `hsla(${hue}, 60%, 35%, ${alpha})`;
           const r = 8 + wave * 12;
           ctx.beginPath();
@@ -52,7 +52,7 @@ export default function TitleScreen({ onStart, onReset }) {
         const px = ((k * 137.5 + t * 30) % w);
         const py = ((k * 97.3 + Math.sin(t + k) * 20) % h);
         const s = Math.sin(t * 3 + k) * 0.5 + 0.5;
-        ctx.fillStyle = `rgba(160, 220, 160, ${s * 0.15})`;
+        ctx.fillStyle = `rgba(232, 147, 110, ${s * 0.15})`;
         ctx.beginPath();
         ctx.arc(px, py, 1.5, 0, Math.PI * 2);
         ctx.fill();
@@ -182,20 +182,20 @@ const s = {
     gap: 8, padding: '0 24px', textAlign: 'center',
   },
   zhTitle: {
-    fontSize: 20, fontWeight: 400, color: 'rgba(180,220,180,0.85)',
+    fontSize: 20, fontWeight: 400, color: 'rgba(240,123,94,0.85)',
     letterSpacing: '6px', marginBottom: 4,
   },
   enTitle: {
     fontSize: 'clamp(32px, 7vw, 56px)', fontWeight: 800,
-    color: '#e8f0e8', letterSpacing: '4px',
+    color: '#FFFCF7', letterSpacing: '4px',
     fontFamily: 'system-ui, sans-serif',
-    textShadow: '0 0 40px rgba(76,175,80,0.4), 0 2px 12px rgba(0,0,0,0.5)',
+    textShadow: '0 0 40px rgba(232,93,58,0.4), 0 2px 12px rgba(0,0,0,0.5)',
   },
   cursor: {
-    color: '#4caf50', animation: 'blink 0.7s step-end infinite',
+    color: '#E85D3A', animation: 'blink 0.7s step-end infinite',
   },
   subtitle: {
-    fontSize: 14, color: 'rgba(200,230,200,0.6)',
+    fontSize: 14, color: 'rgba(255,252,247,0.6)',
     letterSpacing: '2px', marginTop: 8,
   },
   menu: {
@@ -205,9 +205,9 @@ const s = {
   btn: {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     gap: 8, padding: '14px 24px',
-    background: 'rgba(76,175,80,0.2)',
-    border: '1px solid rgba(76,175,80,0.5)',
-    borderRadius: 12, color: '#c8e6c9',
+    background: 'rgba(232,93,58,0.2)',
+    border: '1px solid rgba(232,93,58,0.5)',
+    borderRadius: 12, color: '#FFFCF7',
     fontSize: 16, fontWeight: 700, cursor: 'pointer',
     backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
     transition: 'background 0.2s, border-color 0.2s',
@@ -221,7 +221,7 @@ const s = {
   btnIcon: { fontSize: 14 },
   footer: {
     position: 'absolute', bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-    color: 'rgba(200,230,200,0.3)', fontSize: 11, letterSpacing: '1px',
+    color: 'rgba(255,252,247,0.3)', fontSize: 11, letterSpacing: '1px',
     zIndex: 1,
   },
 };

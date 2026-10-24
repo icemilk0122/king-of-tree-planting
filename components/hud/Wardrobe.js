@@ -69,10 +69,10 @@ const s = {
   },
   panel: {
     width: '100%', maxWidth: 420,
-    background: 'linear-gradient(135deg, rgba(30,40,50,0.95), rgba(20,30,40,0.98))',
+    background: 'linear-gradient(135deg, rgba(42,36,30,0.95), rgba(32,28,22,0.98))',
     backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
-    border: '2px solid rgba(120,180,220,0.3)',
-    borderRadius: 20, padding: 20, color: '#e0eaf0',
+    border: '2px solid rgba(232,93,58,0.3)',
+    borderRadius: 20, padding: 20, color: '#FFFCF7',
   },
   header: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16,
@@ -91,27 +91,27 @@ const s = {
     border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, cursor: 'pointer',
   },
   slotActive: {
-    color: '#fff', background: 'rgba(76,175,80,0.25)',
-    borderColor: 'rgba(76,175,80,0.6)',
+    color: '#fff', background: 'rgba(232,93,58,0.25)',
+    borderColor: 'rgba(232,93,58,0.6)',
   },
   items: {
     display: 'flex', flexDirection: 'column', gap: 8,
   },
   itemBtn: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    padding: '12px 14px', fontSize: 14, color: '#e0eaf0',
+    padding: '12px 14px', fontSize: 14, color: '#FFFCF7',
     background: 'rgba(255,255,255,0.06)',
     border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10,
     cursor: 'pointer', textAlign: 'left',
   },
   itemActive: {
-    background: 'rgba(76,175,80,0.15)',
-    borderColor: 'rgba(76,175,80,0.5)',
+    background: 'rgba(232,93,58,0.15)',
+    borderColor: 'rgba(232,93,58,0.5)',
   },
   itemName: { fontWeight: 600 },
   equipped: {
-    fontSize: 11, color: '#81c784', fontWeight: 600,
-    padding: '2px 8px', background: 'rgba(76,175,80,0.2)', borderRadius: 6,
+    fontSize: 11, color: '#F07B5E', fontWeight: 600,
+    padding: '2px 8px', background: 'rgba(232,93,58,0.2)', borderRadius: 6,
   },
   removeBtn: {
     padding: '10px 14px', fontSize: 13, color: 'rgba(255,255,255,0.5)',

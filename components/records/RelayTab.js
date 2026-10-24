@@ -122,16 +122,16 @@ const s = {
   },
   emptyState: { textAlign: 'center', padding: '32px 16px' },
   emptyIcon: { fontSize: 48, marginBottom: 12 },
-  emptyTitle: { fontSize: 16, fontWeight: 700, color: '#e8f0e8', marginBottom: 8 },
+  emptyTitle: { fontSize: 16, fontWeight: 700, color: '#FFFCF7', marginBottom: 8 },
   emptyHint: { fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 },
   toast: {
-    background: 'rgba(76,175,80,0.2)', border: '1px solid rgba(76,175,80,0.4)',
-    borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#a5d6a7',
+    background: 'rgba(232,93,58,0.2)', border: '1px solid rgba(232,93,58,0.4)',
+    borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#F07B5E',
     textAlign: 'center', marginBottom: 8,
   },
   card: {
     background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(120,180,120,0.15)',
+    border: '1px solid rgba(232,93,58,0.15)',
     borderRadius: 12, overflow: 'hidden',
   },
   cardTop: {
@@ -140,20 +140,20 @@ const s = {
   },
   chainIcon: { fontSize: 24, flexShrink: 0 },
   chainInfo: { flex: 1, minWidth: 0 },
-  chainTitle: { fontSize: 14, fontWeight: 600, color: '#e8f0e8' },
+  chainTitle: { fontSize: 14, fontWeight: 600, color: '#FFFCF7' },
   chainMeta: { fontSize: 12, color: 'rgba(255,255,255,0.45)', marginTop: 2 },
   expandArrow: { fontSize: 12, color: 'rgba(255,255,255,0.3)', flexShrink: 0 },
   legsWrap: {
     padding: '4px 14px 14px 14px',
-    borderTop: '1px solid rgba(120,180,120,0.1)',
+    borderTop: '1px solid rgba(232,93,58,0.1)',
   },
   leg: { display: 'flex', gap: 10, paddingTop: 10 },
   legDot: {
-    width: 10, height: 10, borderRadius: '50%', background: '#4caf50',
+    width: 10, height: 10, borderRadius: '50%', background: '#E85D3A',
     flexShrink: 0, marginTop: 4,
   },
   legContent: { flex: 1, minWidth: 0 },
-  legUser: { fontSize: 13, fontWeight: 600, color: '#c8e6c9' },
+  legUser: { fontSize: 13, fontWeight: 600, color: '#FFFCF7' },
   legPhoto: {
     width: '100%', borderRadius: 8, maxHeight: 120,
     objectFit: 'cover', marginTop: 6,
@@ -162,8 +162,8 @@ const s = {
   legStatus: { fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 4 },
   pickUpBtn: {
     width: '100%', marginTop: 12, padding: '12px',
-    background: 'rgba(76,175,80,0.15)', border: '1px solid rgba(76,175,80,0.4)',
-    borderRadius: 10, color: '#a5d6a7', fontSize: 14, fontWeight: 700,
+    background: 'rgba(232,93,58,0.15)', border: '1px solid rgba(232,93,58,0.4)',
+    borderRadius: 10, color: '#F07B5E', fontSize: 14, fontWeight: 700,
     cursor: 'pointer', textAlign: 'center',
   },
 };
