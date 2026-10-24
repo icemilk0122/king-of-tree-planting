@@ -1,22 +1,27 @@
 'use client';
 
-export default function ActionBar({ onNearbyQuests, onHeritageGuide, onPhotoReport, onPlantTree, onMap }) {
+export default function ActionBar({ onNearbyQuests, onHeritageGuide, onPhotoReport, onPlantTree, onMap, hideMobileNav }) {
   return (
-    <div style={styles.bar}>
-      <div style={styles.left}>
-        <button type="button" style={styles.btn} onClick={onNearbyQuests}>
-          <span style={styles.icon}>❗</span>
-          <span style={styles.label}>附近任務</span>
-        </button>
-        <button type="button" style={styles.btn} onClick={onHeritageGuide}>
-          <span style={styles.icon}>🌳</span>
-          <span style={styles.label}>老樹圖鑑</span>
-        </button>
-        <button type="button" style={styles.btn} onClick={onMap}>
-          <span style={styles.icon}>🗺️</span>
-          <span style={styles.label}>地圖</span>
-        </button>
-      </div>
+    <div style={{
+      ...styles.bar,
+      ...(hideMobileNav ? { justifyContent: 'flex-end' } : {}),
+    }}>
+      {!hideMobileNav && (
+        <div style={styles.left}>
+          <button type="button" style={styles.btn} onClick={onNearbyQuests}>
+            <span style={styles.icon}>❗</span>
+            <span style={styles.label}>附近任務</span>
+          </button>
+          <button type="button" style={styles.btn} onClick={onHeritageGuide}>
+            <span style={styles.icon}>🌳</span>
+            <span style={styles.label}>老樹圖鑑</span>
+          </button>
+          <button type="button" style={styles.btn} onClick={onMap}>
+            <span style={styles.icon}>🗺️</span>
+            <span style={styles.label}>地圖</span>
+          </button>
+        </div>
+      )}
       <div style={styles.right}>
         <button type="button" style={{ ...styles.btn, ...styles.primaryBtn }} onClick={onPhotoReport}>
           <span style={styles.icon}>📸</span>

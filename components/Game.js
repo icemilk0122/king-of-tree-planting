@@ -370,21 +370,32 @@ export default function Game() {
         </div>
       )}
 
-      {/* Records button */}
-      <button
-        style={styles.recordsBtn}
-        onClick={() => setActivePanel(activePanel === 'records' ? null : 'records')}
-      >
-        🏆 我的紀錄
-      </button>
-
-      {/* Wardrobe button */}
-      <button
-        style={styles.wardrobeBtn}
-        onClick={() => setActivePanel(activePanel === 'wardrobe' ? null : 'wardrobe')}
-      >
-        👕 換裝
-      </button>
+      {/* Records & Wardrobe buttons — positioned differently on mobile */}
+      {isTouchDevice ? (
+        <div style={styles.mobileRightNav}>
+          <button style={styles.mobileNavBtn} onClick={() => setActivePanel(activePanel === 'records' ? null : 'records')}>
+            🏆
+          </button>
+          <button style={styles.mobileNavBtn} onClick={() => setActivePanel(activePanel === 'wardrobe' ? null : 'wardrobe')}>
+            👕
+          </button>
+        </div>
+      ) : (
+        <>
+          <button
+            style={styles.recordsBtn}
+            onClick={() => setActivePanel(activePanel === 'records' ? null : 'records')}
+          >
+            🏆 我的紀錄
+          </button>
+          <button
+            style={styles.wardrobeBtn}
+            onClick={() => setActivePanel(activePanel === 'wardrobe' ? null : 'wardrobe')}
+          >
+            👕 換裝
+          </button>
+        </>
+      )}
 
       {/* Proximity tree info */}
       <div ref={treeInfoRef} style={styles.treeInfo} />
@@ -596,6 +607,15 @@ export default function Game() {
         </>
       )}
 
+      {/* Mobile left nav — vertical below HUD */}
+      {isTouchDevice && !showDialogue && activePanel !== 'photo' && activePanel !== 'plant' && (
+        <div style={styles.mobileLeftNav}>
+          <button style={styles.mobileNavBtn} onClick={() => setActivePanel('nearby')}>❗</button>
+          <button style={styles.mobileNavBtn} onClick={openHeritageGuide}>🌳</button>
+          <button style={styles.mobileNavBtn} onClick={() => setActivePanel('map')}>🗺️</button>
+        </div>
+      )}
+
       {/* Bottom Action Bar (hidden when dialogue or photo is open) */}
       {!showDialogue && activePanel !== 'photo' && activePanel !== 'plant' && (
         <ActionBar
@@ -607,6 +627,7 @@ export default function Game() {
             emitStoryEvent('proposal.tool_opened');
           }}
           onMap={() => setActivePanel('map')}
+          hideMobileNav={isTouchDevice}
         />
       )}
     </>
@@ -788,6 +809,39 @@ const styles = {
     borderRadius: 8,
     backdropFilter: 'blur(4px)',
     WebkitBackdropFilter: 'blur(4px)',
+  },
+  mobileLeftNav: {
+    position: 'fixed',
+    top: 'calc(110px + env(safe-area-inset-top, 0px))',
+    left: 12,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+    zIndex: 10,
+  },
+  mobileRightNav: {
+    position: 'fixed',
+    top: 'calc(110px + env(safe-area-inset-top, 0px))',
+    right: 12,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+    zIndex: 10,
+  },
+  mobileNavBtn: {
+    width: 44,
+    height: 44,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'rgba(42,36,30,0.85)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    borderRadius: 12,
+    color: '#FFFCF7',
+    fontSize: 20,
+    cursor: 'pointer',
   },
   resetViewBtn: {
     position: 'fixed',
