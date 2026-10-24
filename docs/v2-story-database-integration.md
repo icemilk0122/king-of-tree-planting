@@ -5,7 +5,7 @@
 ## 部署順序
 
 1. 備份 Supabase，先檢查 `participations` 是否已有重複資料，以及現有 RLS 是否允許目前使用者完成交易內的讀寫。舊 ledger 可保留歷史重複紀錄；新版以 participation row lock 防止再次重複結算。
-2. 在測試環境套用 `supabase/migrations/202610240001_v2_story_domain_contracts.sql`。
+2. 在測試環境依序套用 `supabase/migrations/202610240001_v2_story_domain_contracts.sql` 與 `supabase/migrations/202610240002_add_quest_content_version.sql`。
 3. 驗證領取任務、照片上傳、單次加點、重複送出拒絕、提案重送防重複與社區事件。
 4. 執行 `npm test` 與 `npm run build`，再部署前端。
 5. 驗證完成前，不開啟官方狀態、人工審核、特定老樹或期間活動劇情。
@@ -20,6 +20,17 @@
 | `quest.local_reward_committed` | `S16_GENERAL_REVIEWED` | 交易回傳一般任務 ledger/event 後，每筆一次 |
 
 `content/story/v2/runtime-profile.json` 是目前能力的唯一開關。交接包內其他劇情仍保留，但不會只因為 JSON 存在就自動觸發。
+
+## 任務內容版號
+
+`quests.content_version` 用來區分執行期任務所屬的內容批次。導入前的既有任務由 migration 回填為 `legacy-v1`；目前故事包新建立的任務標記為 `2.0-review.1`。任務清單、樹木任務與玩家任務紀錄預設只讀目前版本，因此舊任務不需刪除也不會混入新流程。
+
+需要人工盤點時可直接依版號篩選：
+
+```sql
+select * from public.quests where content_version = 'legacy-v1';
+select * from public.quests where content_version = '2.0-review.1';
+```
 
 ## 資料一致性
 
