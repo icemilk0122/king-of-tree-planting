@@ -3,9 +3,11 @@ import assert from 'node:assert/strict';
 import {
   createNpcNavigationTarget,
   filterNearbyNpcQuests,
+  getDefaultNearbyQuests,
   getNpcPlacement,
   getNpcPlacementsForDistrict,
   isNpcTreeQuest,
+  mergeNearbyNpcQuests,
   NPC_PLACEMENTS,
 } from '../lib/npc-placements.js';
 import { lonLatToWorld } from '../lib/map.js';
@@ -120,4 +122,28 @@ test('nearby quests include only trees that are explicitly bound to NPCs', () =>
     filterNearbyNpcQuests(quests, 'daan').map(quest => quest.id),
     ['npc-general', 'npc-special']
   );
+});
+
+test('demo quests are immediately available in Daan and survive an empty database response', () => {
+  assert.deepEqual(
+    getDefaultNearbyQuests('daan').map(quest => quest.tree_id),
+    ['heritage-557', 'heritage-763']
+  );
+  assert.deepEqual(
+    mergeNearbyNpcQuests([], 'daan').map(quest => quest.tree_id),
+    ['heritage-557', 'heritage-763']
+  );
+  assert.deepEqual(getDefaultNearbyQuests('xinyi'), []);
+});
+
+test('database quest data replaces the matching demo fallback', () => {
+  const liveQuest = {
+    id: 'live-557',
+    tree_id: 'heritage-557',
+    area_id: 'daan',
+    points: 99,
+  };
+  const merged = mergeNearbyNpcQuests([liveQuest], 'daan');
+  assert.equal(merged.length, 2);
+  assert.equal(merged.find(quest => quest.tree_id === 'heritage-557').id, 'live-557');
 });

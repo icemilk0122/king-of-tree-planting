@@ -4,19 +4,21 @@ import { useState, useEffect } from 'react';
 import { getActiveQuests } from '../../lib/quest-engine';
 import {
   createNpcNavigationTarget,
-  filterNearbyNpcQuests,
+  getDefaultNearbyQuests,
   getNpcPlacementsForDistrict,
+  mergeNearbyNpcQuests,
 } from '../../lib/npc-placements';
 
 export default function NearbyQuests({ areaId, onNavigateToQuest, onNavigateToStory, onClose }) {
-  const [quests, setQuests] = useState([]);
+  const [quests, setQuests] = useState(() => getDefaultNearbyQuests(areaId));
   const [loading, setLoading] = useState(true);
   const stories = getNpcPlacementsForDistrict(areaId);
 
   useEffect(() => {
+    setQuests(getDefaultNearbyQuests(areaId));
     setLoading(true);
     getActiveQuests(areaId)
-      .then(activeQuests => setQuests(filterNearbyNpcQuests(activeQuests, areaId)))
+      .then(activeQuests => setQuests(mergeNearbyNpcQuests(activeQuests, areaId)))
       .catch((e) => console.warn('Failed to load quests:', e))
       .finally(() => setLoading(false));
   }, [areaId]);
@@ -61,7 +63,7 @@ export default function NearbyQuests({ areaId, onNavigateToQuest, onNavigateToSt
               {!loading && <small style={styles.sectionHint}>{quests.length} 個可進行</small>}
             </div>
 
-            {loading && <div style={styles.loading}>正在尋找附近任務…</div>}
+            {loading && quests.length === 0 && <div style={styles.loading}>正在尋找附近任務…</div>}
 
             {!loading && quests.length === 0 && (
               <div style={styles.empty}>
@@ -73,7 +75,7 @@ export default function NearbyQuests({ areaId, onNavigateToQuest, onNavigateToSt
               </div>
             )}
 
-            {!loading && quests.length > 0 && (
+            {quests.length > 0 && (
               <div style={styles.list}>
                 {quests.map((q) => (
                   <button
