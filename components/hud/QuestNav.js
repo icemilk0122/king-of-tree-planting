@@ -60,7 +60,7 @@ export default function QuestNav({ quest, getTargetPos, getPlayerPos, onArrive, 
 const s = {
   container: {
     position: 'fixed',
-    top: 'calc(60px + env(safe-area-inset-top, 0px))',
+    top: 'calc(120px + env(safe-area-inset-top, 0px))',
     left: '50%',
     transform: 'translateX(-50%)',
     zIndex: 55,
