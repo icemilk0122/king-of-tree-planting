@@ -5,7 +5,7 @@ import { initGame } from '../lib/engine';
 import RPGDialogue from './quest/RPGDialogue';
 import ActionBar from './hud/ActionBar';
 import { getOrCreateQuestForTree, acceptQuest, toggleFollowTree, startRelay, resetUserData } from '../lib/quest-engine';
-import { detectDistrict, detectDistrictFromAddress } from '../lib/area-detect';
+import { resolveDistrict } from '../lib/area-detect';
 import PhotoCapture from './photo/PhotoCapture';
 import NearbyQuests from './quest/NearbyQuests';
 import MyRecords from './records/MyRecords';
@@ -21,6 +21,7 @@ import QuestNav from './hud/QuestNav';
 import Wardrobe from './hud/Wardrobe';
 import { OPENING_STORY_POSITION, resetLocalGameSession } from '../lib/game-session';
 import { shouldShowTreeDialogue } from '../lib/dialogue-visibility';
+import { DEFAULT_DISTRICT } from '../lib/districts';
 
 export default function Game() {
   const containerRef = useRef(null);
@@ -39,7 +40,7 @@ export default function Game() {
   const [showDialogue, setShowDialogue] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
   const [questLoading, setQuestLoading] = useState(false);
-  const [currentDistrict, setCurrentDistrict] = useState('xinyi');
+  const [currentDistrict, setCurrentDistrict] = useState(DEFAULT_DISTRICT);
   const [navQuest, setNavQuest] = useState(null);
   const [storyQueue, setStoryQueue] = useState([]);
   const [currentStory, setCurrentStory] = useState(null);
@@ -115,13 +116,11 @@ export default function Game() {
 
   const onAddressUpdate = useCallback((addr) => {
     setAddress(addr);
-    if (gameRef.current) {
-      const coords = gameRef.current.getPlayerCoords();
-      const district = detectDistrictFromAddress(addr) || detectDistrict(coords.lat, coords.lng);
-      if (district) {
-        setCurrentDistrict(district);
-        syncQuestMarkersForDistrict(district);
-      }
+    const coords = gameRef.current?.getPlayerCoords?.();
+    const district = resolveDistrict(addr, coords);
+    if (district) {
+      setCurrentDistrict(district);
+      syncQuestMarkersForDistrict(district);
     }
   }, [syncQuestMarkersForDistrict]);
 
@@ -190,14 +189,14 @@ export default function Game() {
     const timer = setTimeout(() => {
       if (!gameRef.current) return;
       const coords = gameRef.current.getPlayerCoords();
-      const district = detectDistrict(coords.lat, coords.lng);
+      const district = resolveDistrict(address, coords);
       if (district) {
         setCurrentDistrict(district);
         syncQuestMarkersForDistrict(district);
       }
     }, 2000);
     return () => clearTimeout(timer);
-  }, [gameStarted, syncQuestMarkersForDistrict]);
+  }, [address, gameStarted, syncQuestMarkersForDistrict]);
 
   async function handleDialogueAction(action) {
     if (action === 'photo') {
