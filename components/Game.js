@@ -421,7 +421,7 @@ export default function Game() {
         )}
 
       {/* Controls hint */}
-      <div style={styles.controls}>
+      <div className="desktop-controls-hint" style={styles.controls}>
         WASD: 移動 &nbsp; Q/E: 旋轉 &nbsp; 滾輪: 縮放 &nbsp; V: 視角 &nbsp; F: 全螢幕
       </div>
 

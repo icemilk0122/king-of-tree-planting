@@ -140,3 +140,9 @@ button:active {
     text-align: right;
   }
 }
+
+@media (max-width: 767px), (hover: none) and (pointer: coarse) {
+  .desktop-controls-hint {
+    display: none;
+  }
+}
