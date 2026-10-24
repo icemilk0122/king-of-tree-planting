@@ -148,8 +148,8 @@ const s = {
   },
   portraitImage: {
     display: 'block',
-    width: 'clamp(250px, 38vw, 440px)',
-    height: 'min(68vh, 660px)',
+    width: 'clamp(180px, 32vw, 440px)',
+    height: 'min(42vh, 660px)',
     objectFit: 'contain',
     objectPosition: 'bottom center',
     filter: 'drop-shadow(0 18px 22px rgba(0,0,0,0.38))',
