@@ -6,6 +6,7 @@ export default function TitleScreen({ onStart, onReset }) {
   const [phase, setPhase] = useState('loading');
   const [showMenu, setShowMenu] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const canvasRef = useRef(null);
   const bgRef = useRef(null);
   const textRef = useRef(null);
@@ -13,6 +14,10 @@ export default function TitleScreen({ onStart, onReset }) {
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const breathRef = useRef(0);
   const loadedRef = useRef(0);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 600);
+  }, []);
 
   useEffect(() => {
     const srcs = ['/images/title-bg.png', '/images/title-text.png', '/images/title-char.png'];
@@ -159,17 +164,17 @@ export default function TitleScreen({ onStart, onReset }) {
     }}>
       {/* Layer 1: Background cityscape (parallax only) */}
       <div style={s.layerWrap}>
-        <img ref={bgRef} src="/images/title-bg.png" alt="" style={{ ...s.layerImg, opacity: fadeIn, transition: 'opacity 1s ease' }} />
+        <img ref={bgRef} src="/images/title-bg.png" alt="" style={{ ...s.layerImg, ...(isMobile && s.mobileImg), opacity: fadeIn, transition: 'opacity 1s ease' }} />
       </div>
 
       {/* Layer 2: Character (parallax + breathing) */}
       <div style={s.layerWrap}>
-        <img ref={charRef} src="/images/title-char.png" alt="" style={{ ...s.layerImg, ...s.charImg, opacity: fadeIn, transition: 'opacity 1s ease 0.2s' }} />
+        <img ref={charRef} src="/images/title-char.png" alt="" style={{ ...s.layerImg, ...s.charImg, ...(isMobile && s.mobileImg), opacity: fadeIn, transition: 'opacity 1s ease 0.2s' }} />
       </div>
 
       {/* Layer 3: Title text (parallax, slight) */}
       <div style={s.layerWrap}>
-        <img ref={textRef} src="/images/title-text.png" alt="樹蔭守護者" style={{ ...s.layerImg, opacity: fadeIn, transition: 'opacity 1s ease 0.4s' }} />
+        <img ref={textRef} src="/images/title-text.png" alt="樹蔭守護者" style={{ ...s.layerImg, ...(isMobile && s.mobileImg), opacity: fadeIn, transition: 'opacity 1s ease 0.4s' }} />
       </div>
 
       <div style={s.vignette} />
@@ -218,6 +223,9 @@ const s = {
     width: '100%', height: '100%',
     objectFit: 'cover', objectPosition: 'center center',
     willChange: 'transform',
+  },
+  mobileImg: {
+    objectPosition: '35% center',
   },
   charImg: {
     transformOrigin: '60% 50%',
