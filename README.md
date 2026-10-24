@@ -14,7 +14,7 @@
 | 後端 / 資料庫 | [Supabase](https://supabase.com/) (PostgreSQL + Storage) | 任務資料、照片儲存、RLS 權限控制 |
 | 地圖圖磚 | [OpenStreetMap](https://www.openstreetmap.org/) | 衛星/街道底圖 (`tile.openstreetmap.org`) |
 | 天氣 | [Open-Meteo](https://open-meteo.com/) | 即時天氣 API（免費、免 API key） |
-| 3D 角色建模 | [Blender](https://www.blender.org/) + Python 腳本 | Q 版模組化角色 GLB 生成 |
+| 3D 角色建模 | [Blender](https://www.blender.org/) + Python 腳本 | Q 版模組化角色（7 部位 × 23 件裝備 + 3 套預設造型） |
 
 ## 資料來源與授權
 
@@ -61,10 +61,18 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 需要安裝 [Blender](https://www.blender.org/) 3.0+：
 
 ```bash
-blender --background --python scripts/generate-character.py
+blender --background --python scripts/generate-character-v2.py
 ```
 
-在 `public/models/` 生成 base + 14 件裝備 GLB 檔。未生成時遊戲自動使用幾何體角色。
+在 `public/models/` 生成 char-base.glb + 23 件裝備 GLB 檔。未生成時遊戲自動使用幾何體角色。
+
+角色系統支援 7 個裝備部位（髮型、臉部配件、帽子、上衣、下裝、鞋子、配件），並提供 3 套預設造型：
+
+| 造型 | 說明 |
+|------|------|
+| 經典守護者 | 捲髮 + 方框眼鏡 + 條紋上衣 + 深色長褲 |
+| 樹蔭守護者 | 草帽 + 白色 Polo 衫 + 深藍長褲 |
+| 海島休閒 | 墨鏡 + 花襯衫 + 黑短褲 + 夾腳拖 |
 
 ## 專案結構
 
@@ -86,16 +94,20 @@ blender --background --python scripts/generate-character.py
 │   ├── trees.js            # TreeManager（90K 棵樹的 LOD 載入）
 │   ├── buildings.js        # 建築物 3D 渲染
 │   ├── character.js        # 模組化 GLB 角色 + 裝備系統
-│   ├── equipment.js        # 裝備定義（6 slot × 15 件）
+│   ├── equipment.js        # 裝備定義（7 slot × 23 件 + 3 套預設造型）
 │   ├── quest-engine.js     # 任務 CRUD + 接力賽
 │   ├── stories.js          # 劇情腳本
 │   ├── supabase.js         # Supabase client（Proxy 延遲初始化）
 │   └── weather.js          # Open-Meteo 天氣查詢
 ├── public/
 │   ├── data/               # trees.json (90K)、buildings.json
-│   └── images/             # 標題畫面美術圖
+│   ├── models/             # char-base.glb + 23 件裝備 GLB
+│   └── images/             # 標題畫面美術圖（三層分離：bg/char/text）
+├── assets/
+│   └── blender/              # Blender 原始檔 (.blend)
 └── scripts/
-    └── generate-character.py  # Blender 角色生成腳本
+    ├── generate-character.py     # Blender 角色生成腳本 (v1)
+    └── generate-character-v2.py  # Blender 角色生成腳本 (v2，模組化裝備)
 ```
 
 ## RPG 任務模組
