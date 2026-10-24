@@ -373,6 +373,7 @@ export default function Game() {
           currentDistrict={currentDistrict}
           onClose={() => setActivePanel(null)}
           onSubmitted={(proposal) => {
+            gameRef.current?.spawnSapling();
             emitStoryEvent('proposal.saved', {
               eventId: `proposal.saved:${proposal.id}`,
               proposalId: proposal.id,
